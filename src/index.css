@@ -1,0 +1,50 @@
+:root{
+  --grey:#ededed;
+  --purple:linear-gradient(118deg,#7828c8,rgba(115,103,240,.7));
+  --light:white;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  background-color: var(--grey) ;
+  min-height: 100vh;
+  background-color: #ededed;
+  overflow-x: hidden;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+#root{
+  width: 100%;
+  min-height: 100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+/* x button */
+.nextui-c-eXOOPO svg{
+  margin-right: 10px;
+  transform: scale(1.35);
+  color: #7828c8;
+}
+.margin_top_10{
+  margin-top: 10px;
+}
+.margin_top_15{
+  margin-top: 15px;
+}
+.margin_top_20{
+  margin-top: 20px;
+}
+.margin_top_25{
+  margin-top: 25px;
+}
+.margin_top_30{
+  margin-top: 30px;
+}

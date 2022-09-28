@@ -1,0 +1,663 @@
+import React, { useState } from 'react'
+import { Input,Radio } from '@nextui-org/react'
+import { AiOutlineClear,AiOutlineUserAdd } from 'react-icons/ai';
+import Select from 'react-select';
+import { v4 as uuidv4 } from 'uuid';   
+import { useForm } from "react-hook-form";                                                                                                                                                                                                                     
+
+import './Transport.css'
+
+function Transport({orderId}) {
+
+    const [firstTable,setFirstTable]= useState('transport_garovPart close');
+    const [secondTable,setSecondTable]= useState('transport_ishonchnomaPart close');
+    const [garov, setGarov]= useState('transport_fourInputs close');
+    // important inputs
+    const [valuedStatus, setValuedStatus] = useState(false)
+    const [valuedNumber,setValuedNumber] = useState(1)
+    const [ownerStatus, setOwnerStatus] = useState(false)
+    const [trustOwnerStatus, setTrustOwnerStatus] = useState(false)
+    const [giveSum, setGiveSum] = useState(0)
+
+    function tables(a){
+        if(a===1){                                                                                      
+            setFirstTable('transport_garovPart close')                                                                                                                                                                                             
+            setSecondTable('transport_ishonchnomaPart close')
+            setOwnerStatus(false)
+            setTrustOwnerStatus(false)
+        }                                                                                                       
+        else if(a===2){
+            setFirstTable('transport_garovPart open')
+            setSecondTable('transport_ishonchnomaPart close')
+            setOwnerStatus(true)
+            setTrustOwnerStatus(false)
+        }else if(a===3){
+            setFirstTable('transport_garovPart open')
+            setSecondTable('transport_ishonchnomaPart open')
+            setOwnerStatus(true)
+            setTrustOwnerStatus(true)
+        }
+    }
+
+    function fourInputs(b){
+        if(b===1){
+            setGarov('transport_fourInputs open')
+        }
+        else if(b===2){
+            setGarov('transport_fourInputs close')
+        }
+    }
+
+    // UseForm
+    const { register,
+        handleSubmit,
+        watch,
+        formState: { errors, isValid }
+    } = useForm();
+
+    // Transport information
+    const [transportProducts, setTransportProducts] = useState([
+        {
+            id:1,
+            name:'',
+            year:'',
+            number:'',
+            type_of_auto:'',
+            engine_number:'',
+            body_code:'',
+            chassis:'',
+            sum:0
+        }
+    ]);
+
+    // Addining item
+    function addNewTransportProduct(){
+        let newProduct = [
+            {
+                id:uuidv4(),
+                name:'',
+                year:'',
+                number:'',
+                type_of_auto:'',
+                engine_number:'',
+                body_code:'',
+                chassis:'',
+                sum:0
+            }
+        ]
+        setTransportProducts(transportProducts.concat(newProduct))    
+    }
+
+    // Deleting item
+    function deleteTransportProduct(id){
+        if(transportProducts.length > 1){
+            setTransportProducts( transportProducts?.filter((item,index)=> item.id !== id) )
+        }else{
+            setTransportProducts(transportProducts)
+        }
+    }
+
+    function GetTotalSum(){
+        let prices=[]
+        transportProducts?.map(item =>{
+            prices.push(item?.sum)
+        })
+
+        let totalSum = prices.reduce((prev, current) => Number(prev) + Number(current), 0)
+        return totalSum
+    }
+
+    // const [resetWarning, setResetWarning] = useState('warning_reset_main close')
+
+    // function openReset(e){
+    //     e.preventDefault()
+    //     setResetWarning('warning_reset_main open')
+    // }
+    // function closeReset(e){
+    //     e.preventDefault()
+    //     setResetWarning('warning_reset_main close')
+    // }
+
+    // Selector Options
+    const options = [
+        { value: '1', label: "O'zR fuqarosining ID kartasi" },
+        { value: '2', label: "O'zR Fuqarosining pasporti" },
+        { value: '3', label: "Harbiy xizmatchi guvohnomasi" },
+        { value: '4', label: "Xizmat guvohnomasi" },
+        { value: '5', label: "Xorijiy fuqaro pasporti" },
+        { value: '6', label: "Yashash guvohnomasi" },
+        { value: '7', label: "O'zR Fuqarosining biometrik pasporti" },
+        { value: '8', label: "Tug'ulganlik haqidagi guvohnoma" },
+        { value: '9', label: "O'zR fuqarosining yangi namunadagi haydovchilik guvohnomasi" },
+        { value: '10', label: "Boshqa" }
+    ];
+    // Style of selector
+    const colourStyles = {
+        control: styles => ({ ...styles, backgroundColor: 'white'}),
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+          return {
+            ...styles,
+            backgroundColor: isSelected ? 'rgb(215,215,215)' : 'white',
+            color:'black',
+            margin: '0 5px',
+            width: 'cal(100% - 10px)',
+            fontWeight:500,
+            borderRadius:'5px',
+            border: isSelected ? '2px solid rgb(215,215,215)' : '2px solid white',
+            cursor: isDisabled ? 'not-allowed' : 'default',
+            "&:hover": {
+                border:'2px solid rgb(215,215,215)'
+                // color:'white'
+            }
+          };
+        },
+        
+    };
+
+    // Form onSubmit
+    const onSubmit = (data) =>{
+        console.log(data)
+    }
+
+  return (
+    <>
+        {/* Reset Warning
+        <div className={resetWarning}>
+            <p>Haqiqatan ham ma'lumontlarni qayta tiklamoqchimisiz?</p>
+            <div >
+            <button onClick={closeReset}>Ha</button>
+            <button onClick={closeReset}>Yoq</button>
+            </div>
+        </div> */}
+
+        <section className='transport_section'>
+            <form className='transport_main' onSubmit={handleSubmit(onSubmit)}>
+                <div className='transport_garov'>
+                    <p>Garov mulkining egasi</p>
+                    <div>
+                        <Radio.Group label=' ' orientation="horizontal" color='secondary' defaultValue={1} size='sm' className='transport_garov_radioGroup' onChange={(e)=>tables(e)}>
+                            <Radio value={1} className='transport_garov_radio'>Mijozning o'zi</Radio>
+                            <Radio value={2} className='transport_garov_radio'>Uchinchi shaxs</Radio>
+                            <Radio value={3} className='transport_garov_radio'>Ishonchnoma asosida</Radio>
+                        </Radio.Group>
+                    </div>
+                </div>
+
+                <div className='transport_addition'>
+                    <Radio.Group label=' ' orientation="horizontal" color='secondary' defaultValue={2} size='sm' className='transport_addition_radioGroup' onChange={(e)=>fourInputs(e)}>
+                        <Radio value={1} className='transport_addition_radio'>Mustaqil baholash asosida</Radio>
+                        <Radio value={2} className='transport_addition_radio'>O'zaro kelishuvga asosan</Radio>
+                    </Radio.Group>
+                </div>
+
+                {/* Addition 4 inputs */}
+                <div className={garov}>
+                    <Input 
+                        label='Transport vositasini baholovchi tashkilo'
+                        placeholder='Vosiq Mirzo'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_fourInputs_input'
+                        clearable
+                    >
+                    </Input>
+                    <Input 
+                        label='Litsenziya'
+                        placeholder='Litsenziya BL001, RR0118, 19.02.2014 y. berilgan'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_fourInputs_input'
+                        clearable
+                    >
+                    </Input>
+                    <Input 
+                        label='Baholovchining ismi sharifi'
+                        placeholder='B.Asomov'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_fourInputs_input'
+                        clearable
+                    >
+                    </Input>
+                    <Input 
+                        label='Baholash hujjati raqami'
+                        placeholder='06/002'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_fourInputs_input'
+                        clearable
+                    >
+                    </Input>    
+                </div>
+
+                <div className='transport_mainInputs'>
+                    <Input 
+                        label='Qayd etish guvohnomasi'
+                        placeholder='AAF № 0186343'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_mainInputs_input' 
+                        clearable
+                        {...register(`company.name`, { required: true} )}
+                    >
+                    </Input>  
+                    <Input 
+                        label='Baholovchi hujjat sanasi'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_mainInputs_input' 
+                        type='date'
+                        {...register(`date`, { required: true} )}
+                    >
+                    </Input>  
+                    <Input 
+                        label='Baholangan qiymati'
+                        value={GetTotalSum()}
+                        readOnly
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_mainInputs_input' 
+                        {...register(`company.name`, { required: true} )}
+                    >
+                    </Input>  
+                </div>
+
+        {/****************************--- TABLE ---****************************/}
+
+                <div className='transport_table'>
+                    <div className='transport_table_title_part'>
+                        <p className='transport_table_title'>Baholash natijalari</p>
+                    </div>
+                    {
+                        transportProducts.map((item,index)=>{
+                            return(
+                                    <div className='transport_table_product' key={item?.id}>
+                                        <div className='transport_table_product_title'>
+                                            <p>Mahsulot {index + 1}</p>
+                                            <button type='button' onClick={()=>deleteTransportProduct(item?.id)}><i className='bx bxs-trash'></i></button>
+                                        </div>
+                                        <div className='transport_table_things'>
+                                            <Input 
+                                                label='Nomi'
+                                                placeholder='Damos'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).name}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].name = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>  
+                                            <Input 
+                                                label='Ishlab chiqarilgan yi'
+                                                placeholder='2009'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).year}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].year = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Davlat raqam belgisi'
+                                                placeholder='FR 447 RJ'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).number}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].number = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Transport vositasi turi'
+                                                placeholder='yengil sedan'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).type_of_auto}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].type_of_auto = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Dvigatel raqami'
+                                                placeholder='447 118'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).engine_number}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].engine_number = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Kuzov raqami'
+                                                placeholder='JF92JJFLDKSF9034J'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).body_code}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].body_code = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Shassi №'
+                                                placeholder='Raqamsiz'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).chassis}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].chassis = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label="Baholangan qiymati, so'm"
+                                                placeholder='140 000 000'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                type='number'
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).sum}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].sum = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                        </div>
+                                    </div>
+                            )
+                        })
+                    }
+                    <div className='transport_product_addPlace'>
+                        <button className='transport_product_addButton' type='button' onClick={()=>addNewTransportProduct()}><i className='bx bx-plus-circle'></i></button>
+                    </div>
+                </div>
+
+
+                <div className='transport_endMainInputs'>
+                    <Input 
+                        label='Qabul qilish qiymati, %da'
+                        value={(giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)}
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        readOnly
+                        className='transport_endMainInputs_input' 
+                        status={
+                            ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 100 ? 'error' : ''
+                        }
+                    >
+                    </Input>  
+                    <Input 
+                        label="Qabul qilish qiymati, so'mda"
+                        placeholder=' 50 000 000'
+                        type='number'
+                        width='100%'
+                        value={giveSum}
+                        color="secondary"
+                        bordered 
+                        className='transport_endMainInputs_input' 
+                        onChange={(e)=>{
+                            setGiveSum(e.target.value)
+                        }}
+                    >
+                    </Input>  
+                    <Input 
+                        label='Identifikatsiya raqami (JShShIR)'
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='transport_endMainInputs_input' 
+                    >
+                    </Input>  
+                </div>
+                
+                {/* Owner */}
+                <div className={firstTable}>
+                    <p className='additionPart_title'>Garov mulki egasining ma'lumotlari</p>
+                    <div>
+                        <Input 
+                            label='Garov mulki egasining F.I.Sh.'
+                            placeholder=' Muxammadshukurov Xusniddin Fatxulla o`g`li'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>
+                        <div className='transport_garovPart_selectPart'>
+                            <p>Shaxsini tasdiqlovchi xujjat turi</p>
+                            <Select
+                                // value={selectedOption}
+                                defaultValue={options[0]}
+                                // styles={customStyles}
+                                options={options}
+                                className='buyurtma_select_new'
+                                styles={colourStyles}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 12,
+                                    colors: {
+                                    ...theme.colors,
+                                    primary25: '#7828c8',
+                                    primary: '#7828c8',
+                                    },
+                                })}
+                            />
+                        </div>
+                        <Input 
+                            label='Seriyasi va raqami'
+                            placeholder='AA 87654321'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Kim tomonidan berilgan'
+                            clearable
+                            placeholder='Toshkent viloyati Bo`ka tumani Mudofa '
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Berilgan sana'
+                            type='date'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label="Ro'yxat bo'yicha yashash manzili"
+                            clearable
+                            placeholder='Toshkent viloyati Bo`ka tumani Y.Xojimetov fu O`zbekiston ko`chasi 92 uy'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Identifikatsiya raqami (JShShIR)'
+                            placeholder='123456789'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                        >
+                        </Input>   
+                    </div>
+                </div>
+
+                {/* Trust Owner */}
+                <div className={secondTable}>
+                    <p className='additionPart_title'>Ishonchnoma berilgan shaxs ma'lumotlari</p>
+                    <div>
+                        <Input 
+                            label='F.I.Sh.'
+                            placeholder='Maxkamova Kimdir Kimsanovna'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>
+                        <div className='transport_garovPart_selectPart'>
+                            <p>Shaxsini tasdiqlovchi hujjat turi</p>
+                            <Select
+                                // value={selectedOption}
+                                defaultValue={options[0]}
+                                // styles={customStyles}
+                                options={options}
+                                className='buyurtma_select_new'
+                                styles={colourStyles}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 12,
+                                    colors: {
+                                    ...theme.colors,
+                                    primary25: '#7828c8',
+                                    primary: '#7828c8',
+                                    },
+                                })}
+                            />
+                        </div>
+                        <Input 
+                            label='Seriyasi va raqami'
+                            placeholder='AA 87654321'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Kim tomonidan berilgan'
+                            clearable
+                            placeholder='Toshkent viloyati Bo`ka tumani Mudofa '
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Berilgan sana'
+                            type='date'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label="Ro'yxat bo'yicha yashash manzili"
+                            clearable
+                            placeholder='Toshkent viloyati Bo`ka tumani Y.Xojimetov fu O`zbekiston ko`chasi 92 uy'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>
+                        <Input 
+                            label='Ishonchnoma raqami'
+                            placeholder='123456789'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>  
+                        <Input 
+                            label=' Ishonchnoma berilgan sana'
+                            type='date'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>  
+                        <Input 
+                            label='Identifikatsiya raqami (JShShIR)'
+                            clearable
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_ishonchnomaPart_input' 
+                        >
+                        </Input>   
+                    </div>
+                </div>
+
+                <div className='submit-buttons'>
+                    <button className='client_submit reset' type='button'>
+                        Formani tiklash
+                        <AiOutlineClear/>
+                    </button>
+                    <button type='submit' className='client_submit submit'>
+                        Ta'minotni qo'shish
+                        <AiOutlineUserAdd/>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </>
+  )
+}
+
+export default Transport

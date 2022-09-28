@@ -1,0 +1,115 @@
+.little-statistics{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+.circle-total{
+    width: 23.5%;
+    padding:15px 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: .2s linear all;
+}
+.circle-total:hover{
+    transform: scale(1.1);
+}
+.circle_total_parts{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 75px;
+}
+.big-statistics{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.total-part-circle-blue{
+    font-size: 60px;
+    color: #1E90FF;
+}
+.total-part-circle-yellow{
+    font-size: 60px;
+    color: rgb(219, 219, 22);
+}
+.price-total{
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom:0;
+}
+.total-text{
+    font-size: 14px;
+    color: grey;
+}
+.total-end{
+    margin-top: 10px;
+}
+.total-end-text-green span{
+    color: rgb(17, 168, 17);
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.total-end-text-red span{
+    color: rgb(201, 14, 14);
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.total-end-text-green,.total-end-text-red{
+    font-size: 13px;
+}
+.barChart{
+    width: 65%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+.horizChart{
+    width: 33%;
+    background-color: #fff;
+    height: auto;
+    padding:20px;
+    border-radius: 10px;
+}
+
+
+
+/* Media */
+
+@media (min-width: 1600px) {
+    .total-part-circle-blue{
+        font-size: 80px;
+    }
+    .total-part-circle-yellow{
+        font-size: 80px;
+    }
+    .price-total{
+        font-size: 21px;
+    }
+    .total-text{
+        font-size: 16px;
+    }
+    .circle-total{
+        padding:20px 25px;
+    }
+    .barChart{
+        width: 65%;
+        padding: 40px;
+    }
+    .horizChart{
+        padding: 30px;
+    }
+    .circle_total_parts{
+        height: 85px;
+    }
+}

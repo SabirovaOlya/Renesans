@@ -1,0 +1,87 @@
+.stepper_table{
+    display: flex;
+    flex-direction: row;
+    margin-left: -15px;
+    margin-right: -15px;
+    width:calc( 100%+ 30px);
+    margin-top: 30px;
+    height: 60px;
+    background-color: #ededed;
+    padding: 0 20px;
+}
+.stepper_tab{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 25px;
+    font-weight: 600;
+    font-size: 16px;
+}
+.active_tab{
+    background-color: white;
+    border-top: 5px solid #ededed;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+.active_tab p{
+    color: #7828c8;
+}
+
+.step_buttons{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+.double_button{
+    justify-content: space-between;
+}
+.single_button{
+    justify-content: flex-end;
+}
+.step_next{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border: 2px solid blue;
+    background-color: rgb(185, 185, 255);
+    box-shadow: 2px 5px 5px rgb(185, 185, 255);
+    height: 40px;
+    width: 200px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease-out;
+    outline: none;
+}
+.step_next p{
+    font-size: 17px;
+    margin-right: 3px;
+    transition-duration: 0.2s;
+}
+.step_next:hover p{
+    margin-right: 7px;
+}
+.previous_button{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border: 2px solid orangered;
+    background-color: rgb(250, 174, 146);
+    box-shadow: -2px 5px 5px rgb(250, 174, 146);
+    height: 40px;
+    width: 220px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease-out;
+    outline: none;
+}
+.previous_button p{
+    font-size: 17px;
+    margin-left: 3px;
+    transition-duration: 0.2s;
+}
+.previous_button:hover p{
+    margin-left: 7px;
+}

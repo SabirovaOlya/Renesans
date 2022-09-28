@@ -1,0 +1,8 @@
+.spinner-loader{
+    width: 50%;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 100px;
+}

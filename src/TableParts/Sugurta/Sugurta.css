@@ -1,0 +1,10 @@
+.sugurta_section{
+    padding: 20px 0 0 0;
+}
+.sugurta_main{
+    display: flex;
+    flex-direction: column;
+}
+.sugurta_main .sugurta_input{
+    margin-bottom: 15px;
+}

@@ -1,0 +1,23 @@
+/* Pagination
+.pagination_block_wrapper{
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagination_block{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.pagination_block button{
+    margin-left: 20px;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: linear .2s all;
+} */
