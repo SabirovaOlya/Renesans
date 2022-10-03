@@ -112,6 +112,30 @@ function Taminot() {
         })
     }
 
+    function SinglePage(type, id){
+        if(type == 'gold'){
+            navigate(`/taminot/singlegold/${id}`, { replace: true })
+        }else if(type == 'auto'){
+            navigate(`/taminot/singleavto/${id}`, { replace: true })
+        }else if(type == 'guarrantor'){
+            navigate(`/taminot/singleuchinchi/${id}`, { replace: true })
+        }else if(type == 'insurance'){
+            navigate(`/taminot/singlesugurta/${id}`, { replace:true })
+        }
+    }
+
+    function EditPage(type, id){
+        if(type == 'gold'){
+            navigate(`/taminot/editgold/${id}`, { replace: true })
+        }else if(type == 'auto'){
+            navigate(`/taminot/editavto/${id}`, { replace: true })
+        }else if(type == 'guarrantor'){
+            navigate(`/taminot/edituchinchi/${id}`, { replace: true })
+        }else if(type == 'insurance'){
+            navigate(`/taminot/editsugurta/${id}`, { replace:true })
+        }
+    }
+
     useEffect(() => {
         getUrl(currentUrl)
     }, []);
@@ -176,8 +200,8 @@ function Taminot() {
                                     <p className='li_shartnoma'>{item?.id}</p>
                                     <p className='li_shartnoma'>{item?.type}</p>
                                     <div className='userButtons_shartnoma'>
-                                        <button><i className='bx bx-user'></i></button>
-                                        <button><i className='bx bx-edit-alt'></i></button>
+                                        <button onClick={()=>{SinglePage(item?.type, item?.id)}}><i className='bx bx-user'></i></button>
+                                        <button onClick={()=>{EditPage(item?.type, item?.id)}}><i className='bx bx-edit-alt'></i></button>
                                         <button onClick={()=>{DeleteProduct(item?.id)}}><i className='bx bx-trash'></i></button>
                                     </div>
                                 </li>

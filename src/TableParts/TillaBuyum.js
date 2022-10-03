@@ -92,7 +92,6 @@ function TillaBuyum({orderId}) {
     }
 
     // Getting Total Sum of golds
-
     function TotalSum(){
         let SumArray = []
         bahoItems?.map((item)=>{
@@ -224,15 +223,6 @@ function TillaBuyum({orderId}) {
                     color="secondary"
                     readOnly
                 />
-                {/* <Input
-                bordered
-                label='Baholangan qiymat, yozuvda'
-                className='taminot_tableform_input'
-                width='100%'
-                type='text'
-                placeholder="On yetti million"
-                color="secondary"
-                /> */}
             </div>
             <div className='tamilot_main_table'>
                 <h1>Baholash natijalari</h1>
@@ -270,6 +260,7 @@ function TillaBuyum({orderId}) {
                                     className='taminot_tableform_input'
                                     clearable
                                     placeholder="583"
+                                    type='number'
                                     color="secondary"
                                     value={bahoItems.find(x => x.id === item.id).gold_num}
                                     onChange={(e)=>{

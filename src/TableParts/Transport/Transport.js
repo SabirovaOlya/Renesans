@@ -4,8 +4,9 @@ import { AiOutlineClear,AiOutlineUserAdd } from 'react-icons/ai';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';   
 import { useForm } from "react-hook-form";                                                                                                                                                                                                                     
-
+import Swal from 'sweetalert2';
 import './Transport.css'
+import https from '../../assets/https';
 
 function Transport({orderId}) {
 
@@ -15,9 +16,33 @@ function Transport({orderId}) {
     // important inputs
     const [valuedStatus, setValuedStatus] = useState(false)
     const [valuedNumber,setValuedNumber] = useState(1)
+    const [possessor, setPossessor] = useState('client')
     const [ownerStatus, setOwnerStatus] = useState(false)
     const [trustOwnerStatus, setTrustOwnerStatus] = useState(false)
     const [giveSum, setGiveSum] = useState(0)
+    // Alert
+    function Success() {
+        Swal.fire({
+            title: "Ta'minot qoshildi",
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function Warn() {
+        Swal.fire({
+            title: "Xato",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function ProcentError() {
+        Swal.fire({
+            title: "Qabul qilish qiymati 100% dan ortiq",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    
 
     function tables(a){
         if(a===1){                                                                                      
@@ -25,26 +50,33 @@ function Transport({orderId}) {
             setSecondTable('transport_ishonchnomaPart close')
             setOwnerStatus(false)
             setTrustOwnerStatus(false)
+            setPossessor('client')
         }                                                                                                       
         else if(a===2){
             setFirstTable('transport_garovPart open')
             setSecondTable('transport_ishonchnomaPart close')
             setOwnerStatus(true)
             setTrustOwnerStatus(false)
+            setPossessor('owner')
         }else if(a===3){
             setFirstTable('transport_garovPart open')
             setSecondTable('transport_ishonchnomaPart open')
             setOwnerStatus(true)
             setTrustOwnerStatus(true)
+            setPossessor('trust_owner')
         }
     }
 
     function fourInputs(b){
         if(b===1){
             setGarov('transport_fourInputs open')
+            setValuedStatus(true)
+            setValuedNumber(2)
         }
         else if(b===2){
             setGarov('transport_fourInputs close')
+            setValuedStatus(false)
+            setValuedNumber(1)
         }
     }
 
@@ -107,17 +139,6 @@ function Transport({orderId}) {
         return totalSum
     }
 
-    // const [resetWarning, setResetWarning] = useState('warning_reset_main close')
-
-    // function openReset(e){
-    //     e.preventDefault()
-    //     setResetWarning('warning_reset_main open')
-    // }
-    // function closeReset(e){
-    //     e.preventDefault()
-    //     setResetWarning('warning_reset_main close')
-    // }
-
     // Selector Options
     const options = [
         { value: '1', label: "O'zR fuqarosining ID kartasi" },
@@ -131,6 +152,11 @@ function Transport({orderId}) {
         { value: '9', label: "O'zR fuqarosining yangi namunadagi haydovchilik guvohnomasi" },
         { value: '10', label: "Boshqa" }
     ];
+    // selectors
+    const [ ownerSelector, setOwnerSelector ] = useState(options[0].label)
+    const [ trustOwnerSelector, setTrustOwnerSelector ] = useState(options[0].label)
+
+
     // Style of selector
     const colourStyles = {
         control: styles => ({ ...styles, backgroundColor: 'white'}),
@@ -156,7 +182,38 @@ function Transport({orderId}) {
 
     // Form onSubmit
     const onSubmit = (data) =>{
-        console.log(data)
+        let transports = JSON.parse(JSON.stringify(transportProducts))
+        transports?.map(item =>{
+            delete item.id
+        })
+        const info = {...data, 
+            order_id:orderId,
+            type:'auto',
+            possessor: possessor,
+            valued_by: valuedNumber,
+            auto: transports
+        }
+        Object.assign(info.owner, {doc_type: ownerSelector})
+        Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
+
+        if((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1) <= 100){
+            https
+            .post('/supply-info', info)
+            .then(res =>{
+                if(res?.request?.status === 201){
+                    Success()
+                }
+            })
+            .catch(err =>{
+                console.log(err)
+                console.log(info);
+                Warn()
+            })
+        }else{
+            ProcentError()
+        }
+
+        
     }
 
   return (
@@ -200,6 +257,7 @@ function Transport({orderId}) {
                         bordered 
                         className='transport_fourInputs_input'
                         clearable
+                        {...register(`company.name`, { required: valuedStatus} )}
                     >
                     </Input>
                     <Input 
@@ -210,6 +268,7 @@ function Transport({orderId}) {
                         bordered 
                         className='transport_fourInputs_input'
                         clearable
+                        {...register(`company.license`, { required: valuedStatus} )}
                     >
                     </Input>
                     <Input 
@@ -220,6 +279,7 @@ function Transport({orderId}) {
                         bordered 
                         className='transport_fourInputs_input'
                         clearable
+                        {...register(`company.valuer_name`, { required: valuedStatus} )}
                     >
                     </Input>
                     <Input 
@@ -230,6 +290,7 @@ function Transport({orderId}) {
                         bordered 
                         className='transport_fourInputs_input'
                         clearable
+                        {...register(`company.doc_code`, { required: valuedStatus} )}
                     >
                     </Input>    
                 </div>
@@ -243,7 +304,7 @@ function Transport({orderId}) {
                         bordered 
                         className='transport_mainInputs_input' 
                         clearable
-                        {...register(`company.name`, { required: true} )}
+                        {...register(`registration_cert`, { required: true} )}
                     >
                     </Input>  
                     <Input 
@@ -264,7 +325,6 @@ function Transport({orderId}) {
                         color="secondary"
                         bordered 
                         className='transport_mainInputs_input' 
-                        {...register(`company.name`, { required: true} )}
                     >
                     </Input>  
                 </div>
@@ -300,10 +360,11 @@ function Transport({orderId}) {
                                             >
                                             </Input>  
                                             <Input 
-                                                label='Ishlab chiqarilgan yi'
+                                                label='Ishlab chiqarilgan yil'
                                                 placeholder='2009'
                                                 clearable
                                                 color="secondary"
+                                                type='number'
                                                 bordered 
                                                 className='transport_tableProduct_input' 
                                                 value={transportProducts?.find(x => x.id === item.id).year}
@@ -350,6 +411,7 @@ function Transport({orderId}) {
                                                 clearable
                                                 color="secondary"
                                                 bordered 
+                                                type='number'
                                                 className='transport_tableProduct_input' 
                                                 value={transportProducts?.find(x => x.id === item.id).engine_number}
                                                 onChange={(e)=>{
@@ -428,6 +490,7 @@ function Transport({orderId}) {
                         status={
                             ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 100 ? 'error' : ''
                         }
+                        {...register(`percent`, { required: true} )}
                     >
                     </Input>  
                     <Input 
@@ -439,17 +502,10 @@ function Transport({orderId}) {
                         color="secondary"
                         bordered 
                         className='transport_endMainInputs_input' 
+                        {...register(`sum`, { required: true} )}
                         onChange={(e)=>{
                             setGiveSum(e.target.value)
                         }}
-                    >
-                    </Input>  
-                    <Input 
-                        label='Identifikatsiya raqami (JShShIR)'
-                        width='100%'
-                        color="secondary"
-                        bordered 
-                        className='transport_endMainInputs_input' 
                     >
                     </Input>  
                 </div>
@@ -466,14 +522,13 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_garovPart_input' 
+                            {...register(`owner.fio`, { required: ownerStatus} )}
                         >
                         </Input>
                         <div className='transport_garovPart_selectPart'>
                             <p>Shaxsini tasdiqlovchi xujjat turi</p>
                             <Select
-                                // value={selectedOption}
                                 defaultValue={options[0]}
-                                // styles={customStyles}
                                 options={options}
                                 className='buyurtma_select_new'
                                 styles={colourStyles}
@@ -486,6 +541,8 @@ function Transport({orderId}) {
                                     primary: '#7828c8',
                                     },
                                 })}
+                                onChange={(event) => setOwnerSelector(event.label)}
+                                // {...register("owner.doc_type", { value: ownerSelector }, { required: ownerStatus })}
                             />
                         </div>
                         <Input 
@@ -496,6 +553,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_garovPart_input' 
+                            {...register(`owner.serial_num`, { required: ownerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -506,6 +564,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_garovPart_input' 
+                            {...register(`owner.issued_by`, { required: ownerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -515,6 +574,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_garovPart_input' 
+                            {...register(`owner.issue_date`, { required: ownerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -525,6 +585,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_garovPart_input' 
+                            {...register(`owner.address`, { required: ownerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -533,8 +594,10 @@ function Transport({orderId}) {
                             clearable
                             width='100%'
                             color="secondary"
-                            bordered 
+                            bordered
+                            type='number'
                             className='transport_garovPart_input' 
+                            {...register(`owner.pinfl`, { required: ownerStatus, minLength: 14})}
                         >
                         </Input>   
                     </div>
@@ -552,14 +615,13 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.fio`, { required: trustOwnerStatus} )}
                         >
                         </Input>
                         <div className='transport_garovPart_selectPart'>
                             <p>Shaxsini tasdiqlovchi hujjat turi</p>
                             <Select
-                                // value={selectedOption}
                                 defaultValue={options[0]}
-                                // styles={customStyles}
                                 options={options}
                                 className='buyurtma_select_new'
                                 styles={colourStyles}
@@ -572,7 +634,10 @@ function Transport({orderId}) {
                                     primary: '#7828c8',
                                     },
                                 })}
+                                onChange={(event)=>{setTrustOwnerSelector(event.label)}}
+                                // {...register(`trust_owner.doc_type`,{ value: trustOwnerSelector }, { required: trustOwnerStatus} )}
                             />
+                            {/* <input hidden value={trustOwnerSelector} /> */}
                         </div>
                         <Input 
                             label='Seriyasi va raqami'
@@ -582,6 +647,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.serial_num`, { required: trustOwnerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -592,6 +658,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.issued_by`, { required: trustOwnerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -601,6 +668,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.issue_date`, { required: trustOwnerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -611,6 +679,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.address`, { required: trustOwnerStatus} )}
                         >
                         </Input>
                         <Input 
@@ -621,6 +690,8 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            type='number'
+                            {...register(`trust_owner.proxy_number`, { required: trustOwnerStatus} )}
                         >
                         </Input>  
                         <Input 
@@ -630,6 +701,7 @@ function Transport({orderId}) {
                             color="secondary"
                             bordered 
                             className='transport_ishonchnomaPart_input' 
+                            {...register(`trust_owner.date`, { required: trustOwnerStatus} )}
                         >
                         </Input>  
                         <Input 
@@ -638,7 +710,9 @@ function Transport({orderId}) {
                             width='100%'
                             color="secondary"
                             bordered 
-                            className='transport_ishonchnomaPart_input' 
+                            className='transport_ishonchnomaPart_input'
+                            type='number' 
+                            {...register(`trust_owner.pinfl`, { required: trustOwnerStatus, minLength:14} )}
                         >
                         </Input>   
                     </div>

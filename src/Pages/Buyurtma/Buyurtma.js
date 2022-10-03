@@ -64,7 +64,10 @@ function Buyurtma() {
             return "tasdiqlangan"
         } else if (data === "denied") {
             return "rad etilgan"
+        }else{
+            return "unknown"
         }
+        
     }
     function idSort(data) {
         if (data === "accepted") {

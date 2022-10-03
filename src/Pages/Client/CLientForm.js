@@ -28,7 +28,10 @@ function CLientForm() {
   const onSubmit = (data) => {
     https
     .post('/clients', data)
-    .then(res => Success())
+    .then(res => {
+      Success()
+      console.log(data);
+    })
     .catch(err => Warn())
   }
   // Multi DatePicker Configure

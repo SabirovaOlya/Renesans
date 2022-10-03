@@ -3,7 +3,7 @@ import {Input} from '@nextui-org/react';
 import { AiOutlineUserAdd,AiOutlineClear } from 'react-icons/ai';
 import { useForm } from "react-hook-form";
 import https from '../../assets/https';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; 
 
 import './Sugurta.css'
 

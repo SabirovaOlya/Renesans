@@ -34,7 +34,15 @@ import EditGroup from '../Client/EditGroup';
 import BuyurtmaForm from '../Buyurtma/BuyurtmaForm';
 import Taminot from '../Taminot/Taminot';
 import TaminotForm from '../Taminot/TaminotForm';
+import SingleGold from '../Taminot/SingleGold';
+import SingleUchinchi from '../Taminot/SingleUchinchi';
+import SingleSugurta from '../Taminot/SingleSugurta';
 import SingleBuyurtnama from '../Buyurtma/SingleBuyurtnama';
+import SingleAvto from '../Taminot/SingleAvto';
+import EditSugurta from '../Taminot/EditSugurta';
+import EditUchinchi from '../Taminot/EditUchinchi';
+import EditGold from '../Taminot/EditGold';
+import EditAvto from '../Taminot/EditAvto';
 import KL1 from '../KL1/KL1';
 import KL1Form from '../KL1Form/KL1Form';
 import SingleKL1 from '../KL1Form/SingleKL1';
@@ -228,9 +236,16 @@ function Main() {
                                 {/* pdf */}
                                 <Route path='/taminot' element={<Taminot />} />
                                 <Route path='/taminot/form' element={<TaminotForm />} />
+                                <Route path='/taminot/singlegold/:id' element={<SingleGold />} />
+                                <Route path='/taminot/singleuchinchi/:id' element={<SingleUchinchi />} />
+                                <Route path='/taminot/singlesugurta/:id' element={<SingleSugurta/>} />
+                                <Route path='/taminot/singleavto/:id' element={<SingleAvto/>} />
+                                <Route path='/taminot/editsugurta/:id' element={<EditSugurta/>} />
+                                <Route path='/taminot/edituchinchi/:id' element={<EditUchinchi/>} />
+                                <Route path='/taminot/editgold/:id' element={<EditGold/>} />
+                                <Route path='/taminot/editavto/:id' element={<EditAvto/>} />
                                 <Route path ='/kl1' element={<KL1Form/>} />
                                 <Route path='/kl1/addkl1/*' element={<StepperForm />} />
-                                {/* <Route path='/kl1/stepkl1/*' element={<StepperForm />} /> */}
                                 <Route path='/kl1/editkl1/:id' element={<EditKL1 />} />
                                 <Route path='/kl1/singlekl1/:id' element={<SingleKL1/>} />
                                 <Route path='/filials' element={<Filial />} />

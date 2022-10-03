@@ -195,17 +195,18 @@ function UchinchiShaxs({orderId}) {
                     <Input 
                         label='Identifikatsiya raqami (JShShIR)'
                         placeholder='123456789'
+                        type='number'
                         clearable
                         width='100%'
                         color="secondary"
                         bordered 
                         className='transport_garovPart_input' 
-                        {...register("pinfl", { required: true })}
+                        {...register("pinfl", { required: true,  minLength: 14 })}
                     />  
                 </div>
             </div>
             <div className='submit-buttons'>
-                <button type='reset' className='client_submit reset'>
+                <button type='button' className='client_submit reset'>
                     Formani tiklash
                     <AiOutlineClear/>
                 </button>

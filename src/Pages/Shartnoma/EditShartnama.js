@@ -307,7 +307,7 @@ function EditShartnama() {
                             cashInputAppearence()
                         }
                         <div className='xodim_buttons'>
-                            <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>
+                            <button type='button' className='client_submit reset back_red' onClick={() => { BackFun() }}>
                                 O'zgarishni bekor qilish
                                 <AiOutlineClear />
                             </button>
