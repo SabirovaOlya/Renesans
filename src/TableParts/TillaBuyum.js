@@ -113,19 +113,40 @@ function TillaBuyum({orderId}) {
             valued_by:bahoType,
             gold: products
         }
+        Object.assign(info, {percent:(giveSum == 0 || TotalSum() == 0) ? 0 : ((giveSum / TotalSum())*100).toFixed(1)})
 
         if(((giveSum == 0 || TotalSum() == 0) ? 0 : ((giveSum / TotalSum())*100).toFixed(1)) <= 100){
-            https
-            .post('/supply-info', info)
-            .then(res =>{
-                if(res?.request?.status ===  201){
-                    Success()
-                }
-            })
-            .catch(err =>{
-                console.log(err);
-                console.log(info);
-            })
+            if(bahoType === 2){
+                https
+                .post('/supply-info', info)
+                .then(res =>{
+                    if(res?.request?.status ===  201){
+                        Success()
+                        console.log(info);
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                    console.log(info);
+                })
+            }else if(bahoType === 1){
+                // post info without company value
+                let infoNoCompany = JSON.parse(JSON.stringify(info))
+                delete infoNoCompany.company
+
+                https
+                .post('/supply-info', infoNoCompany)
+                .then(res =>{
+                    if(res?.request?.status ===  201){
+                        Success()
+                        console.log(infoNoCompany);
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                    console.log(infoNoCompany);
+                })
+            }
 
         }else{
             ProcentError()
@@ -135,15 +156,6 @@ function TillaBuyum({orderId}) {
 
     return (
     <>
-        {/* Reset Warning */}
-        {/* <div className={resetWarning}>
-            <p>Haqiqatan ham ma'lumontlarni qayta tiklamoqchimisiz?</p>
-            <div >
-            <button onClick={closeReset}>Ha</button>
-            <button onClick={closeReset}>Yoq</button>
-            </div>
-        </div> */}
-
         <form className='taminot_form' onSubmit={handleSubmit(onSubmit)}>
             <div className='taminot_ratio_parent taminot_tilla_radio'>
                 <Radio.Group label=' ' color='secondary' orientation="horizontal" defaultValue={2} size='sm' className='taminot_ratio' 
@@ -389,7 +401,6 @@ function TillaBuyum({orderId}) {
                         status={
                             ((giveSum == 0 || TotalSum() == 0) ? 0 : ((giveSum / TotalSum())*100).toFixed(1)) > 100 ? 'error' : ''
                         }
-                        {...register("percent", { required: true })}
                     />
                     <Input
                         bordered

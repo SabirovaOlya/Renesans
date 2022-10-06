@@ -93,6 +93,11 @@ function EditAvto() {
             setAvtoInfo(res?.data)
             setAvtoBack(res?.data)
             setCars(res?.data?.auto)
+            setTimeout(()=>{
+                // if(res?.data?.possessor === 'client'){
+                //     Object.assign(avtoInfo, owner)
+                // }
+            },200)
         })
         .catch(err =>{
             console.log(err)
@@ -148,6 +153,7 @@ function EditAvto() {
                         let newArray = {...avtoInfo}
                         newArray.valued_by = event
                         setAvtoInfo(newArray)
+                        console.log(event);
                     }}
                 >
                     <Radio value={2}>Mustaqil Baholash Asosida</Radio>
@@ -195,7 +201,6 @@ function EditAvto() {
             date:data.date,
             sum:data.sum,
             percent:data.percent,
-            company:data?.company,
             owner:data?.owner,
             trust_owner:data?.trust_owner,
             auto:carsNoId
@@ -204,6 +209,12 @@ function EditAvto() {
         Object.assign(info.trust_owner, {doc_type: avtoInfo?.trust_owner?.doc_type, id:avtoInfo?.trust_owner?.id})
 
         if(avtoInfo?.percent <= 100){
+            if(avtoInfo.issued_by == 2){
+                Object.assign(info, {company:data.company})
+            }else if(avtoInfo.issued_by == 1){
+                delete  info.company
+            }
+            
             https
             .patch(`/supply-info/${id}`, info)
             .then(res =>{
@@ -214,6 +225,7 @@ function EditAvto() {
             .catch(err =>{
                 Warn()
                 console.log(err)
+                console.log(info);
             })
         }else{
             ProcentError()
@@ -510,8 +522,8 @@ function EditAvto() {
                             bordered 
                             readOnly
                             className='transport_endMainInputs_input' 
-                            status={avtoInfo?.percent > 100 ? 'error' : ''}
                             {...register(`percent`, { required: true} )}
+                            status={avtoInfo?.percent > 100 ? 'error' : ''}
                         >
                         </Input>  
                         <Input 

@@ -3,15 +3,18 @@ import { Input } from '@nextui-org/react'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../Components/Pagination/Pagination'
 import { useForm } from "react-hook-form";
-// Styles
-import './Taminot.css'
-import '../../assets/pagination.css'
 // API
 import https from '../../assets/https'
 import Swal from 'sweetalert2';
+import { Loading } from "@nextui-org/react"
+// Styles
+import './Taminot.css'
+import '../../assets/pagination.css'
 
 
 function Taminot() {
+
+    const [loading, setLoading] = useState(true)
 
     function Warn() {
         Swal.fire({
@@ -138,6 +141,9 @@ function Taminot() {
 
     useEffect(() => {
         getUrl(currentUrl)
+        setTimeout(()=>{
+            setLoading(false)
+        },300)
     }, []);
 
     return (
@@ -192,22 +198,32 @@ function Taminot() {
                         <p className='headerTable-title_shartnoma'>Ta'minot raqami</p>
                         <p className='headerTable-title_shartnoma'>Mahsulot nomi</p>
                     </div>
-                    <ul className='tableInfo'>
-                        {
-                            taminotlar?.map((item, index) => {
-                                return <li className='client_row' key={index}>
-                                    <p className='liName li_shartnoma'>{item?.owner?.fio ? item?.owner?.fio : "Buyurtmachining o'zi" }</p>
-                                    <p className='li_shartnoma'>{item?.id}</p>
-                                    <p className='li_shartnoma'>{item?.type}</p>
-                                    <div className='userButtons_shartnoma'>
-                                        <button onClick={()=>{SinglePage(item?.type, item?.id)}}><i className='bx bx-user'></i></button>
-                                        <button onClick={()=>{EditPage(item?.type, item?.id)}}><i className='bx bx-edit-alt'></i></button>
-                                        <button onClick={()=>{DeleteProduct(item?.id)}}><i className='bx bx-trash'></i></button>
-                                    </div>
-                                </li>
-                            })
-                        }
-                    </ul>
+                    {
+                        loading ? (
+                            <div className='loader_container'>
+                                <Loading size="lg" />
+                            </div>
+                        ) : (
+                            <>
+                        <ul className='tableInfo'>
+                            {
+                                taminotlar?.map((item, index) => {
+                                    return <li className='client_row' key={index}>
+                                        <p className='liName li_shartnoma'>{item?.owner?.fio ? item?.owner?.fio : "Buyurtmachining o'zi" }</p>
+                                        <p className='li_shartnoma'>{item?.id}</p>
+                                        <p className='li_shartnoma'>{item?.type}</p>
+                                        <div className='userButtons_shartnoma'>
+                                            <button onClick={()=>{SinglePage(item?.type, item?.id)}}><i className='bx bx-user'></i></button>
+                                            <button onClick={()=>{EditPage(item?.type, item?.id)}}><i className='bx bx-edit-alt'></i></button>
+                                            <button onClick={()=>{DeleteProduct(item?.id)}}><i className='bx bx-trash'></i></button>
+                                        </div>
+                                    </li>
+                                })
+                            }
+                        </ul>    
+                            </>
+                        )
+                    }
                 </div>
             </div>
             <div className='pagination_block_wrapper'>

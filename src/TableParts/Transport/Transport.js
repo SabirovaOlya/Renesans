@@ -42,6 +42,13 @@ function Transport({orderId}) {
             confirmButtonText: 'Ok'
         })
     }
+    function CarError() {
+        Swal.fire({
+            title: "Qabul qilish qiymati 100% dan ortiq",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     
 
     function tables(a){
@@ -195,18 +202,33 @@ function Transport({orderId}) {
         }
         Object.assign(info.owner, {doc_type: ownerSelector})
         Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
+        Object.assign(info, {percent: (giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)})
 
         if((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1) <= 100){
+            
+            let postInfo = JSON.parse(JSON.stringify(info))
+            if(possessor === "client"){
+                delete postInfo.trust_owner
+                delete postInfo.owner
+            }else if(possessor === "owner"){
+                delete postInfo.trust_owner
+            }
+
+            if(valuedNumber === 1){
+                delete postInfo.company
+            }
+
             https
-            .post('/supply-info', info)
+            .post('/supply-info', postInfo)
             .then(res =>{
                 if(res?.request?.status === 201){
                     Success()
+                    console.log(postInfo)
                 }
             })
             .catch(err =>{
                 console.log(err)
-                console.log(info);
+                console.log(postInfo);
                 Warn()
             })
         }else{
@@ -218,15 +240,6 @@ function Transport({orderId}) {
 
   return (
     <>
-        {/* Reset Warning
-        <div className={resetWarning}>
-            <p>Haqiqatan ham ma'lumontlarni qayta tiklamoqchimisiz?</p>
-            <div >
-            <button onClick={closeReset}>Ha</button>
-            <button onClick={closeReset}>Yoq</button>
-            </div>
-        </div> */}
-
         <section className='transport_section'>
             <form className='transport_main' onSubmit={handleSubmit(onSubmit)}>
                 <div className='transport_garov'>
@@ -481,28 +494,27 @@ function Transport({orderId}) {
                 <div className='transport_endMainInputs'>
                     <Input 
                         label='Qabul qilish qiymati, %da'
-                        value={(giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)}
                         width='100%'
                         color="secondary"
-                        bordered 
-                        readOnly
                         className='transport_endMainInputs_input' 
+                        bordered 
+                        value={(giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)}
                         status={
                             ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 100 ? 'error' : ''
                         }
-                        {...register(`percent`, { required: true} )}
+                        readOnly
                     >
                     </Input>  
                     <Input 
                         label="Qabul qilish qiymati, so'mda"
                         placeholder=' 50 000 000'
                         type='number'
+                        className='transport_endMainInputs_input' 
                         width='100%'
-                        value={giveSum}
                         color="secondary"
                         bordered 
-                        className='transport_endMainInputs_input' 
-                        {...register(`sum`, { required: true} )}
+                        value={giveSum}
+                        {...register("sum", { required: true} )}
                         onChange={(e)=>{
                             setGiveSum(e.target.value)
                         }}
@@ -542,7 +554,6 @@ function Transport({orderId}) {
                                     },
                                 })}
                                 onChange={(event) => setOwnerSelector(event.label)}
-                                // {...register("owner.doc_type", { value: ownerSelector }, { required: ownerStatus })}
                             />
                         </div>
                         <Input 
@@ -635,9 +646,7 @@ function Transport({orderId}) {
                                     },
                                 })}
                                 onChange={(event)=>{setTrustOwnerSelector(event.label)}}
-                                // {...register(`trust_owner.doc_type`,{ value: trustOwnerSelector }, { required: trustOwnerStatus} )}
                             />
-                            {/* <input hidden value={trustOwnerSelector} /> */}
                         </div>
                         <Input 
                             label='Seriyasi va raqami'
