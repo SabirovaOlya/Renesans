@@ -102,6 +102,7 @@ function Transport({orderId}) {
             year:'',
             number:'',
             type_of_auto:'',
+            registration_cert:'',
             engine_number:'',
             body_code:'',
             chassis:'',
@@ -118,6 +119,7 @@ function Transport({orderId}) {
                 year:'',
                 number:'',
                 type_of_auto:'',
+                registration_cert:'',
                 engine_number:'',
                 body_code:'',
                 chassis:'',
@@ -310,17 +312,6 @@ function Transport({orderId}) {
 
                 <div className='transport_mainInputs'>
                     <Input 
-                        label='Qayd etish guvohnomasi'
-                        placeholder='AAF № 0186343'
-                        width='100%'
-                        color="secondary"
-                        bordered 
-                        className='transport_mainInputs_input' 
-                        clearable
-                        {...register(`registration_cert`, { required: true} )}
-                    >
-                    </Input>  
-                    <Input 
                         label='Baholovchi hujjat sanasi'
                         width='100%'
                         color="secondary"
@@ -414,6 +405,21 @@ function Transport({orderId}) {
                                                 onChange={(e)=>{
                                                     const newArray = [...transportProducts]
                                                     newArray[index].type_of_auto = e.target.value
+                                                    setTransportProducts(newArray)
+                                                }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Qayd etish guvohnomasi'
+                                                placeholder='FDS92452'
+                                                clearable
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                value={transportProducts?.find(x => x.id === item.id).registration_cert}
+                                                onChange={(e)=>{
+                                                    const newArray = [...transportProducts]
+                                                    newArray[index].registration_cert = e.target.value
                                                     setTransportProducts(newArray)
                                                 }}
                                             >
@@ -597,6 +603,18 @@ function Transport({orderId}) {
                             bordered 
                             className='transport_garovPart_input' 
                             {...register(`owner.address`, { required: ownerStatus} )}
+                        >
+                        </Input>
+                        <Input 
+                            label="Telefon raqami"
+                            clearable
+                            placeholder='909900909'
+                            labelLeft='+998'
+                            width='100%'
+                            color="secondary"
+                            bordered 
+                            className='transport_garovPart_input' 
+                            {...register(`owner.phone`, { required: ownerStatus} )}
                         >
                         </Input>
                         <Input 

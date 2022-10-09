@@ -6,10 +6,14 @@ import https from '../../assets/https';
 import { useForm } from "react-hook-form";
 // Alert
 import Swal from 'sweetalert2'
+import { List } from 'react-content-loader'
 import Select from 'react-select';
 import './Taminot.css'
 
 function EditUchinchi() {
+
+    const [loading, setLoading] = useState(true)
+
     const [uchinchiEdit, setUchinchiEdit] = useState({})
     const [uchinchiBack, setUchinchiBack] = useState({})
     const [name, setName] = useState('')
@@ -88,6 +92,9 @@ function EditUchinchi() {
             setUchinchiBack(res?.data?.owner)
             setName(res?.data?.order?.client?.name)
             setOrderId(res?.data?.order?.id)
+            setTimeout(()=>{
+                setLoading(false)
+            },300)
         })
         .catch(err =>{
             console.log(err)
@@ -127,160 +134,169 @@ function EditUchinchi() {
           </Link>
         </div>
         <div className='single_buyurtma'>
-          <h1 className='text_center filial_edit_text'>{name}</h1>
-          <div className='pdf_margin_top_15'>
-            <form onSubmit={handleSubmit(onSubmit)} className='single_buyurtma_info'>
-                <div className='single_buyurtma_inputs'>
-                    <p>Ta'minot turi:</p>
-                    <p>3 shaxs kafilligi</p>
-                 </div>
-                <Input 
-                    label="Uchinchi mulki egasining F.I.Sh."
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    clearable
-                    value={uchinchiEdit?.fio}
-                    {...register("fio", { required: true })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.fio = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <div className='transport_garovPart_selectPart'>
-                    <p>Shaxsini tasdiqlovchi xujjat</p>
-                    <Select
-                        defaultValue={options.find(x => x.label == uchinchiEdit?.doc_type)}
-                        value={options.find(x => x.label == uchinchiEdit?.doc_type)}
-                        options={options}
-                        className='buyurtma_select_new'
-                        styles={colourStyles}
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 12,
-                            colors: {
-                            ...theme.colors,
-                            primary25: '#7828c8',
-                            primary: '#7828c8',
-                            },
-                        })}
+            {
+                loading ? (
+                    <div className='margin_top_30'>
+                        <List />
+                    </div>
+                ) : (
+                <>
+            <h1 className='text_center filial_edit_text'>{name}</h1>
+            <div className='pdf_margin_top_15'>
+                <form onSubmit={handleSubmit(onSubmit)} className='single_buyurtma_info'>
+                    <div className='single_buyurtma_inputs'>
+                        <p>Ta'minot turi:</p>
+                        <p>3 shaxs kafilligi</p>
+                    </div>
+                    <Input 
+                        label="Uchinchi mulki egasining F.I.Sh."
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        clearable
+                        value={uchinchiEdit?.fio}
+                        {...register("fio", { required: true })}
                         onChange={(e)=>{
                             let newArray = {...uchinchiEdit}
-                            newArray.doc_type = e.label
+                            newArray.fio = e.target.value
                             setUchinchiEdit(newArray)
                         }}
-                    />
-                </div>
-                <Input 
-                    label="Seriyasi va raqami"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    clearable
-                    value={uchinchiEdit?.serial_num}
-                    {...register("serial_num", { required: true })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.serial_num = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <Input 
-                    label="Kim tomonidan berilgan"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    clearable
-                    value={uchinchiEdit?.issued_by}
-                    {...register("issued_by", { required: true })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.issued_by = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <Input 
-                    label="Berilgan sana"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    type='date'
-                    value={uchinchiEdit?.issue_date}
-                    {...register("issue_date", { required: true })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.issue_date = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <Input 
-                    label="Telefon Raqami"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    clearable
-                    value={uchinchiEdit?.phone}
-                    {...register("phone", { required: true })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.phone = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <Input 
-                    label="Ro'yxat bo'yicha yashash manzili"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    clearable
-                    value={uchinchiEdit?.address}
-                    {...register("address", { required: true})}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.address = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <Input 
-                    label="Identifikatsiya raqami (JShShIR)"
-                    width='100%'
-                    color="secondary"
-                    bordered 
-                    className='vall'
-                    value={uchinchiEdit?.pinfl}
-                    {...register("pinfl", { required: true, minLength:14 })}
-                    onChange={(e)=>{
-                        let newArray = {...uchinchiEdit}
-                        newArray.pinfl = e.target.value
-                        setUchinchiEdit(newArray)
-                    }}
-                >  
-                </Input>
-                <div className='xodim_buttons'>
-                    <button type='button' className='client_submit reset back_red' onClick={() => { BackFun() }}>
-                        O'zgarishni bekor qilish
-                        <AiOutlineClear />
-                    </button>
-                    <button type='submit' className='client_submit submit back_green'>
-                        O'zgarishni kiritish
-                        <AiOutlineUserAdd />
-                    </button>
-                </div>
-            </form>
-          </div>
+                    >  
+                    </Input>
+                    <div className='transport_garovPart_selectPart'>
+                        <p>Shaxsini tasdiqlovchi xujjat</p>
+                        <Select
+                            defaultValue={options.find(x => x.label == uchinchiEdit?.doc_type)}
+                            value={options.find(x => x.label == uchinchiEdit?.doc_type)}
+                            options={options}
+                            className='buyurtma_select_new'
+                            styles={colourStyles}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 12,
+                                colors: {
+                                ...theme.colors,
+                                primary25: '#7828c8',
+                                primary: '#7828c8',
+                                },
+                            })}
+                            onChange={(e)=>{
+                                let newArray = {...uchinchiEdit}
+                                newArray.doc_type = e.label
+                                setUchinchiEdit(newArray)
+                            }}
+                        />
+                    </div>
+                    <Input 
+                        label="Seriyasi va raqami"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        clearable
+                        value={uchinchiEdit?.serial_num}
+                        {...register("serial_num", { required: true })}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.serial_num = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <Input 
+                        label="Kim tomonidan berilgan"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        clearable
+                        value={uchinchiEdit?.issued_by}
+                        {...register("issued_by", { required: true })}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.issued_by = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <Input 
+                        label="Berilgan sana"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        type='date'
+                        value={uchinchiEdit?.issue_date}
+                        {...register("issue_date", { required: true })}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.issue_date = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <Input 
+                        label="Telefon Raqami"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        clearable
+                        value={uchinchiEdit?.phone}
+                        {...register("phone", { required: true })}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.phone = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <Input 
+                        label="Ro'yxat bo'yicha yashash manzili"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        clearable
+                        value={uchinchiEdit?.address}
+                        {...register("address", { required: true})}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.address = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <Input 
+                        label="Identifikatsiya raqami (JShShIR)"
+                        width='100%'
+                        color="secondary"
+                        bordered 
+                        className='vall'
+                        value={uchinchiEdit?.pinfl}
+                        {...register("pinfl", { required: true, minLength:14 })}
+                        onChange={(e)=>{
+                            let newArray = {...uchinchiEdit}
+                            newArray.pinfl = e.target.value
+                            setUchinchiEdit(newArray)
+                        }}
+                    >  
+                    </Input>
+                    <div className='xodim_buttons'>
+                        <button type='button' className='client_submit reset back_red' onClick={() => { BackFun() }}>
+                            O'zgarishni bekor qilish
+                            <AiOutlineClear />
+                        </button>
+                        <button type='submit' className='client_submit submit back_green'>
+                            O'zgarishni kiritish
+                            <AiOutlineUserAdd />
+                        </button>
+                    </div>
+                </form>
+            </div>
+                </>)
+            }
         </div>
       </section>
     )

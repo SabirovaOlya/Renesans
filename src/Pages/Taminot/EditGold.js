@@ -8,11 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 // Alert
 import Swal from 'sweetalert2'
 import { Radio } from "@nextui-org/react";
+import { List } from 'react-content-loader'
 import Select from 'react-select';
 import { BiTrash } from 'react-icons/bi';
 import './Taminot.css'
 
 function EditGold() {
+
+    const [loading, setLoading] = useState(true)
 
     const [goldInfo, setGoldInfo] = useState({})
     const [goldBack, setGoldBack] = useState({})
@@ -53,9 +56,18 @@ function EditGold() {
         await https
         .get(`/supply-info/${id}`)
         .then(res =>{
-            setGoldInfo(res?.data)
-            setGoldBack(res?.data)
+            if(res?.data?.valued_by == 1){
+                let arr ={...res?.data, company : {name:'', license:'', doc_code:'', valuer_name:''}}
+                setGoldBack(arr)
+                setGoldInfo(arr)
+            }else{
+                setGoldInfo(res?.data)
+                setGoldBack(res?.data)
+            }
             setGolds(res?.data?.gold)
+            setTimeout(()=>{
+                setLoading(false)
+            },300)
         })
         .catch(err =>{
             console.log(err)
@@ -128,67 +140,36 @@ function EditGold() {
         goldsNoId.map(item =>{
             delete item.id
         })
-
-        if(goldInfo?.valued_by == 2){
-            let info = {
-                order_id:goldInfo?.order?.id,
-                possessor: 'client',
-                type: 'gold',
-                valued_by: goldInfo?.valued_by,
-                date:data.date,
-                sum:data.sum,
-                percent:data.percent,
-                company:data.company,
-                gold:goldsNoId
-            }
-
-            if(goldInfo?.percent <= 100){
-                https
-                .patch(`/supply-info/${id}`, info)
-                .then(res =>{
-                    if(res.request.status == 200){
-                        Success()
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    Warn()
-                })
-            }else{
-                ProcentError()
-            }
-
-
-        }else{
-            let info = {
-                order_id:goldInfo?.order?.id,
-                possessor: 'client',
-                type: 'gold',
-                valued_by: goldInfo?.valued_by,
-                date:data.date,
-                sum:data.sum,
-                percent:data.percent,
-                gold:goldsNoId
-            }
-
-            if(goldInfo?.percent <= 100){
-                https
-                .patch(`/supply-info/${id}`, info)
-                .then(res =>{
-                    if(res.request.status == 200){
-                        Success()
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    Warn()
-                })
-            }else{
-                ProcentError()
-            }
-
+        
+        let info = {...data, 
+            order_id:goldInfo?.order?.id,
+            possessor: 'client',
+            type: 'gold',
+            valued_by: goldInfo?.valued_by,
+            gold:goldsNoId
+        }
+        let postInfo = JSON.parse(JSON.stringify(info))
+        if(postInfo?.valued_by == 1){
+            delete postInfo.company
         }
 
+        if(goldInfo?.percent <= 100){
+            https
+            .patch(`/supply-info/${id}`, postInfo)
+            .then(res =>{
+                if(res.request.status == 200){
+                    Success()
+                    console.log(postInfo);
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+                Warn()
+                console.log(postInfo);
+            })
+        }else{
+            ProcentError()
+        }
     }
 
 
@@ -201,6 +182,14 @@ function EditGold() {
           </Link>
         </div>
         <div className='single_buyurtma'>
+
+            {
+                loading ? (
+                    <div className='margin_top_30'>
+                        <List />
+                    </div>
+                ) : (
+                <>
             <h1 className='text_center filial_edit_text'>{goldInfo?.order?.client?.name}</h1>
             <div className='pdf_margin_top_15'>
                 <form onSubmit={handleSubmit(onSubmit)} className='single_buyurtma_info'>
@@ -507,6 +496,9 @@ function EditGold() {
                     </div>
                 </form>
             </div>
+                </>
+                )
+            }
         </div>
     </section>
   )

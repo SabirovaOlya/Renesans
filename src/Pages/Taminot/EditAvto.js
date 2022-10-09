@@ -8,11 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 // Alert
 import Swal from 'sweetalert2'
 import { Radio } from "@nextui-org/react";
+import { List } from 'react-content-loader'
 import Select from 'react-select';
 import { BiTrash } from 'react-icons/bi';
 import './Taminot.css'
 
 function EditAvto() {
+
+    const [loading, setLoading] = useState(true)
 
     const [avtoInfo, setAvtoInfo] = useState({})
     const [avtoBack, setAvtoBack] = useState({})
@@ -79,7 +82,6 @@ function EditAvto() {
             cursor: isDisabled ? 'not-allowed' : 'default',
             "&:hover": {
                 border:'2px solid rgb(215,215,215)'
-                // color:'white'
             }
           };
         },
@@ -90,14 +92,109 @@ function EditAvto() {
         await https
         .get(`/supply-info/${id}`)
         .then(res =>{
-            setAvtoInfo(res?.data)
-            setAvtoBack(res?.data)
+            if(res?.data?.valued_by == 1){
+                let arr ={...res?.data, company : {name:'', license:'', doc_code:'', valuer_name:''}}
+                if(res?.data?.possessor == "client"){
+                    let arr2 = {...arr, 
+                        owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            phone:''
+                        },
+                        trust_owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            date:'',
+                            proxy_number:''
+                        }
+                    }
+                    setAvtoInfo(arr2)
+                    setAvtoBack(arr2)
+                }else if(res?.data?.possessor == "owner"){
+                    let arr3 = {...arr,
+                        trust_owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            date:'',
+                            proxy_number:''
+                        }
+                    }
+                    setAvtoInfo(arr3)
+                    setAvtoBack(arr3)
+                }else if(res?.data?.possessor == "trust_owner"){
+                    setAvtoInfo(arr)
+                    setAvtoBack(arr)
+                }
+            }else{
+                setAvtoInfo(res?.data)
+                setAvtoBack(res?.data)
+                let array = {...res?.data}
+                if(res?.data?.possessor == "client"){
+                    let array2 = {...array, 
+                        owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            phone:''
+                        },
+                        trust_owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            date:'',
+                            proxy_number:''
+                        }
+                    }
+                    setAvtoInfo(array2)
+                    setAvtoBack(array2)
+                }else if(res?.data?.possessor == "owner"){
+                    let array3 = {...array,
+                        trust_owner:{
+                            fio:'',
+                            doc_type:'',
+                            serial_num:'',
+                            issued_by:'',
+                            issue_date:'',
+                            address:'',
+                            pinfl:'',
+                            date:'',
+                            proxy_number:''
+                        }
+                    }
+                    setAvtoInfo(array3)
+                    setAvtoBack(array3)
+                }else if(res?.data?.possessor == "trust_owner"){
+                    setAvtoInfo(array)
+                    setAvtoBack(array)
+                }
+            }
             setCars(res?.data?.auto)
             setTimeout(()=>{
-                // if(res?.data?.possessor === 'client'){
-                //     Object.assign(avtoInfo, owner)
-                // }
-            },200)
+                setLoading(false)
+            },300)
         })
         .catch(err =>{
             console.log(err)
@@ -153,7 +250,6 @@ function EditAvto() {
                         let newArray = {...avtoInfo}
                         newArray.valued_by = event
                         setAvtoInfo(newArray)
-                        console.log(event);
                     }}
                 >
                     <Radio value={2}>Mustaqil Baholash Asosida</Radio>
@@ -197,10 +293,10 @@ function EditAvto() {
             type: 'auto',
             possessor: avtoInfo?.possessor,
             valued_by:avtoInfo?.valued_by,
-            registration_cert:data.registration_cert,
             date:data.date,
             sum:data.sum,
             percent:data.percent,
+            company:data.company,
             owner:data?.owner,
             trust_owner:data?.trust_owner,
             auto:carsNoId
@@ -208,24 +304,30 @@ function EditAvto() {
         Object.assign(info.owner, {doc_type: avtoInfo?.owner?.doc_type, id:avtoInfo?.owner?.id})
         Object.assign(info.trust_owner, {doc_type: avtoInfo?.trust_owner?.doc_type, id:avtoInfo?.trust_owner?.id})
 
+        let postInfo = JSON.parse(JSON.stringify(info))
+        if(avtoInfo?.valued_by == 1){
+            delete  postInfo.company
+        }
+        if(avtoInfo?.possessor === "client"){
+            delete postInfo.trust_owner
+            delete postInfo.owner
+        }else if(avtoInfo?.possessor === "owner"){
+            delete postInfo.trust_owner
+        }
+
         if(avtoInfo?.percent <= 100){
-            if(avtoInfo.issued_by == 2){
-                Object.assign(info, {company:data.company})
-            }else if(avtoInfo.issued_by == 1){
-                delete  info.company
-            }
-            
             https
-            .patch(`/supply-info/${id}`, info)
+            .patch(`/supply-info/${id}`, postInfo)
             .then(res =>{
                 if(res.request.status === 200){
                     Success()
+                    console.log(postInfo)
                 }
             })
             .catch(err =>{
                 Warn()
                 console.log(err)
-                console.log(info);
+                console.log(postInfo);
             })
         }else{
             ProcentError()
@@ -242,6 +344,13 @@ function EditAvto() {
           </Link>
         </div>
         <div className='single_buyurtma'>
+            {
+                loading ? (
+                    <div className='margin_top_30'>
+                        <List />
+                    </div>
+                ) : (
+                <>        
             <h1 className='text_center filial_edit_text'>{avtoInfo?.order?.client?.name}</h1>
             <div className='pdf_margin_top_15'>
                 <form onSubmit={handleSubmit(onSubmit)} className='single_buyurtma_info'>
@@ -319,23 +428,7 @@ function EditAvto() {
                             }}  
                         />
                     </div>
-                    <div className='transport_mainInputs'>
-                        <Input 
-                            label='Qayd etish guvohnomasi'
-                            width='100%'
-                            color="secondary"
-                            bordered 
-                            className='transport_mainInputs_input' 
-                            clearable
-                            value={avtoInfo?.registration_cert}
-                            {...register(`registration_cert`, { required: true} )}
-                            onChange={(e)=>{
-                                let newArray = {...avtoInfo}
-                                newArray.registration_cert = e.target.value
-                                setAvtoInfo(newArray)
-                            }}  
-                        >
-                        </Input>  
+                    <div className='transport_mainInputs'>  
                         <Input 
                             label='Baholovchi hujjat sanasi'
                             width='100%'
@@ -436,6 +529,20 @@ function EditAvto() {
                                                     newArray[index].type_of_auto = e.target.value
                                                     setCars(newArray)
                                                 }}
+                                            >
+                                            </Input>
+                                            <Input 
+                                                label='Qayd etish guvohnomasi'
+                                                color="secondary"
+                                                bordered 
+                                                className='transport_tableProduct_input' 
+                                                clearable
+                                                value={cars?.find(x => x.id === item.id).registration_cert}
+                                                onChange={(e)=>{
+                                                    const newArray = [...cars]
+                                                    newArray[index].registration_cert = e.target.value
+                                                    setCars(newArray)
+                                                }}  
                                             >
                                             </Input>
                                             <Input 
@@ -655,6 +762,22 @@ function EditAvto() {
                             >
                             </Input>
                             <Input 
+                                label="Telefon raqami"
+                                clearable
+                                width='100%'
+                                color="secondary"
+                                bordered 
+                                className='vall' 
+                                value={avtoInfo?.owner?.phone}
+                                {...register(`owner.phone`, { required: (avtoInfo?.possessor =='trust_owner' || avtoInfo?.possessor =='owner') ? true : false} )}
+                                onChange={(e)=>{
+                                    let newArray = {...avtoInfo}
+                                    newArray.owner.phone = e.target.value
+                                    setAvtoInfo(newArray)
+                                }}
+                            >
+                            </Input>
+                            <Input 
                                 label='Identifikatsiya raqami (JShShIR)'
                                 clearable
                                 width='100%'
@@ -846,6 +969,8 @@ function EditAvto() {
                     </div>
                 </form>
             </div>
+                </>)
+            }
         </div>
     </section>
   )

@@ -6,9 +6,13 @@ import https from '../../assets/https';
 import { useForm } from "react-hook-form";
 // Alert
 import Swal from 'sweetalert2'
+import { List } from 'react-content-loader'
 import './Taminot.css'
 
 function EditSugurta() {
+
+    const [loading, setLoading] = useState(true)
+
     const [sugurtaEdit, setSugurtaEdit] = useState({})
     const [sugurtaBack, setSugurtaBack] = useState({})
     const [name, setName] = useState('')
@@ -46,6 +50,9 @@ function EditSugurta() {
             setSugurtaBack(res?.data?.insurance)
             setName(res?.data?.order?.client?.name)
             setOrderId(res?.data?.order?.id)
+            setTimeout(()=>{
+                setLoading(false)
+            },300)
         })
         .catch(err =>{
             console.log(err)
@@ -86,6 +93,13 @@ function EditSugurta() {
           </Link>
         </div>
         <div className='single_buyurtma'>
+            {
+                loading ? (
+                    <div className='margin_top_30'>
+                        <List />
+                    </div>
+                ) : (
+                <>
           <h1 className='text_center filial_edit_text'>{name}</h1>
           <div className='pdf_margin_top_15'>
             <form onSubmit={handleSubmit(onSubmit)} className='single_buyurtma_info'>
@@ -110,7 +124,7 @@ function EditSugurta() {
                 >  
                 </Input>
                 <Input 
-                    label="Sug'urta kompaniyasining nomi"
+                    label="Siyosat raqami"
                     width='100%'
                     color="secondary"
                     bordered 
@@ -126,7 +140,7 @@ function EditSugurta() {
                 >  
                 </Input>
                 <Input 
-                    label="Sug'urta kompaniyasining nomi"
+                    label="Sug'urta summasi"
                     width='100%'
                     color="secondary"
                     bordered 
@@ -142,7 +156,7 @@ function EditSugurta() {
                 >  
                 </Input>
                 <Input 
-                    label="Sug'urta kompaniyasining nomi"
+                    label="Sug'urta sanasi"
                     width='100%'
                     color="secondary"
                     bordered 
@@ -169,6 +183,8 @@ function EditSugurta() {
                 </div>
             </form>
           </div>
+                </>)
+            }
         </div>
       </section>
     )

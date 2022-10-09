@@ -81,10 +81,6 @@ function SingleAvto() {
                             <p>{avtoInfo?.valued_by == 1 ? "O'zaro kelishuvga asosan" : "Mustaqil Baholash Asosida"}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Qayd etish guvohnomasi</p>
-                            <p>{avtoInfo?.registration_cert}</p>
-                        </div>
-                        <div className='single_buyurtma_inputs'>
                             <p>Baholovchi hujjat sanasi</p>
                             <p>{avtoInfo?.date}</p>
                         </div>
@@ -158,6 +154,10 @@ function SingleAvto() {
                                 <p>{avtoInfo?.owner?.address}</p>
                             </div>
                             <div className='single_buyurtma_inputs'>
+                                <p>Telefon raqami:</p>
+                                <p>{avtoInfo?.owner?.phone}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
                                 <p>Identifikatsiya raqami (JShShIR) :</p>
                                 <p>{avtoInfo?.owner?.pinfl}</p>
                             </div>
@@ -213,6 +213,7 @@ function SingleAvto() {
                                         <td>Ishlab chiqarilgan yil</td>
                                         <td>Davlat raqam belgisi</td>
                                         <td>Transport vositasi turi</td>
+                                        <td>Qayd etish guvohnomasi</td>
                                         <td>Dvigatel raqami</td>
                                         <td>Kuzov raqami</td>
                                         <td>Shassi №</td>
@@ -227,6 +228,7 @@ function SingleAvto() {
                                                 <td>{item?.year}</td>
                                                 <td>{item?.number}</td>
                                                 <td>{item?.type_of_auto}</td>
+                                                <td>{item?.registration_cert}</td>
                                                 <td>{item?.engine_number}</td>
                                                 <td>{item?.body_code}</td>
                                                 <td>{item?.chassis}</td>

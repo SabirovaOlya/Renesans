@@ -86,6 +86,12 @@ function Taminot() {
             .then(res => {
                 setPaginations(res?.data?.meta?.links)
                 setTaminotlar(res?.data?.data)
+                setTimeout(()=>{
+                    setLoading(false)
+                },300)
+            })
+            .catch(err =>{
+                console.log(err)
             })
     }
 
@@ -141,14 +147,10 @@ function Taminot() {
 
     useEffect(() => {
         getUrl(currentUrl)
-        setTimeout(()=>{
-            setLoading(false)
-        },300)
     }, []);
 
     return (
         <section className='taminot'>
-
             {/* Modalka */}
             <div className={modalka}>
                 <Input
