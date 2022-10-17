@@ -1,35 +1,23 @@
 import React, { useState, useContext,useEffect } from 'react'
 import { Input } from '@nextui-org/react'
 import { Context } from '../../../Context';
-// UseForm
 import { useForm } from "react-hook-form";
-
-import { AiOutlineDoubleRight } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
+import https from '../../../assets/https';
+// Components
+import { List } from 'react-content-loader'
+import { AiOutlineDoubleRight } from 'react-icons/ai'
 
 function Shaxshiy() {
 
     let navigate = useNavigate()
-
+    const [clientId, setClientId] = useState()
+    
     function NextStep(){
         navigate('/kl1/addkl1/1_qism', { replace: true });
     }
-
-    const { activeTab, setActiveTab } = useContext(Context);
-
-    const [malumotArray, setMalumotArray] = useState({
-        data_first:'0000-00-00',
-        data_second:'0000-00-00',
-        dateMake:'',
-        dateGet:'',
-        name:'Usmonova Muyassar Abduvalievna',
-        address:'Sirdariyo viloyati Guliston shahri Begmatov jochasi 46-uy 10-xonadon',
-        timeAddress:'Royihatga olingan manzili boyicha istiqomat qiladi',
-        shir:'41-3077-9287-0060',
-        number:'90 995 59 90',
-        goal:"Aylanma mablag'larini to'ldirish -Moy almashtirish va moylash materiallari, filtr sotib olish",
-        price:((2000000).toLocaleString())
-    })
+    
+    const {setActiveTab, infoClient, infoOrder, dataMalumot, setDataMalumot } = useContext(Context);
 
     // Tab active
     useEffect(() => {
@@ -56,20 +44,19 @@ function Shaxshiy() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     rounded
-                    // value={malumotArray?.data_first}
                     bordered
                     label='Hujjat tayyorlangan sana'
                     type='date'
                     color="secondary"
                     width='100%'
                     className='kl1_input'
+                    value={dataMalumot?.doc_date}
+                    {...register("doc_date", { required: true })}
                     onChange={(e)=>{
-                        let newMalumot = {...malumotArray}
-                        newMalumot.data_first = e.target.value
-                        console.log(e.target.value);
-                        setMalumotArray(newMalumot)
+                        let newMalumot = {...dataMalumot}
+                        newMalumot.doc_date = e.target.value
+                        setDataMalumot(newMalumot)
                     }}
-                    {...register("data_1", { required: true })}
                 />
                 <Input
                     rounded
@@ -79,36 +66,42 @@ function Shaxshiy() {
                     color="secondary"
                     width='100%'
                     className='kl1_input'
-                    {...register("data_2", { required: true })}
+                    value={dataMalumot?.mark_date}
+                    {...register("mark_date", { required: true })}
+                    onChange={(e)=>{
+                        let newMalumot = {...dataMalumot}
+                        newMalumot.mark_date = e.target.value
+                        setDataMalumot(newMalumot)
+                    }}
                 />
                 <div className='single_buyurtma_info pdf_margin_top_5'>
                     <div className='single_buyurtma_inputs'>
                         <p>Buyurtmachining F.I.Sh:</p>
-                        <p>{malumotArray.name}</p>
+                        <p>{infoClient?.name}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Doimiy yashash manzili:</p>
-                        <p>{malumotArray.address}</p>
+                        <p>{infoClient?.address}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Vaqtinchalik yashash manzili:</p>
-                        <p>{malumotArray.timeAddress}</p>
+                        <p>{infoClient?.temp_address}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>JSh ShIR:</p>
-                        <p>{'41-3077-9287-0060'}</p>
+                        <p>{infoClient?.pinfl}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Buyurtmachining telefon raqami:</p>
-                        <p>{`+998 ${malumotArray.number}`}</p>
+                        <p>{infoClient?.phone}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Kredit maqsadi:</p>
-                        <p>{malumotArray.goal}</p>
+                        <p>{infoOrder?.aim}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Soralayotgan kredit miqdori:</p>
-                        <p>{`${malumotArray.price} so'm`}</p>
+                        <p>{infoOrder?.sum}</p>
                     </div>
                 </div>
                 <div className='step_buttons single_button'>

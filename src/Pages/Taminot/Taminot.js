@@ -43,28 +43,28 @@ function Taminot() {
     let navigate = useNavigate();
     
     function navigateAdd(id) {
-        if(id !== 0){
-            let dataId ={
-                code: Number(id)
-            }
-            
-            https
-            .post('/check/order/code', dataId)
-            .then(res =>{
-                navigate("/taminot/form", {state:{id:res?.data?.order_id}})
-            })
-            .catch(err =>{
-                if(err?.request?.status === 404){
-                    return(
-                        Error404()
-                    )
-                }else{
-                    console.log(err);
-                }
-            })
-        }else{
-            Warn()
+        if(!id){
+            return Warn()
         }
+        
+        let dataId ={
+            code: Number(id)
+        }
+        
+        https
+        .post('/check/order/code', dataId)
+        .then(res =>{
+            navigate("/taminot/form", {state:{id:res?.data?.order_id}})
+        })
+        .catch(err =>{
+            if(err?.request?.status === 404){
+                return(
+                    Error404()
+                )
+            }else{
+                console.log(err);
+            }
+        })
     }
 
     const [taminotlar, setTaminotlar] = useState([]);

@@ -14,10 +14,6 @@ function KL1Form() {
   const [modalka, setModalka] = useState('shartnoma_modal close')
   const [modalCode, setModalCode] = useState('')
   let navigate = useNavigate()
-  function navigateAdd() {
-    navigate("/kl1/addkl1", { replace: true })
-  }
-
 
   // Alert
   function DeleteAlert() {
@@ -27,6 +23,21 @@ function KL1Form() {
         confirmButtonText: 'Ok'
     })
   }
+  function Warn() {
+      Swal.fire({
+          title: "Parolni kiriting",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+      })
+  }
+  function Error404() {
+      Swal.fire({
+          title: "Bunday buyurtma yo'q",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+      })
+  }
+
 
   async function GetDate(url){
     await https
@@ -54,6 +65,31 @@ function KL1Form() {
     GetDate('client-marks')
   },[])
 
+  function navigateAdd(id) {
+      if(!id){
+          return Warn()
+      }
+      
+      let dataId ={
+          code: Number(id)
+      }
+      
+      https
+      .post('/check/order/code', dataId)
+      .then(res =>{
+          navigate("/kl1/addkl1", {state:{id:res?.data?.data?.order?.id}})
+      })
+      .catch(err =>{
+          if(err?.request?.status === 404){
+              return(
+                  Error404()
+              )
+          }else{
+              console.log(err);
+          }
+      })
+  }
+
   function Delete(index){
     https
     .delete(`/client-marks/${index}`)
@@ -78,14 +114,14 @@ function KL1Form() {
             bordered
             width='300px'
             color='secondary'
-            label='Klient kodi'
+            label='Buyurtma kodi'
             placeholder='12345'
             clearable
             onChange={(e) => setModalCode(e.target.value)}
         ></Input>
         <div>
             <button
-                onClick={navigateAdd}
+                onClick={()=>{navigateAdd(modalCode)}}
                 className='shartnoma_modal_button'>Qo'shish</button>
             <button onClick={() => setModalka('shartnoma_modal close')} className='shartnoma_modal_button'>Orqaga</button>
         </div>

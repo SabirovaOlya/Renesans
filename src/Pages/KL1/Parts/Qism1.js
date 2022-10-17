@@ -12,7 +12,7 @@ function FirstKl1() {
     let navigate = useNavigate()
 
     // Tab active
-    const { activeTab, setActiveTab } = useContext(Context)
+    const { activeTab, setActiveTab, familyMem, setFamilyMem, mulkItem, setMulkItem, dataFirstQism, setDataFirstQism } = useContext(Context)
     useEffect(() => {
         setActiveTab(2)
     }, [])
@@ -24,11 +24,7 @@ function FirstKl1() {
         navigate("/kl1/addkl1", { replace: true });
     }
     
-    // ********___Family___*********//
-    const [ familyMem, setFamilyMem ] = useState([{
-        id:1,
-        name:''
-    }])
+    // ********___Family___********* //
     // Family Members Adding and Deleting Functions
     function addFamilyMember () {
         let newFamilyMember = [{
@@ -45,10 +41,7 @@ function FirstKl1() {
     }
 
     // ***********___Mulk___**********
-    const [ mulkItem, setMulkItem ] = useState([{
-        id:1,
-        name:''
-    }])
+
     // Mulk Items Adding and Deleting Functions
     function addMulkItem () {
         let newmulkItem = [{
@@ -76,7 +69,7 @@ function FirstKl1() {
         let properties = []
         familyMem?.map(item => family.push(item.name))
         mulkItem?.map(item => properties.push(item.name))
-        let newData ={...data, family_members:family, property:properties}
+        let newData ={...data, family:family, property:properties}
         console.log(newData)
         setTimeout(()=>{
             NextStep()
@@ -97,7 +90,7 @@ function FirstKl1() {
                             label='Istiqomat qiluvchi'
                             placeholder="Otasi"
                             color="secondary"
-                            width='90%'
+                            width='93%'
                             className='kl1_input'
                             value={familyMem.find(x => x.id === item.id).name}
                             onChange={(e)=>{
@@ -107,8 +100,9 @@ function FirstKl1() {
                             }}
                         />
                         <button
-                        className='kl1_delete_button'
-                        onClick={() => deleteFamilyMember(index)}
+                            className='kl1_delete_button'
+                            type='button'
+                            onClick={() => deleteFamilyMember(index)}
                         >
                             <i className='bx bx-trash'></i>
                         </button>
@@ -118,6 +112,7 @@ function FirstKl1() {
             <div className='margin_bottom20'>
                 <button
                     className='kl1_add_button'
+                    type='button'
                     onClick={()=>{addFamilyMember()}}
                 >
                     Istiqomat qiluvchi qoshish
@@ -131,30 +126,37 @@ function FirstKl1() {
                 className='kl1_input'
                 label='Oila azolari bilan suhbat davomida aniqlangan muhim malumotlar'
                 placeholder='Buyurtmachining va oilaning byudjeti bitta'
-                {...register("family_info", { required: true })}
+                value={dataFirstQism?.conversation_result}
+                {...register("conversation_result", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.conversation_result = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <p className='kl1_formtitle'>Buyurtmachining boshqa mulklari</p>
             {
                 mulkItem.map((item,index)=>(
                     <div className='kl1_product' key={item.id}>
                         <Input
-                        rounded
-                        bordered
-                        label='Mulk nomi'
-                        placeholder="Damas"
-                        color="secondary"
-                        width='90%'
-                        className='kl1_input'
-                        value={mulkItem.find(x => x.id === item.id).name}
-                        onChange={(e)=>{
-                            let newMulk = [...mulkItem]
-                            newMulk[index].name = e.target.value
-                            setMulkItem(newMulk)
-                        }}
+                            rounded
+                            bordered
+                            label='Mulk nomi'
+                            placeholder="Damas"
+                            color="secondary"
+                            width='93%'
+                            className='kl1_input'
+                            value={mulkItem.find(x => x.id === item.id).name}
+                            onChange={(e)=>{
+                                let newMulk = [...mulkItem]
+                                newMulk[index].name = e.target.value
+                                setMulkItem(newMulk)
+                            }}
                         />
                         <button
-                        className='kl1_delete_button'
-                        onClick={() => deleteMulkItem(index)}
+                            className='kl1_delete_button'
+                            onClick={() => deleteMulkItem(index)}
+                            type='button'
                         >
                             <i className='bx bx-trash'></i>
                         </button>
@@ -163,8 +165,9 @@ function FirstKl1() {
             }
             <div className='margin_bottom20'>
                 <button
-                className='kl1_add_button'
-                onClick={()=>{addMulkItem()}}
+                    className='kl1_add_button'
+                    onClick={()=>{addMulkItem()}}
+                    type='button'
                 >
                     Mulkni qoshish
                 </button>
@@ -177,7 +180,13 @@ function FirstKl1() {
                 className='kl1_input margin_bottom20'
                 label='Yashash sharoiti'
                 placeholder='Yashash sharoiti ortacha. Uy 3 ta yotoqxona, oshxona, mehmonxona va hammomdan iborat. Uy tamiri orta darajada. Uy otasini nomida. Xovlining umumiy maydoni 6 sotix. Tomorqada 10 dan ortiq mevali daraxtlar bor. Shuningdek, uy xojaligini oz ehtiyojlari uchun pomidor, bodring, qalampir, baqlajon ekilgan.'
-                {...register("life_terms", { required: true })}
+                value={dataFirstQism?.living_condition}
+                {...register("living_condition", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.living_condition = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <h2 className='kl1_subtitle'>Buyurtmachining faoliyati va daromad  manbalarini organish natijalari</h2>
             <Textarea
@@ -188,7 +197,13 @@ function FirstKl1() {
                 className='kl1_input'
                 label='Buyurtmachining faoliyat turi'
                 placeholder='Savdo-transport vositalari uchun moy sotadi. Savdo bolmaydigan kunlari va har kuni soat 16:00 dan 21:00 gacha Yandeks Taksida taksichilik qiladi.'
-                {...register("job_type", { required: true })}
+                value={dataFirstQism?.type}
+                {...register("type", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.type = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <Input
                 rounded
@@ -198,7 +213,13 @@ function FirstKl1() {
                 color="secondary"
                 width='100%'
                 className='kl1_input'
-                {...register("job_address", { required: true })}
+                value={dataFirstQism?.address}
+                {...register("address", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.address = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <Input
                 rounded
@@ -208,7 +229,13 @@ function FirstKl1() {
                 color="secondary"
                 width='100%'
                 className='kl1_input'
-                {...register("job_possession", { required: true })}
+                value={dataFirstQism?.owner}
+                {...register("owner", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.owner = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <Input
                 rounded
@@ -218,10 +245,16 @@ function FirstKl1() {
                 color="secondary"
                 width='100%'
                 className='kl1_input'
-                {...register("job_duration", { required: true })}
+                value={dataFirstQism?.duration}
+                {...register("duration", { required: true })}
+                onChange={(e)=>{
+                    let newFirstQism = {...dataFirstQism}
+                    newFirstQism.duration = e.target.value
+                    setDataFirstQism(newFirstQism)
+                }}
             />
             <div className='step_buttons double_button'>
-                <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+                <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                 <button type='submit' className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
             </div>
         </form>

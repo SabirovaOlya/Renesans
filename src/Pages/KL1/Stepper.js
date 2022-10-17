@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import React, { useState,useEffect } from 'react'
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Context } from '../../Context';
+import https from '../../assets/https';
 
 // Page Components
 import Shaxshiy from './Parts/Malumot'
@@ -10,8 +12,6 @@ import Oilaviy from './Parts/Qism6'
 import BuyurtmaOylik from './Parts/Qism7'
 import Mavsumiy from './Parts/Mavsumiy'
 import Biznes from './Parts/Biznes'
-
-import { Context } from '../../Context';
 
 // Icons
 import { AiOutlineRollback } from 'react-icons/ai'
@@ -24,6 +24,35 @@ import './Stepper.css'
 
 function StepperForm() {
 
+    const location = useLocation()
+    const orderId = location?.state?.id
+    const [infoClient, setInfoClient] = useState({})
+    const [infoOrder, setInfoOrder] = useState({})
+
+    async function BuyurtmaInfo(){
+        await https
+        .get(`/orders/${orderId}`)
+        .then(res =>{
+            setInfoOrder(res?.data)
+
+            https
+            .get(`/clients/${res?.data?.client?.id}`)
+            .then(res =>{
+                setInfoClient(res?.data)
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    }
+
+    useEffect(()=>{
+        BuyurtmaInfo()
+    },[])
+
     // Active Tab
     const [activeTab, setActiveTab] = useState(1)
 
@@ -32,6 +61,36 @@ function StepperForm() {
 
     // Biznes Part
     const [biznesWindow, setBiznesWindow] = useState('close')
+
+    //***** Information for all pages *****//
+    // -------- Malumot
+    const [ dataMalumot, setDataMalumot] = useState({
+        doc_date:'',
+        mark_date:''
+    })
+    // -------- 1 Qism
+    // family
+    const [ familyMem, setFamilyMem ] = useState([{
+        id:1,
+        name:''
+    }])
+    // mulk
+    const [ mulkItem, setMulkItem ] = useState([{
+        id:1,
+        name:''
+    }])
+    // 1qism inputs
+    const [dataFirstQism, setDataFirstQism] = useState({
+        conversation_result:'',
+        living_condition:'',
+        type:'',
+        address:'',
+        owner:'',
+        duration:''
+    })
+
+
+
 
     function showMavsumiy(){
         if(mavsumiyWindow == 'open'){
@@ -76,7 +135,20 @@ function StepperForm() {
                 mavsumiyWindow,
                 setMavsumiyWindow,
                 biznesWindow,
-                setBiznesWindow
+                setBiznesWindow,
+                orderId,
+                infoClient,
+                infoOrder,
+                // Malumot
+                dataMalumot,
+                setDataMalumot,
+                // 1-Qism
+                familyMem,
+                setFamilyMem,
+                mulkItem,
+                setMulkItem,
+                dataFirstQism,
+                setDataFirstQism
             }}>
                 <Routes>
                     <Route path='/' element={<Shaxshiy/>}/>

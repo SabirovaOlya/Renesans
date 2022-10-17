@@ -141,10 +141,14 @@ function EditGold() {
             delete item.id
         })
         
-        let info = {...data, 
+        let info = {
             order_id:goldInfo?.order?.id,
             possessor: 'client',
             type: 'gold',
+            date: data.date,
+            sum:data.sum,
+            percent: goldInfo?.percent,
+            company:data.company,
             valued_by: goldInfo?.valued_by,
             gold:goldsNoId
         }
@@ -462,9 +466,9 @@ function EditGold() {
                             width='100%'
                             readOnly
                             value={goldInfo?.percent}
+                            {...register("percent", { required: true })}
                             color="secondary"
                             status={goldInfo?.percent > 100 ? 'error' : ''}
-                            {...register("percent", { required: true })}
                         />
                         <Input
                             bordered

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Input,Radio } from '@nextui-org/react'
-import { AiOutlineClear,AiOutlineUserAdd } from 'react-icons/ai';
+import { AiOutlineClear,AiOutlineUserAdd,AiOutlineDownload,AiFillCloseSquare } from 'react-icons/ai';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';   
 import { useForm } from "react-hook-form";                                                                                                                                                                                                                     
@@ -13,6 +13,9 @@ function Transport({orderId}) {
     const [firstTable,setFirstTable]= useState('transport_garovPart close');
     const [secondTable,setSecondTable]= useState('transport_ishonchnomaPart close');
     const [garov, setGarov]= useState('transport_fourInputs close');
+    const [image, setImage] = useState([])
+    const [isShown, setIsShown] = useState(false)
+    const  imageInput = useRef()
     // important inputs
     const [valuedStatus, setValuedStatus] = useState(false)
     const [valuedNumber,setValuedNumber] = useState(1)
@@ -85,6 +88,33 @@ function Transport({orderId}) {
             setValuedStatus(false)
             setValuedNumber(1)
         }
+    }
+
+    // Photo functions
+    function PhotoOpen(){
+        imageInput.current.click()
+        // imageInput.current.setAttribute('multiple', true)
+    }
+    function AddImage(photo){
+        let foto = Object.values(photo)
+        setImage(image.concat(foto))
+    }
+    function ImageDelete(id){
+        let imageItems = image.filter(x => x !== image[id])
+        setImage(imageItems)
+    }
+    function PushImage(){
+        let urls =[]
+        https
+        .post('/upload-photo', image)
+        .then(res =>{
+            urls.push(res)
+            console.log(image)
+            console.log(res.data)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
     }
 
     // UseForm
@@ -200,7 +230,8 @@ function Transport({orderId}) {
             type:'auto',
             possessor: possessor,
             valued_by: valuedNumber,
-            auto: transports
+            auto: transports,
+            images: image
         }
         Object.assign(info.owner, {doc_type: ownerSelector})
         Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
@@ -525,7 +556,27 @@ function Transport({orderId}) {
                             setGiveSum(e.target.value)
                         }}
                     >
-                    </Input>  
+                    </Input> 
+                    <p className='photo_text'>Rasimlar</p>
+                    <div className='taminot_photo_add'>
+                        <div className='photo_add_buttons'>
+                            <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
+                            <button type='button' onClick={()=>{PushImage()}}>Yuklash</button>
+                        </div>
+                        <input ref={imageInput} multiple type="file" onChange={(e)=>{AddImage((e.target.files))}}/>
+                        <div className='photo_images'>
+                        {
+                            image?.map((item,index)=>{
+                                return(
+                                    <div className='image_container' key={index}>
+                                        <img className='photo_show' src={URL.createObjectURL(item)}></img>
+                                        <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
+                                    </div>
+                                )
+                            })
+                        }
+                        </div>
+                    </div> 
                 </div>
                 
                 {/* Owner */}
