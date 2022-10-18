@@ -15,6 +15,7 @@ function Boshqa() {
     const { activeTab, setActiveTab } = useContext(Context)
     const { mavsumiyWindow, setMavsumiyWindow } = useContext(Context)
     const { biznesWindow, setBiznesWindow } = useContext(Context)
+    const { myDaromads, setMyDaromads } = useContext(Context)
 
     function Warn() {
         Swal.fire({
@@ -44,19 +45,6 @@ function Boshqa() {
     }
 
     // Jami boshqa DAROMADlar
-    const [myDaromads, setMyDaromads] = useState(
-    [
-        {   
-            id: 1,
-            nomi:'',
-            qiymati:'',
-            birlikNarxi:0,
-            hajmi:0,
-            oylik:0,
-            izoh:''
-        }
-    ])
-
     // My Daromads adding and deleting funtions
     function addMyDaromad(){
         let newMyDaromad = [{
@@ -251,12 +239,11 @@ function Boshqa() {
             </button>
             <p className='kl1_jami'>JAMI: {getTotalSum()} so`m</p>
         </div>
-             <p className='kl1_jami_main'>Jami o`rtacha oylik daromadlari: {getTotalSum()} so`m</p>
-
-            <div className='step_buttons double_button'>
-                <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
-                <button type='submit' onClick={()=>{onPutDate()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
-            </div>
+        <p className='kl1_jami_main'>Jami o`rtacha oylik daromadlari: {getTotalSum()} so`m</p>
+        <div className='step_buttons double_button'>
+            <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+            <button type='submit' onClick={()=>{onPutDate()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
+        </div>
     </>
   )
 }

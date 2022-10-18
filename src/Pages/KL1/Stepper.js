@@ -68,7 +68,7 @@ function StepperForm() {
         doc_date:'',
         mark_date:''
     })
-    // -------- 1 Qism
+    // --------- 1 Qism -------- //
     // family
     const [ familyMem, setFamilyMem ] = useState([{
         id:1,
@@ -88,7 +88,140 @@ function StepperForm() {
         owner:'',
         duration:''
     })
-
+    // -------- Boshqa -------- //
+    const [myDaromads, setMyDaromads] = useState(
+    [
+        {   
+            id: 1,
+            nomi:'',
+            qiymati:'',
+            birlikNarxi:0,
+            hajmi:0,
+            oylik:0,
+            izoh:''
+        }
+    ])
+    // -------- Mavsumiy -------- //
+    // list of daromads
+    const [mavsumiyDaromads, setMavsumiyDaromads] = useState([{
+        id:1,
+        name:'',
+        value:0
+    }])
+    // monthly daromad
+    const [monthDaromad,setMonthDaromad] = useState({
+        january:0,
+        february:0,
+        march:0,
+        april:0,
+        may:0,
+        june:0,
+        july:0,
+        august:0,
+        september:0,
+        october:0,
+        november:0,
+        december:0
+    })
+    // list of xarajat
+    const [mavsumiyXarajats, setMavsumiyXarajats] = useState([{
+        id:1,
+        name:'',
+        value:0
+    }])
+    // monthly xarajat
+    const [monthXarajat,setMonthXarajat] = useState({
+        january:0,
+        february:0,
+        march:0,
+        april:0,
+        may:0,
+        june:0,
+        july:0,
+        august:0,
+        september:0,
+        october:0,
+        november:0,
+        december:0
+    })
+    // -------- Biznes -------- //
+    // daromad    
+    const [biznesDaromads, setBiznesDaromads] = useState([{
+        id:1,
+        name:'',
+        volume:0,
+        price:0,
+        percent:0,
+        plus:0,
+        commit:''
+    }])
+    // xarajat
+    const [biznesXarajats, setBiznesXarajats] = useState([{
+        id:1,
+        name:'',
+        volume:0,
+        price:0,
+        cost:0,
+        minus:0,
+        commit:''
+    }])
+    // -------- 6 Qism -------- //
+    // daromad
+    const [ familyDaromad, setFamilyDaromad ] = useState([{
+        id:1,
+        name:'',
+        type:'',
+        address:'',
+        profit:0,
+        commit:''
+    }])
+    // xarajat
+    const [ familyXarajat, setFamilyXarajat ] = useState([{
+        id:1,
+        name:'',
+        minus:0,
+        commit:''
+    }])
+    // malumot
+    const [ familyMalumot, setFamilyMalumot ] = useState([{
+        id:1,
+        name:'',
+        rest:0,
+        pay:0,
+        commit:''
+    }])
+    // -------- 7 Qism -------- //
+    // datas
+    const [ familyMavjud, setFamilyMavjud ] = useState([{
+        id:1,
+        name:'',
+        rest:0,
+        pay:0,
+        commit:''
+    }])
+    // 5 input
+    const [ dataSeventhQism, setDataSeventhQism ] = useState({
+        main_debt:0,
+        procent:0,
+        month_pay:0,
+        main_procent:0,
+        credit_history:''
+    })
+    // commit
+    const [historyKredit, setHistoryKredit] = useState('')
+    // -------- Table -------- //
+    const [ dataTable, setDataTable ] = useState({
+        first_input:'',
+        second_input:'',
+        third_input:'',
+        sum_input:0,
+        fourth_input:'',
+        fifth_input:'',
+        sixth_input:'',
+        first_commit:'',
+        second_commit:'',
+        status:true
+    })
 
 
 
@@ -130,25 +263,38 @@ function StepperForm() {
             </div>
             <div className='kl1_tabs_main'>
             <Context.Provider value={{
-                activeTab,
-                setActiveTab,
-                mavsumiyWindow,
-                setMavsumiyWindow,
-                biznesWindow,
-                setBiznesWindow,
+                activeTab, setActiveTab,
+                mavsumiyWindow, setMavsumiyWindow,
+                biznesWindow, setBiznesWindow,
                 orderId,
                 infoClient,
                 infoOrder,
                 // Malumot
-                dataMalumot,
-                setDataMalumot,
+                dataMalumot, setDataMalumot,
                 // 1-Qism
-                familyMem,
-                setFamilyMem,
-                mulkItem,
-                setMulkItem,
-                dataFirstQism,
-                setDataFirstQism
+                familyMem, setFamilyMem,
+                mulkItem, setMulkItem,
+                dataFirstQism, setDataFirstQism,
+                // Boshqa
+                myDaromads, setMyDaromads,
+                // Mavsumiy
+                mavsumiyDaromads, setMavsumiyDaromads,
+                monthDaromad, setMonthDaromad,
+                mavsumiyXarajats, setMavsumiyXarajats,
+                monthXarajat,setMonthXarajat,
+                // Biznes
+                biznesDaromads, setBiznesDaromads,
+                biznesXarajats, setBiznesXarajats,
+                // 6-Qism
+                familyDaromad, setFamilyDaromad,
+                familyXarajat, setFamilyXarajat,
+                familyMalumot, setFamilyMalumot,
+                // 7-Qism
+                familyMavjud, setFamilyMavjud,
+                dataSeventhQism, setDataSeventhQism,
+                historyKredit, setHistoryKredit,
+                // Table
+                dataTable, setDataTable
             }}>
                 <Routes>
                     <Route path='/' element={<Shaxshiy/>}/>

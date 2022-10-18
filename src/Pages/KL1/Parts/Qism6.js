@@ -13,6 +13,10 @@ function Oilaviy() {
     const { activeTab, setActiveTab } = useContext(Context)
     const { mavsumiyWindow, setMavsumiyWindow } = useContext(Context)
     const { biznesWindow, setBiznesWindow } = useContext(Context)
+    const { familyDaromad, setFamilyDaromad } = useContext(Context)
+    const { familyXarajat, setFamilyXarajat } = useContext(Context)
+    const { familyMalumot, setFamilyMalumot } = useContext(Context)
+
     useEffect(() => {
         setActiveTab(6)
     }, [])
@@ -31,16 +35,6 @@ function Oilaviy() {
             navigate("/kl1/addkl1/boshqa", { replace: true })
         }
     }
-
-    // Daromad
-    const [ familyDaromad, setFamilyDaromad ] = useState([{
-        id:1,
-        name:'',
-        type:'',
-        address:'',
-        profit:0,
-        commit:''
-    }])
 
     // Family Daromads Adding and Deleting Functions
     function addfamDaromad () {
@@ -70,13 +64,6 @@ function Oilaviy() {
         return totalDaromadSum.toLocaleString()
     }
 
-    // Xarajat
-    const [ familyXarajat, setFamilyXarajat ] = useState([{
-        id:1,
-        name:'',
-        minus:0,
-        commit:''
-    }])
 
     // Family Xarajats Adding and Deleting Functions
     function addfamXarajat () {
@@ -104,14 +91,6 @@ function Oilaviy() {
         return totalXarajatSum.toLocaleString()
     }
 
-    // Malumot
-    const [ familyMalumot, setFamilyMalumot ] = useState([{
-        id:1,
-        name:'',
-        rest:0,
-        pay:0,
-        commit:''
-    }])
 
     // Family Malumots Adding and Deleting Functions
     function addfamMalumot () {

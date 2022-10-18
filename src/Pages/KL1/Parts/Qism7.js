@@ -11,6 +11,10 @@ function BuyurtmaOylik() {
 
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
+    const { familyMavjud, setFamilyMavjud} = useContext(Context)
+    const { dataSeventhQism, setDataSeventhQism } = useContext(Context)
+    const { historyKredit, setHistoryKredit } = useContext(Context)
+
     useEffect(() => {
         setActiveTab(7)
     }, [])
@@ -23,14 +27,6 @@ function BuyurtmaOylik() {
         navigate("/kl1/addkl1/6_qism", { replace: true });
     }
 
-    // Datas
-    const [ familyMavjud, setFamilyMavjud ] = useState([{
-        id:1,
-        name:'',
-        rest:0,
-        pay:0,
-        commit:''
-    }])
 
     // Family Mavjuds Adding and Deleting Functions
     function addfamMavjud () {
@@ -66,8 +62,6 @@ function BuyurtmaOylik() {
         let totalPay = pay.reduce((prev,current) => Number(prev) + Number(current), 0)
         return totalPay.toLocaleString()
     }
-
-    const [historyKredit, setHistoryKredit] = useState('')
 
     function Qism7Data(){
         let data ={
@@ -228,6 +222,7 @@ function BuyurtmaOylik() {
                 className='kl1_input'
                 placeholder='Jami 7 marotaba kredit olgan, shu jumladan, Renesansdan 2 marotaba. Muntazam o‘z vaqtida to‘lagan. 30 kungacha kechiktirishlar soni - 0, 30 kundan ortiq kechiktirishlar soni - 0'
                 label='Kredit tarixi'
+                value={historyKredit}
                 onChange={(e)=>{
                     setHistoryKredit(e.target.value)
                 }}

@@ -12,6 +12,10 @@ function Mavsumiy() {
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
     const { biznesWindow, setBiznesWindow } = useContext(Context)
+    const { mavsumiyDaromads, setMavsumiyDaromads } = useContext(Context)
+    const { monthDaromad, setMonthDaromad } = useContext(Context)
+    const { mavsumiyXarajats, setMavsumiyXarajats } = useContext(Context)
+    const { monthXarajat,setMonthXarajat } = useContext(Context)
     // const [ mavsumiyWindow, setMavsumiyWindow ] = useContext(Context)
     // console.log(useContext(Context));
     useEffect(() => {
@@ -47,12 +51,6 @@ function Mavsumiy() {
         }
       })
       
-    
-    const [mavsumiyDaromads, setMavsumiyDaromads] = useState([{
-        id:1,
-        name:'',
-        value:0
-    }])
 
     // Mavsumiy Daromads adding and deleting funtions
     function addMavsumiyDaromad(){
@@ -80,33 +78,12 @@ function Mavsumiy() {
     }
 
     // MonthDaromad
-    const [monthDaromad,setMonthDaromad] = useState({
-        january:0,
-        february:0,
-        march:0,
-        april:0,
-        may:0,
-        june:0,
-        july:0,
-        august:0,
-        september:0,
-        october:0,
-        november:0,
-        december:0
-    })
-
     function MonthsSum1(){
         let MonthArrSum1 = Object.values(monthDaromad);
         let totalMonth1 = MonthArrSum1.reduce((prev,current)=> Number(prev) + Number(current), 0)
 
         return totalMonth1.toLocaleString()
     }
-    
-    const [mavsumiyXarajats, setMavsumiyXarajats] = useState([{
-        id:1,
-        name:'',
-        value:0
-    }])
 
     // Mavsumiy Xarajats adding and deleting funtions
     function addMavsumiyXarajat(){
@@ -134,20 +111,6 @@ function Mavsumiy() {
     }
 
     // MonthXarajat
-    const [monthXarajat,setMonthXarajat] = useState({
-        january:0,
-        february:0,
-        march:0,
-        april:0,
-        may:0,
-        june:0,
-        july:0,
-        august:0,
-        september:0,
-        october:0,
-        november:0,
-        december:0
-    })
 
     function MonthsSum2(){
         let MonthArrSum2 = Object.values(monthXarajat);
@@ -237,6 +200,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.january}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.january = e.target.value
@@ -252,6 +217,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.february}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.february = e.target.value
@@ -267,6 +234,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.march}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.march = e.target.value
@@ -282,6 +251,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.april}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.april = e.target.value
@@ -297,6 +268,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.may}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.may = e.target.value
@@ -312,6 +285,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.june}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.june = e.target.value
@@ -327,6 +302,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.july}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.july = e.target.value
@@ -342,6 +319,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.august}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.august = e.target.value
@@ -357,6 +336,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.september}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.september = e.target.value
@@ -372,6 +353,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.october}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.october = e.target.value
@@ -387,6 +370,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.november}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.november = e.target.value
@@ -402,6 +387,8 @@ function Mavsumiy() {
                     width='23%'
                     className='kl1_input'
                     type='number'
+                    value={monthDaromad?.december}
+                    clearable
                     onChange={(e)=>{
                         const newMonths1 = {...monthDaromad}
                         newMonths1.december = e.target.value
@@ -475,6 +462,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.january}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.january = e.target.value
@@ -490,6 +479,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.february}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.february = e.target.value
@@ -505,6 +496,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.march}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.march = e.target.value
@@ -520,6 +513,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.april}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.april = e.target.value
@@ -535,6 +530,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.may}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.may = e.target.value
@@ -550,6 +547,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.june}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.june = e.target.value
@@ -565,6 +564,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.july}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.july = e.target.value
@@ -580,6 +581,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.august}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.august = e.target.value
@@ -595,6 +598,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.september}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.september = e.target.value
@@ -610,6 +615,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.october}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.october = e.target.value
@@ -625,6 +632,8 @@ function Mavsumiy() {
                 width='23%'
                 className='kl1_input'
                 type='number'
+                clearable
+                value={monthXarajat?.november}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.november = e.target.value
@@ -639,8 +648,9 @@ function Mavsumiy() {
                 color="secondary"
                 width='23%'
                 className='kl1_input'
-                css={{ color: '$myDarkColor' }}
                 type='number'
+                clearable
+                value={monthXarajat?.december}
                 onChange={(e)=>{
                     const newMonths2 = {...monthXarajat}
                     newMonths2.december = e.target.value

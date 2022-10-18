@@ -20,6 +20,7 @@ function Table() {
 
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
+    const { dataTable, setDataTable } = useContext(Context)
     useEffect(() => {
         setActiveTab(8)
     }, [])
@@ -42,6 +43,7 @@ function Table() {
     const onSubmit = (data) =>{
         console.log(data);
         Success()
+        console.log(dataTable)
 
         setTimeout(()=>{
             FinishStep()
@@ -58,17 +60,47 @@ function Table() {
                     <div className='kl1_table_double kl1_table_noPadding'>
                         <p>сухбат</p>
                         <div className='kl1_table_inputs'>
-                            <input placeholder='ижобий' type='text' {...register("first_input", { required: true })}/>
+                            <input 
+                                placeholder='ижобий' 
+                                type='text' 
+                                value={dataTable?.first_input}
+                                {...register("first_input", { required: true })}
+                                onChange={(e)=>{
+                                    let array = {...dataTable}
+                                    array.first_input = e.target.value
+                                    setDataTable(array)
+                                }}
+                            />
                         </div>
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
                         <p>учрашув</p>
                         <div className='kl1_table_inputs'>
-                            <input placeholder='ижобий' type='text' {...register("second_input", { required: true })}/>
+                            <input 
+                                placeholder='ижобий' 
+                                type='text' 
+                                value={dataTable?.second_input}
+                                {...register("second_input", { required: true })}
+                                onChange={(e)=>{
+                                    let array = {...dataTable}
+                                    array.second_input = e.target.value
+                                    setDataTable(array)
+                                }}
+                            />
                         </div>
                     </div>
                     <div className='kl1_table_inputs'>
-                        <input placeholder='ижобий' type='text' {...register("third_input", { required: true })}/>
+                        <input 
+                            placeholder='ижобий' 
+                            type='text' 
+                            value={dataTable?.third_input}
+                            {...register("third_input", { required: true })}
+                            onChange={(e)=>{
+                                let array = {...dataTable}
+                                array.third_input = e.target.value
+                                setDataTable(array)
+                            }}
+                        />
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
                         <p>oylik tolov</p>
@@ -92,7 +124,17 @@ function Table() {
                     <div className='kl1_table_dark-bg'>Shaxsiy kapital/kreditlar</div>
                     <div className='kl1_table_dark-bg'>Natija</div>
                     <div className='kl1_table_inputs'>
-                        <input placeholder='25 000 000,00' type='number' {...register("sum_input", { required: true })}/>
+                        <input 
+                            placeholder='25 000 000,00' 
+                            type='number' 
+                            value={dataTable?.sum_input}
+                            {...register("sum_input", { required: true })}
+                            onChange={(e)=>{
+                                let array = {...dataTable}
+                                array.sum_input = e.target.value
+                                setDataTable(array)
+                            }}
+                        />
                     </div>
                     <div className='kl1_table_yellow-bg'>125%</div>
                     <div className='kl1_table_yellow-bg'>50</div>
@@ -100,13 +142,43 @@ function Table() {
                     <div className='kl1_table_dark-bg'>Faoliyat barqarorligi</div>
                     <div className='kl1_table_dark-bg'>Kutilayotgan rivojlanish</div>
                     <div className='kl1_table_inputs kl1_table_input_padding'>
-                        <input placeholder='баркарор' type='text' {...register("fourth_input", { required: true })}/>
+                        <input 
+                            placeholder='баркарор' 
+                            type='text' 
+                            value={dataTable?.fourth_input}
+                            {...register("fourth_input", { required: true })}
+                            onChange={(e)=>{
+                                let array = {...dataTable}
+                                array.fourth_input = e.target.value
+                                setDataTable(array)
+                            }}
+                        />
                     </div>
                     <div className='kl1_table_inputs kl1_table_input_padding'>
-                        <input placeholder='баркарор' type='text' {...register("fifth_input", { required: true })}/>
+                        <input 
+                            placeholder='баркарор' 
+                            type='text' 
+                            value={dataTable?.fifth_input}
+                            {...register("fifth_input", { required: true })}
+                            onChange={(e)=>{
+                                let array = {...dataTable}
+                                array.fifth_input = e.target.value
+                                setDataTable(array)
+                            }}
+                        />
                     </div>
                     <div className='kl1_table_inputs kl1_table_input_padding'>
-                        <input placeholder='ижобий' type='text' {...register("sixth_input", { required: true })}/>
+                        <input
+                            placeholder='ижобий'
+                            type='text'
+                            value={dataTable?.sixth_input}
+                            {...register("sixth_input", { required: true })}
+                            onChange={(e)=>{
+                                let array = {...dataTable}
+                                array.sixth_input = e.target.value
+                                setDataTable(array)
+                            }}
+                        />
                     </div>
                     <div className='kl1_table_dark-bg'>Taminot turi</div>
                     <div className='kl1_table_dark-bg'>Taminot qiymati</div>
@@ -123,7 +195,13 @@ function Table() {
                     className='kl1_input'
                     placeholder='Ajratiladigan kreditga mijoz qoshimcha 150 litr LukOil moylarini, shuningdek, moy alishtirish jarayonida zaruriy bolgan avto ehtiyot qismlar savdosini ham yolga qoymoqchi. Birlamchi hisob kitoblar buyurtmachi daromadi qoshimcha 1 500 000 somga oshishini korsatmoqda.'
                     label='Ajratilgan kreditning buyurtmachi uchun tasirini baholash'
+                    value={dataTable?.first_commit}
                     {...register("first_commit", { required: true })}
+                    onChange={(e)=>{
+                        let array = {...dataTable}
+                        array.first_commit = e.target.value
+                        setDataTable(array)
+                    }}
                 />
                 <Textarea
                     width='100%'
@@ -133,18 +211,30 @@ function Table() {
                     className='kl1_input'
                     placeholder='дохода клиента достаточно для получения кредита'
                     label='Monitoring boyicha masul xodimning yakuniy xulosasi'
+                    value={dataTable?.second_commit}
                     {...register("second_commit", { required: true })}
+                    onChange={(e)=>{
+                        let array = {...dataTable}
+                        array.second_commit = e.target.value
+                        setDataTable(array)
+                    }}
                 />
                 <div className='kl1_accepting'>
                     <p>Taqdim etilgan va toplangan malumotlar hamda kredit byurosidan olingan kredit tarixiga asoslanib men tomonimdan otkazilgan organish va tahlillar asosida ushbu buyurtma boyicha quiydagi yakuniy xulosamni kredit komissiyasida korib chiqish uchun taqdim etaman</p>
-                    <Radio.Group {...register("check", { required: true })} label=' ' defaultValue={true} size='sm' className='kl1_accepting_radio'>
+                    <Radio.Group label=' ' value={dataTable?.status} size='sm' className='kl1_accepting_radio'
+                        onChange={(e)=>{
+                            let array = {...dataTable}
+                            array.status = e
+                            setDataTable(array)
+                        }}
+                    >
                         <div className='kl1_accept margin_bottom'><Radio color='success' className='radio_end' value={true}>Kredit ajratish</Radio></div>
                         <div className='kl1_accept'><Radio color='error' className='radio_end' value={false}>Rad etish</Radio></div>
                     </Radio.Group>
                 </div>
 
                 <div className='step_buttons double_button'>
-                    <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+                    <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                     <button type='submit' className='step_next'><p>KL1 qo'shish</p></button>
                 </div>
             </form>

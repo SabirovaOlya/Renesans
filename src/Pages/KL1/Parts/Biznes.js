@@ -13,6 +13,8 @@ function Biznes() {
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
     const { mavsumiyWindow, setMavsumiyWindow } = useContext(Context)
+    const { biznesDaromads, setBiznesDaromads } = useContext(Context)
+    const { biznesXarajats, setBiznesXarajats } = useContext(Context)
 
     useEffect(() => {
         setActiveTab(5)
@@ -29,17 +31,7 @@ function Biznes() {
             navigate("/kl1/addkl1/boshqa", { replace: true });
         }
     }
-    
-    // Daromad    
-    const [biznesDaromads, setBiznesDaromads] = useState([{
-        id:1,
-        name:'',
-        volume:0,
-        price:0,
-        percent:0,
-        plus:0,
-        commit:''
-    }])
+
 
     // Biznes Daromads adding and deleting functions
     function addBiznesDaromad(){
@@ -70,16 +62,6 @@ function Biznes() {
         return totalDaromad.toLocaleString()
     }
 
-    // Xarajat
-    const [biznesXarajats, setBiznesXarajats] = useState([{
-        id:1,
-        name:'',
-        volume:0,
-        price:0,
-        cost:0,
-        minus:0,
-        commit:''
-    }])
 
     // Biznes Xarajats adding and deleting functions
     function addBiznesXarajat(){
