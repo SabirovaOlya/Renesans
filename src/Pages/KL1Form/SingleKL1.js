@@ -8,6 +8,28 @@ import './KL1Form.css'
 
 
 function SingleKL1() {
+
+    let { id } = useParams()
+    const [ mainInfo, setMainInfo ] = useState({})
+
+    async function GetMainInfo(){
+        await https
+        .get(`/client-marks/${id}`)
+        .then(res =>{
+            console.log(res?.data)
+            setMainInfo(res?.data)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    }
+
+    useEffect(()=>{
+        GetMainInfo()
+    },[])
+
+
+
   return (
     <div>
         <Link to='/kl1' className='clientform_back back-back'>
@@ -16,42 +38,42 @@ function SingleKL1() {
         </Link>
         <section className='single_buyurtma'>
             {/* Malumot */}
-            <h1 className='text_center filial_edit_text'>Klient Name</h1>
+            <h1 className='text_center filial_edit_text'>{mainInfo?.client?.name}</h1>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Hujjat tayyorlangan sana:</p>
-                <p>12/12/2021</p>
+                <p>{mainInfo?.doc_date}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Mijoz tekshirilgan va organilgan sana:</p>
-                <p>23/04/2021</p>
+                <p>{mainInfo?.mark_date}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Buyurtmachining F.I.Sh:</p>
-                <p>Name</p>
+                <p>{mainInfo?.client?.name}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Doimiy yashash manzili:</p>
-                <p>address</p>
+                <p>{mainInfo?.client?.address}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Vaqtinchalik yashash manzili:</p>
-                <p>time_address</p>
+                <p>{mainInfo?.client?.temp_address}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>JSh ShIR:</p>
-                <p>{'41-3077-9287-0060'}</p>
+                <p>{mainInfo?.client?.pinfl}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Buyurtmachining telefon raqami:</p>
-                <p>{`+998 99 979 90 70`}</p>
+                <p>{mainInfo?.client?.phone}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Kredit maqsadi:</p>
-                <p>kredit_goal</p>
+                <p>{mainInfo?.order?.aim}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Soralayotgan kredit miqdori:</p>
-                <p>{`kredit_price so'm`}</p>
+                <p>{mainInfo?.order?.sum}</p>
             </div>
 
             {/* ********Part 1********* */}
@@ -59,45 +81,50 @@ function SingleKL1() {
             <p className='kl1_formtitle text_center'>Birgalikda istiqomat qiluvchilar</p>
             <div className='list_sinlge_form'>
                 <p>Istiqomat qiluvchi:</p>
-                <p>{1}. Otasi</p>
-                <p>{2}. Onasi</p>
-                <p>{3}. Akasi</p>
-                <p>{4}. Sinlisi</p>
-                <p>{5}. Ukasi</p>
+                {/* {
+                    mainInfo?.family?.map((item,index)=>{
+                        return(
+                            <p key={index}>{index + 1}. {item}</p>
+                        )
+                    })
+                    // console.log(typeof mainInfo?.property)
+                } */}
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Oila azolari bilan suhbat davomida aniqlangan muhim malumotlar:</p>
-                <p>Buyurtmachining va oilaning byudjeti bitta Buyurtmachining va oilaning byudjeti bitta Buyurtmachining va oilaning byudjeti bitta Buyurtmachining va oilaning byudjeti bitta Buyurtmachining va oilaning byudjeti bitta Buyurtmachining va oilaning byudjeti bitta</p>
+                <p>{mainInfo?.conversation_result}</p>
             </div>
             <p className='kl1_formtitle text_center'>Buyurtmachining boshqa mulklari</p>
             <div className='list_sinlge_form'>
                 <p>Mulk nomi:</p>
-                <p>{1}. Mulk 1</p>
-                <p>{2}. Mulk 2</p>
-                <p>{3}. Mulk 3</p>
-                <p>{4}. Mulk 4</p>
-                <p>{5}. Mulk 5</p>
+                {/* {
+                    mainInfo?.property?.map((item,index)=>{
+                        return(
+                            <p>{index + 1}. {item}</p>
+                        )
+                    })
+                } */}
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Yashash sharoiti:</p>
-                <p>{`Yashash sharoiti ortacha. Uy 3 ta yotoqxona, oshxona, mehmonxona va hammomdan iborat. Uy tamiri orta darajada. Uy otasini nomida. Xovlining umumiy maydoni 6 sotix. Tomorqada 10 dan ortiq mevali daraxtlar bor. Shuningdek, uy xojaligini oz ehtiyojlari uchun pomidor, bodring, qalampir, baqlajon ekilgan.`}</p>
+                <p>{mainInfo?.living_condition}</p>
             </div>
             <h2 className='kl1_subtitle margin_top_30'>Buyurtmachining faoliyati va daromad  manbalarini organish natijalari</h2>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Buyurtmachining faoliyat turi:</p>
-                <p>{`Savdo-transport vositalari uchun moy sotadi. Savdo bolmaydigan kunlari va har kuni soat 16:00 dan 21:00 gacha Yandeks Taksida taksichilik qiladi.`}</p>
+                <p>{mainInfo?.activity?.type}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Faoliyat manzili:</p>
-                <p>{`Sergeli ehtiyot qismlari bozori, C blok, 19-do'kon`}</p>
+                <p>{mainInfo?.activity?.address}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Faoliyat joyi (shaxsiy / ijara / boshqa):</p>
-                <p>{`Ijara`}</p>
+                <p>{mainInfo?.activity?.owner}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Ushbu sohada foliyat yuritish davomiyligi:</p>
-                <p>{`3 yildan oshiq`}</p>
+                <p>{mainInfo?.activity?.duration}</p>
             </div>
 
             {/* ********___Boshqa___********* */}
@@ -162,66 +189,6 @@ function SingleKL1() {
                 </div>
             </div>
             <p className='kl1_jami margin_top_15'>Jami o'rtacha oylik daromadlari: {1000000} so`m</p>
-            <p className='kl1_formtitle text_center'>Boshqa xarajatlar turi</p>
-            <div className='single_boshqa_product'>
-                <div className='kl1_product_title'>
-                    <p>Xarajat {1}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Xarajat nomi:</p>
-                    <p>{`Name`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Hajmi:</p>
-                    <p>{`100`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Birlik narxi:</p>
-                    <p>{`250 000 so'm`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Qiymati:</p>
-                    <p>{`2 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Oylik xarajat:</p>
-                    <p>{`25 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Izoh:</p>
-                    <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                </div>
-            </div>
-            <div className='single_boshqa_product'>
-                <div className='kl1_product_title'>
-                    <p>Xarajat {2}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Xarajat nomi:</p>
-                    <p>{`Name`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Hajmi:</p>
-                    <p>{`100`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Birlik narxi:</p>
-                    <p>{`250 000 so'm`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Qiymati:</p>
-                    <p>{`2 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Oylik xarajat:</p>
-                    <p>{`25 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Izoh:</p>
-                    <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                </div>
-            </div>
-            <p className='kl1_jami margin_top_20'>Jami o'rtacha oylik xarajatlari: {1000000} so'm</p>
 
             {/******___Mavsumiy___******/}
             <div>
