@@ -101,6 +101,8 @@ function StepperForm() {
             izoh:''
         }
     ])
+    const [ checkMavsumiy, setCheckMavsumiy ] = useState(false)
+    const [ checkBiznes, setCheckBiznes ] = useState(false)
     // -------- Mavsumiy -------- //
     // list of daromads
     const [mavsumiyDaromads, setMavsumiyDaromads] = useState([{
@@ -218,8 +220,8 @@ function StepperForm() {
         fourth_input:'',
         fifth_input:'',
         sixth_input:'',
-        first_commit:'',
-        second_commit:'',
+        credit_impact  :'',
+        conclusion:'',
         status:true
     })
 
@@ -277,6 +279,8 @@ function StepperForm() {
                 dataFirstQism, setDataFirstQism,
                 // Boshqa
                 myDaromads, setMyDaromads,
+                checkMavsumiy, setCheckMavsumiy,
+                checkBiznes,setCheckBiznes,
                 // Mavsumiy
                 mavsumiyDaromads, setMavsumiyDaromads,
                 monthDaromad, setMonthDaromad,

@@ -1,10 +1,12 @@
 import React, { useState, useContext,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 // Components
 import { Input, createTheme } from '@nextui-org/react'
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../../../Context';
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
-import { useNavigate } from 'react-router-dom';
+// Alert
+import Swal from 'sweetalert2'
 
 
 function Mavsumiy() {
@@ -24,15 +26,30 @@ function Mavsumiy() {
 
     let navigate = useNavigate()
 
-    function NextStep(){
-        if(biznesWindow == 'open'){
-            navigate('/kl1/addkl1/biznes', { replace: true });
-        }else{
-            navigate('/kl1/addkl1/6_qism', { replace: true });
-        }
-    }
     function BackStep(){
         navigate("/kl1/addkl1/boshqa", { replace: true });
+    }
+
+    function WarnDaromad() {
+        Swal.fire({
+            title: "Daromad ma'lumotlari mos kelmaydi",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function WarnXarajat() {
+        Swal.fire({
+            title: "Xarajat ma'lumotlari mos kelmaydi",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function Warn(){
+        Swal.fire({
+            title: "Ma'lumotlar to'liq emas",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
     }
 
     const myDarkTheme = createTheme({
@@ -119,24 +136,32 @@ function Mavsumiy() {
         return totalMonth2.toLocaleString()
     }
 
-    function MavsumiyData(){
-        let data ={
-            daromads:mavsumiyDaromads,
-            xarajats:mavsumiyXarajats,
-            daromad_sum:GetDaromadSum(),
-            xarajat_sum:GetXarajatSum(),
-            daromad_sum_monthly:MonthsSum1(),
-            xarajat_sum_monthly:MonthsSum2(),
-            daromad_monthly:monthDaromad,
-            xarajat_monthly:monthXarajat
+    function NextStep(){
+
+        if(GetDaromadSum() == 0 || GetDaromadSum() == 0){
+            return Warn()
         }
-        console.log(data);
+
+        if(MonthsSum1() != GetDaromadSum()){
+            return( WarnDaromad() )
+        }
+        if(MonthsSum2() != GetXarajatSum()){
+            return( WarnXarajat() )
+        }
+
+        if(biznesWindow == 'open'){
+            navigate('/kl1/addkl1/biznes', { replace: true });
+        }else{
+            navigate('/kl1/addkl1/6_qism', { replace: true });
+        }
+    }
+
+    function MavsumiyData(){
         setTimeout(()=>{
             NextStep()
         },500)
     }
 
-                    
     return (
         <section>
                 <p className='kl1_formtitle'>Mavsumiy daromad turi, manbasi va faoliyat joyi</p>
@@ -663,7 +688,7 @@ function Mavsumiy() {
             </div>
 
             <div className='step_buttons double_button'>
-                <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+                <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                 <button type='submit' onClick={()=>{MavsumiyData()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
             </div>
         </section>

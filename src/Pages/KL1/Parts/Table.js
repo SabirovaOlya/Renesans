@@ -6,6 +6,7 @@ import { Context } from '../../../Context';
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import https from '../../../assets/https';
 
 function Table() {
 
@@ -17,13 +18,31 @@ function Table() {
             confirmButtonText: 'Ok'
         })
     }
-
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
     const { dataTable, setDataTable } = useContext(Context)
     useEffect(() => {
         setActiveTab(8)
     }, [])
+    // Components
+    const { 
+        orderId, infoClient, infoOrder,
+        // malumot
+        dataMalumot,
+        // 1 Qism
+        familyMem, mulkItem, dataFirstQism,
+        // Boshqa
+        myDaromads, checkMavsumiy, checkBiznes,
+        // Mavsumiy
+        mavsumiyDaromads, monthDaromad,
+        mavsumiyXarajats, monthXarajat,
+        // Biznes
+        biznesDaromads, biznesXarajats,
+        // 6 Qism
+        familyDaromad, familyXarajat, familyMalumot,
+        // 7 Qism
+        familyMavjud, dataSeventhQism, historyKredit
+    } = useContext(Context)
 
     let navigate = useNavigate()
     function FinishStep(){
@@ -41,13 +60,72 @@ function Table() {
     } = useForm();
 
     const onSubmit = (data) =>{
-        console.log(data);
-        Success()
-        console.log(dataTable)
 
-        setTimeout(()=>{
-            FinishStep()
-        },1200)
+        let familyMembersCopy = []
+        familyMem?.map((item)=>{
+            familyMembersCopy.push(item.name)
+        })
+
+        let mulkCopy = []
+        mulkItem.map(item =>{
+            mulkCopy.push(item.name)
+        })
+        
+        let info = {
+            user_id:1,
+            order_id:infoOrder.id,
+            client_id:infoClient?.id,
+            doc_date:dataMalumot.doc_date,
+            mark_date:dataMalumot.mark_date,
+            family:familyMembersCopy,
+            property:mulkCopy,
+            paths:[],
+            conversation_result:dataFirstQism.conversation_result,
+            living_condition:dataFirstQism.living_condition,
+            credit_impact:dataTable.credit_impact,
+            conclusion:dataTable.conclusion,
+            credit_history:historyKredit,
+            status:dataTable.status
+        }
+
+        let infooo={
+            doc_date: "2022-10-22",
+            client_id: 3,
+            order_id: 12,
+            user_id: 1,
+            paths: [],
+            mark_date: "2022-10-19",
+            family: [
+                "Otasi",
+                "onasi"
+            ],
+            property: [
+                "Damas"
+            ],
+            conversation_result: "suhbat commit",
+            living_condition: "ortacha",
+            credit_impact: "yok",
+            conclusion: "mumkun",
+            credit_history: "kredit yok",
+            status: true
+            
+        }
+
+        // if(checkMavsumiy){
+        //     Object.assign(info,{ monthly_income: monthDaromad, monthly_expense: monthXarajat})
+        // }
+
+        console.log(info)
+        
+        https
+        .post('/client-marks', infooo)
+        .then(res =>{
+            console.log(res.data)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+
     }
 
     return (
@@ -64,7 +142,7 @@ function Table() {
                                 placeholder='ижобий' 
                                 type='text' 
                                 value={dataTable?.first_input}
-                                {...register("first_input", { required: true })}
+                                // {...register("first_input", { required: true })}
                                 onChange={(e)=>{
                                     let array = {...dataTable}
                                     array.first_input = e.target.value
@@ -80,7 +158,7 @@ function Table() {
                                 placeholder='ижобий' 
                                 type='text' 
                                 value={dataTable?.second_input}
-                                {...register("second_input", { required: true })}
+                                // {...register("second_input", { required: true })}
                                 onChange={(e)=>{
                                     let array = {...dataTable}
                                     array.second_input = e.target.value
@@ -94,7 +172,7 @@ function Table() {
                             placeholder='ижобий' 
                             type='text' 
                             value={dataTable?.third_input}
-                            {...register("third_input", { required: true })}
+                            // {...register("third_input", { required: true })}
                             onChange={(e)=>{
                                 let array = {...dataTable}
                                 array.third_input = e.target.value
@@ -128,7 +206,7 @@ function Table() {
                             placeholder='25 000 000,00' 
                             type='number' 
                             value={dataTable?.sum_input}
-                            {...register("sum_input", { required: true })}
+                            // {...register("sum_input", { required: true })}
                             onChange={(e)=>{
                                 let array = {...dataTable}
                                 array.sum_input = e.target.value
@@ -146,7 +224,7 @@ function Table() {
                             placeholder='баркарор' 
                             type='text' 
                             value={dataTable?.fourth_input}
-                            {...register("fourth_input", { required: true })}
+                            // {...register("fourth_input", { required: true })}
                             onChange={(e)=>{
                                 let array = {...dataTable}
                                 array.fourth_input = e.target.value
@@ -159,7 +237,7 @@ function Table() {
                             placeholder='баркарор' 
                             type='text' 
                             value={dataTable?.fifth_input}
-                            {...register("fifth_input", { required: true })}
+                            // {...register("fifth_input", { required: true })}
                             onChange={(e)=>{
                                 let array = {...dataTable}
                                 array.fifth_input = e.target.value
@@ -172,7 +250,7 @@ function Table() {
                             placeholder='ижобий'
                             type='text'
                             value={dataTable?.sixth_input}
-                            {...register("sixth_input", { required: true })}
+                            // {...register("sixth_input", { required: true })}
                             onChange={(e)=>{
                                 let array = {...dataTable}
                                 array.sixth_input = e.target.value
@@ -195,11 +273,11 @@ function Table() {
                     className='kl1_input'
                     placeholder='Ajratiladigan kreditga mijoz qoshimcha 150 litr LukOil moylarini, shuningdek, moy alishtirish jarayonida zaruriy bolgan avto ehtiyot qismlar savdosini ham yolga qoymoqchi. Birlamchi hisob kitoblar buyurtmachi daromadi qoshimcha 1 500 000 somga oshishini korsatmoqda.'
                     label='Ajratilgan kreditning buyurtmachi uchun tasirini baholash'
-                    value={dataTable?.first_commit}
-                    {...register("first_commit", { required: true })}
+                    value={dataTable?.credit_impact}
+                    {...register("credit_impact", { required: true })}
                     onChange={(e)=>{
                         let array = {...dataTable}
-                        array.first_commit = e.target.value
+                        array.credit_impact = e.target.value
                         setDataTable(array)
                     }}
                 />
@@ -211,11 +289,11 @@ function Table() {
                     className='kl1_input'
                     placeholder='дохода клиента достаточно для получения кредита'
                     label='Monitoring boyicha masul xodimning yakuniy xulosasi'
-                    value={dataTable?.second_commit}
-                    {...register("second_commit", { required: true })}
+                    value={dataTable?.conclusion}
+                    {...register("conclusion", { required: true })}
                     onChange={(e)=>{
                         let array = {...dataTable}
-                        array.second_commit = e.target.value
+                        array.conclusion = e.target.value
                         setDataTable(array)
                     }}
                 />

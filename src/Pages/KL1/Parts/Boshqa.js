@@ -16,6 +16,8 @@ function Boshqa() {
     const { mavsumiyWindow, setMavsumiyWindow } = useContext(Context)
     const { biznesWindow, setBiznesWindow } = useContext(Context)
     const { myDaromads, setMyDaromads } = useContext(Context)
+    const { checkMavsumiy, setCheckMavsumiy } = useContext(Context)
+    const { checkBiznes,setCheckBiznes } = useContext(Context)
 
     function Warn() {
         Swal.fire({
@@ -89,16 +91,17 @@ function Boshqa() {
 
     function onPutDate(){
         if(getTotalSum() === '0'){
-            Warn()
-        }else{
-            let data = {
-                daramads:myDaromads,
-                daramads_sum:getTotalSum()
-            }
-            setTimeout(()=>{
-                NextStep()
-            },500)
+           return Warn()
         }
+
+        let data = {
+            daramads:myDaromads,
+            daramads_sum:getTotalSum()
+        }
+        setTimeout(()=>{
+            NextStep()
+        },500)
+       
     }
 
 
@@ -106,17 +109,19 @@ function Boshqa() {
         <>
         <h2 className='kl1_subtitle'>Buyurtmachining daromadlari</h2>
         <div className='kl1_radio'>
-            <Checkbox size='sm' color='secondary' defaultValue={biznesWindow=='close' ? false : true} 
+            <Checkbox size='sm' color='secondary' isSelected={checkBiznes} 
                 onChange={(e)=>{
                     if(e){
                         setBiznesWindow('open')
                     }else{
                         setBiznesWindow('close')
                     }
+                    setCheckBiznes(e)
                 }}
             >Biznes daromadlar</Checkbox>
-            <Checkbox size='sm' className='kl1_radio_checkbox' color='secondary' defaultValue={mavsumiyWindow==='open' ? true : false} 
+            <Checkbox size='sm' className='kl1_radio_checkbox' color='secondary' isSelected={checkMavsumiy} 
                 onChange={(e)=>{
+                    setCheckMavsumiy(e)
                     if(e){
                         setMavsumiyWindow('open')
                     }else{
@@ -241,7 +246,7 @@ function Boshqa() {
         </div>
         <p className='kl1_jami_main'>Jami o`rtacha oylik daromadlari: {getTotalSum()} so`m</p>
         <div className='step_buttons double_button'>
-            <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+            <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
             <button type='submit' onClick={()=>{onPutDate()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
         </div>
     </>

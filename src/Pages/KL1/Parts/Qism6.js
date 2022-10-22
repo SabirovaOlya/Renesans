@@ -149,21 +149,10 @@ function Oilaviy() {
 
         let total = totalDaromadSum - totalXarajatSum - totalMalumotSumPay
          
-        return total.toLocaleString()
+        return total
     }
 
     function Qism6Data(){
-        let data ={
-            family_daromads:familyDaromad,
-            family_daromad_sum:GetSumDaromad(),
-            family_xarajats:familyXarajat,
-            family_xarajat_sum:GetSumXarajat(),
-            info:familyMalumot,
-            info_pay:GetMalumotPay(),
-            info_rest:GetMalumotRest(),
-            into_total:TotalMalumot()
-        }
-        console.log(data)
 
         setTimeout(()=>{
             NextStep()
@@ -442,10 +431,10 @@ function Oilaviy() {
                             <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: { GetMalumotPay()} so`m</p>
                         </div>
                     </div>
-                    <p className={(TotalMalumot() > 0)? 'text_black_18 green_text' : 'text_black_18 red_text'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: {TotalMalumot()} so`m</p>
+                    <p className={(Number(TotalMalumot()) >= 0)? 'text_black_18 green_text' : 'text_black_18 red_text'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: {TotalMalumot().toLocaleString()} so`m</p>
                     
                     <div className='step_buttons double_button'>
-                        <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+                        <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                         <button type='submit' onClick={()=>{Qism6Data()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
                     </div>
         </section>

@@ -1,10 +1,12 @@
 import React, { useState, useContext,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 // Components
 import { Input, Textarea } from '@nextui-org/react'
 import { v4 as uuidv4 } from 'uuid';
 import { Context } from '../../../Context';
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
-import { useNavigate } from 'react-router-dom';
+// Alert
+import Swal from 'sweetalert2'
 
 
 
@@ -21,9 +23,7 @@ function Biznes() {
     }, [])
 
     let navigate = useNavigate()
-    function NextStep(){
-        navigate('/kl1/addkl1/6_qism', { replace: true });
-    }
+    
     function BackStep(){
         if(mavsumiyWindow === 'open'){
             navigate("/kl1/addkl1/mavsumiy", { replace: true });
@@ -32,6 +32,13 @@ function Biznes() {
         }
     }
 
+    function Warn(){
+        Swal.fire({
+            title: "Ma'lumotlar to'liq emas",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
 
     // Biznes Daromads adding and deleting functions
     function addBiznesDaromad(){
@@ -100,14 +107,14 @@ function Biznes() {
         }
     }
 
-    function BiznesData(){
-        let data ={
-            daromads:biznesDaromads,
-            xarajats:biznesXarajats,
-            daromad_sum:GetSumDaromad(),
-            xarajat_sum:GetSumXarajat()
+    function NextStep(){
+        if(GetSumDaromad() == 0 || GetSumXarajat() == 0){
+            return Warn()
         }
-        console.log(data);
+        navigate('/kl1/addkl1/6_qism', { replace: true });
+    }
+
+    function BiznesData(){
         setTimeout(()=>{
             NextStep()
         },500)
@@ -345,7 +352,7 @@ function Biznes() {
                     </div>
                 </div>
                 <div className='step_buttons double_button'>
-                    <button type='reset' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
+                    <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                     <button type='submit' onClick={()=>{BiznesData()}} className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
                 </div>
         </section>
