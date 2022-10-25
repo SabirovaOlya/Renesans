@@ -79,6 +79,7 @@ function StepperForm() {
         id:1,
         name:''
     }])
+    const [path, setPath] = useState([])
     // 1qism inputs
     const [dataFirstQism, setDataFirstQism] = useState({
         conversation_result:'',
@@ -277,6 +278,7 @@ function StepperForm() {
                 familyMem, setFamilyMem,
                 mulkItem, setMulkItem,
                 dataFirstQism, setDataFirstQism,
+                path, setPath,
                 // Boshqa
                 myDaromads, setMyDaromads,
                 checkMavsumiy, setCheckMavsumiy,

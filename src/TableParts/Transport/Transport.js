@@ -1,20 +1,23 @@
 import React, { useState, useRef } from 'react'
 import { Input,Radio } from '@nextui-org/react'
+import { useForm } from "react-hook-form";                                                                                                                                                                                                                     
+import https from '../../assets/https';
+import axios from 'axios';
+
 import { AiOutlineClear,AiOutlineUserAdd,AiOutlineDownload,AiFillCloseSquare } from 'react-icons/ai';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';   
-import { useForm } from "react-hook-form";                                                                                                                                                                                                                     
 import Swal from 'sweetalert2';
 import './Transport.css'
-import https from '../../assets/https';
 
 function Transport({orderId}) {
 
     const [firstTable,setFirstTable]= useState('transport_garovPart close');
     const [secondTable,setSecondTable]= useState('transport_ishonchnomaPart close');
     const [garov, setGarov]= useState('transport_fourInputs close');
-    const [image, setImage] = useState([])
     const [isShown, setIsShown] = useState(false)
+    const [image, setImage] = useState([])
+    const [path, setPath] = useState([])
     const  imageInput = useRef()
     // important inputs
     const [valuedStatus, setValuedStatus] = useState(false)
@@ -93,28 +96,28 @@ function Transport({orderId}) {
     // Photo functions
     function PhotoOpen(){
         imageInput.current.click()
-        // imageInput.current.setAttribute('multiple', true)
     }
     function AddImage(photo){
-        let foto = Object.values(photo)
-        setImage(image.concat(foto))
-    }
-    function ImageDelete(id){
-        let imageItems = image.filter(x => x !== image[id])
-        setImage(imageItems)
-    }
-    function PushImage(){
-        let urls =[]
-        https
-        .post('/upload-photo', image)
-        .then(res =>{
-            urls.push(res)
-            console.log(image)
-            console.log(res.data)
+        let form = new FormData()
+        form.append('image[]',photo)
+
+        axios({
+            method: "post",
+            url: "https://ioi-tech.uz/api/upload-photo",
+            data: form,
+            headers: { Authorization: "Bearer " + window.localStorage.getItem('token'),
+            "Content-Type": "multipart/form-data" },
+        })
+        .then( res =>{
+            setPath(path.concat(res.data.data))
         })
         .catch(err =>{
-            console.log(err)
+            console.log(err);
         })
+    }
+    function ImageDelete(id){
+        let imageItems = path.filter(x => x !== path[id])
+        setPath(imageItems)
     }
 
     // UseForm
@@ -561,15 +564,14 @@ function Transport({orderId}) {
                     <div className='taminot_photo_add'>
                         <div className='photo_add_buttons'>
                             <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
-                            <button type='button' onClick={()=>{PushImage()}}>Yuklash</button>
                         </div>
-                        <input ref={imageInput} multiple type="file" onChange={(e)=>{AddImage((e.target.files))}}/>
+                        <input ref={imageInput} type="file" onChange={(e)=>{AddImage((e.target.files[0]))}}/>
                         <div className='photo_images'>
                         {
-                            image?.map((item,index)=>{
+                            path?.map((item,index)=>{
                                 return(
                                     <div className='image_container' key={index}>
-                                        <img className='photo_show' src={URL.createObjectURL(item)}></img>
+                                        <img className='photo_show' src={`https://ioi-tech.uz${item}`}></img>
                                         <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
                                     </div>
                                 )

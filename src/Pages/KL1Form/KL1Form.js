@@ -71,7 +71,7 @@ function KL1Form() {
       }
       
       let dataId ={
-          code: Number(id)
+        code: Number(id)
       }
       
       https
@@ -81,6 +81,7 @@ function KL1Form() {
       })
       .catch(err =>{
           if(err?.request?.status === 404){
+            console.log(err);
               return(
                   Error404()
               )

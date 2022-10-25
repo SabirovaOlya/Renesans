@@ -30,7 +30,7 @@ function Table() {
         // malumot
         dataMalumot,
         // 1 Qism
-        familyMem, mulkItem, dataFirstQism,
+        familyMem, mulkItem, dataFirstQism, path,
         // Boshqa
         myDaromads, checkMavsumiy, checkBiznes,
         // Mavsumiy
@@ -79,7 +79,7 @@ function Table() {
             mark_date:dataMalumot.mark_date,
             family:familyMembersCopy,
             property:mulkCopy,
-            paths:[],
+            paths:path,
             conversation_result:dataFirstQism.conversation_result,
             living_condition:dataFirstQism.living_condition,
             credit_impact:dataTable.credit_impact,
@@ -88,38 +88,16 @@ function Table() {
             status:dataTable.status
         }
 
-        let infooo={
-            doc_date: "2022-10-22",
-            client_id: 3,
-            order_id: 12,
-            user_id: 1,
-            paths: [],
-            mark_date: "2022-10-19",
-            family: [
-                "Otasi",
-                "onasi"
-            ],
-            property: [
-                "Damas"
-            ],
-            conversation_result: "suhbat commit",
-            living_condition: "ortacha",
-            credit_impact: "yok",
-            conclusion: "mumkun",
-            credit_history: "kredit yok",
-            status: true
-            
+        if(checkMavsumiy){
+            Object.assign(info,{ monthly_income: monthDaromad, monthly_expense: monthXarajat})
         }
 
-        // if(checkMavsumiy){
-        //     Object.assign(info,{ monthly_income: monthDaromad, monthly_expense: monthXarajat})
-        // }
-
-        console.log(info)
+        // console.log(info)
         
         https
-        .post('/client-marks', infooo)
+        .post('/client-marks', info)
         .then(res =>{
+            console.log(info)
             console.log(res.data)
         })
         .catch(err =>{

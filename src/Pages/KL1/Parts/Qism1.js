@@ -1,8 +1,9 @@
-import React, { useState, useContext,useEffect } from 'react'
+import React, { useState, useContext,useEffect, useRef } from 'react'
 import { Input, Textarea } from '@nextui-org/react'
 import { v4 as uuidv4 } from 'uuid'
 import { Context } from '../../../Context';
-import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
+import axios from 'axios';
+import { AiOutlineDoubleRight, AiOutlineDoubleLeft,AiOutlineDownload,AiFillCloseSquare } from 'react-icons/ai'
 // UseForm
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +11,9 @@ import { useNavigate } from 'react-router-dom';
 function FirstKl1() {
 
     let navigate = useNavigate()
+
+    const { path, setPath } = useContext(Context)
+    const  imageInput = useRef()
 
     // Tab active
     const { activeTab, setActiveTab, familyMem, setFamilyMem, mulkItem, setMulkItem, dataFirstQism, setDataFirstQism } = useContext(Context)
@@ -22,6 +26,33 @@ function FirstKl1() {
     }
     function BackStep(){
         navigate("/kl1/addkl1", { replace: true });
+    }
+
+    // ********** Photo functions ************* //
+    function PhotoOpen(){
+        imageInput.current.click()
+    }
+    function AddImage(photo){
+        let form = new FormData()
+        form.append('image[]',photo)
+
+        axios({
+            method: "post",
+            url: "https://ioi-tech.uz/api/upload-photo",
+            data: form,
+            headers: { Authorization: "Bearer " + window.localStorage.getItem('token'),
+            "Content-Type": "multipart/form-data" },
+        })
+        .then( res =>{
+            setPath(path.concat(res.data.data))
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+    }
+    function ImageDelete(id){
+        let imageItems = path.filter(x => x !== path[id])
+        setPath(imageItems)
     }
     
     // ********___Family___********* //
@@ -253,6 +284,26 @@ function FirstKl1() {
                     setDataFirstQism(newFirstQism)
                 }}
             />
+            <p className='photo_text'>Rasimlar</p>
+            <div className='taminot_photo_add'>
+                <div className='photo_add_buttons'>
+                    <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
+                </div>
+                <input ref={imageInput} type="file" onChange={(e)=>{AddImage((e.target.files[0]))}}/>
+                <div className='photo_images'>
+                {
+                    path?.map((item,index)=>{
+                        return(
+                            <div className='image_container' key={index}>
+                                <img className='photo_show' src={`https://ioi-tech.uz${item}`}></img>
+                                <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
+                            </div>
+                        )
+                    })
+                }
+                </div>
+            </div> 
+
             <div className='step_buttons double_button'>
                 <button type='button' onClick={()=>{BackStep()}} className='previous_button'><AiOutlineDoubleLeft/><p>Oldingi</p></button>
                 <button type='submit' className='step_next'><p>Keyingi</p> <AiOutlineDoubleRight/></button>
