@@ -26,7 +26,7 @@ function Table() {
     }, [])
     // Components
     const { 
-        orderId, infoClient, infoOrder,
+        infoClient, infoOrder,
         // malumot
         dataMalumot,
         // 1 Qism
@@ -34,8 +34,8 @@ function Table() {
         // Boshqa
         myDaromads, checkMavsumiy, checkBiznes,
         // Mavsumiy
-        mavsumiyDaromads, monthDaromad,
-        mavsumiyXarajats, monthXarajat,
+        monthDaromad,
+        monthXarajat,
         // Biznes
         biznesDaromads, biznesXarajats,
         // 6 Qism
@@ -91,14 +91,184 @@ function Table() {
         if(checkMavsumiy){
             Object.assign(info,{ monthly_income: monthDaromad, monthly_expense: monthXarajat})
         }
-
-        // console.log(info)
         
         https
         .post('/client-marks', info)
         .then(res =>{
             console.log(info)
-            console.log(res.data)
+            console.log(res?.data)
+
+            if(res?.data){
+                // 1 Qism
+                let dataBase = {
+                    type: dataFirstQism.type,
+                    address: dataFirstQism.address,
+                    owner: dataFirstQism.owner,
+                    duration: dataFirstQism.duration,
+                    client_mark_id: res?.data?.id
+                }
+
+                https
+                .post('/activities', dataBase)
+                .then(res =>{
+                    console.log(res)
+                })
+                .catch(err =>{
+                    console.log(err)
+                })
+
+                // Boshqa
+                myDaromads?.map(item =>{
+                    let firstItem = {
+                        name: item?.nomi,
+                        volume: item?.hajmi,
+                        unit_price: item?.birlikNarxi,
+                        worth: item?.qiymati,
+                        comment: item?.izoh,
+                        client_mark_id: res?.data?.id
+                    }
+
+                    https
+                    .post('/other-income', firstItem)
+                    .then(res =>{
+                        console.log(res);
+                    })
+                    .catch(err =>{
+                        console.log(err)
+                    })
+                })
+
+                // Biznes
+                if(checkBiznes){
+                    biznesDaromads?.map(item =>{
+                        let biznesPlusItem = {
+                            "name" : item?.name,
+                            "monthly_volume" : item?.volume,
+                            "unit_price" : item?.price,
+                            "average_price" : item?.percent,
+                            "monthly_income" : item?.plus,
+                            "comment" : item?.commit,
+                            "type" : 1,
+                            "client_mark_id": res?.data?.id
+                        }
+                        console.log(biznesPlusItem)
+
+                        https
+                        .post('/business-incomes', biznesPlusItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+    
+                    biznesXarajats?.map(item =>{
+                        let biznesMinusItem = {
+                            "name":item?.name,
+                            "volume" : item?.volume,
+                            "price" : item?.price,
+                            "value" : item?.cost,
+                            "average_monthly_expense" : item?.minus,
+                            "comment" : item?.commit,
+                            "type" : 1,
+                            "client_mark_id": res?.data?.id
+                        }
+                        console.log(biznesMinusItem)
+                        https
+                        .post('/business-expenses', biznesMinusItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+                }
+
+                // 6 Qism
+                if(familyDaromad[0].profit != 0){
+                    familyDaromad.map(item =>{
+                        let familyPlusItem = {
+                            "name": item?.name,
+                            "activity_type": item?.type,
+                            "activity_address": item?.address,
+                            "monthly_income": item?.profit,
+                            "comment": item?.commit,
+                            "client_mark_id": res?.data?.id
+                        }
+                        https
+                        .post('/family-incomes', familyPlusItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+                }
+
+                if(familyXarajat[0].minus != 0){
+                    familyXarajat.map(item =>{
+                        let familyMinusItem = {
+                            "name": item?.name,
+                            "expense": item?.minus,
+                            "comment": item?.commit,
+                            "client_mark_id": res?.data?.id
+                        } 
+                        https
+                        .post('/family-expenses', familyMinusItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+                }
+
+                if(familyMalumot[0].pay != 0){
+                    familyMalumot.map(item =>{
+                        let familyKreditItem = {
+                            "name": item?.name,
+                            "main": item?.rest,
+                            "monthly": item?.pay,
+                            "comment": item?.commit,
+                            "client_mark_id": res?.data?.id
+                        }
+                        https
+                        .post('/family-loans', familyKreditItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+                }
+
+                if(familyMavjud[0].pay != 0){
+                    familyMavjud.map(item =>{
+                        let clientKreditItem = {
+                            "name": item?.name,
+                            "main": item?.rest,
+                            "monthly": item?.pay,
+                            "comment": item?.commit,
+                            "client_mark_id": res?.data?.id
+                        }
+                        https
+                        .post('/loans', clientKreditItem)
+                        .then(res =>{
+                            console.log(res)
+                        })
+                        .catch(err =>{
+                            console.log(err)
+                        })
+                    })
+                }
+
+            }
+
         })
         .catch(err =>{
             console.log(err)

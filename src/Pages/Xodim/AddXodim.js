@@ -35,11 +35,7 @@ function AddXodim() {
             confirmButtonText: 'Ok'
         })
     }
-    // UseNavigate
-    // let navigate = useNavigate()
-    // Warning Modal
-    // const [open, setOpen] = useState(false);
-    // const [warn, setWarn] = useState(false);
+    
 
     // Filial Section
     const [filialOptions, setFilialOptions] = useState([])
@@ -162,7 +158,6 @@ function AddXodim() {
                             setFilial(event)
                         }}
                         />
-                        {/* <input hidden value={filialRole} {...register("branch_id", { required: true })}/> */}
                     </div>
                     <div className='xodim_selectform'>
                         <p>Bo'limi</p>
@@ -187,7 +182,6 @@ function AddXodim() {
                             setSection(event)
                         }}
                         />
-                        {/* <input hidden value={sectionRole} {...register("section_id", { required: true })}/> */}
                     </div>
                     <Input
                         width='100%'

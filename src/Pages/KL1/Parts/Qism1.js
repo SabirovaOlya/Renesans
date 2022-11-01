@@ -44,7 +44,7 @@ function FirstKl1() {
             "Content-Type": "multipart/form-data" },
         })
         .then( res =>{
-            setPath(path.concat(res.data.data))
+            setPath(path.concat(res?.data?.data))
         })
         .catch(err =>{
             console.log(err);
@@ -101,7 +101,6 @@ function FirstKl1() {
         familyMem?.map(item => family.push(item.name))
         mulkItem?.map(item => properties.push(item.name))
         let newData ={...data, family:family, property:properties}
-        console.log(newData)
         setTimeout(()=>{
             NextStep()
         },500)
@@ -295,7 +294,7 @@ function FirstKl1() {
                     path?.map((item,index)=>{
                         return(
                             <div className='image_container' key={index}>
-                                <img className='photo_show' src={`https://ioi-tech.uz${item}`}></img>
+                                <img className='photo_show' src={`https://ioi-tech.uz/${item}`}></img>
                                 <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
                             </div>
                         )
@@ -312,5 +311,4 @@ function FirstKl1() {
     </>
   )
 }
-
 export default FirstKl1

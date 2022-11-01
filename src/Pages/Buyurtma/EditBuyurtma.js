@@ -16,16 +16,10 @@ function EditBuyurtma() {
     const [backOrder, setBackOrder] = useState({})
     const [status, setStatus] = useState("")
     const [checked, setChecked] = useState(Boolean)
-    // Selector
-    const options = [
-        { value: "1", label: 'variant 1' },
-        { value: "2", label: 'variant 2' },
-        { value: "3", label: 'variant 3' },
-        { value: "4", label: 'variant 4' },
-        { value: "5", label: 'variant 5' },
-        { value: "6", label: 'variant 6' }
-    ];
-    const [variant, setVariant] = useState(options[0].value)
+    const [client, setClient] = useState({})
+    const [sectionOptions, setSectionOptions] = useState([])
+
+    // Select Style
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
@@ -56,23 +50,91 @@ function EditBuyurtma() {
         })
     }
 
+    // Select Function
+    async function fetchSection() {
+        const ress = await https.get('/products')
+        let selectSection = []
+        ress?.data?.data?.map((item)=>{
+            selectSection.push(
+                { value: item?.id, label: item?.name }
+            )
+        })
+        setSectionOptions(selectSection)
+    }
+
+    useEffect(() => {
+        fetchSection()
+    }, [])
+    
+
     useEffect(() => {
         https
             .get(`/orders/${id}`)
             .then(res => {
+                setClient(res?.data?.client)
                 const { client, product, ...newRes } = res.data
                 setOrder({ ...newRes, client_id: res.data.client.id, product_id: res.data.product[0]?.id })
                 setBackOrder({ ...newRes, client_id: res.data.client.id, product_id: res.data.product[0]?.id })
                 setStatus(res.data.status)
                 setChecked(res.data.sign_committee)
-                Success()
             })
             .catch(err => {
-                Warn()
+               console.log(err)
             })
     }, []);
 
-    console.log(status)
+    function RadioButton(){
+        if(status){
+            return(
+                <Radio.Group
+                    label=' '
+                    defaultValue={status == 'pending' ? true : false}
+                    onChange={(e) => {
+                        if(e){
+                            let newOrder = {...order}
+                            newOrder.status = 'pending'
+                            setOrder(newOrder)
+                            setStatus('pending')
+                        }else{
+                            let newOrder = {...order}
+                            newOrder.status = 'denied'
+                            setOrder(newOrder)
+                            setStatus('denied')
+                        }
+                    }}
+                    size='sm'
+                    className='kl1_accepting_radio buyurtma_radio'
+                >
+                    <div className='kl1_accept'><Radio color='success' className='radio_end' value={true}>Tasdiqlash</Radio></div>
+                    <div className='kl1_accept'><Radio color='error' className='radio_end' value={false}>Rad etish</Radio></div>
+                </Radio.Group>
+            )
+        }else{
+            return(<></>)
+        }
+    }
+
+    function CheckboxFun(){
+        if(status){
+            return(
+                <Checkbox
+                    value="Kredit Qo'mitasi qorariga asosan"
+                    size='sm'
+                    defaultSelected={checked}
+                    className='filial_input'
+                    color="secondary"
+                    onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.sign_committee = e
+                            setOrder(newOrder)
+                            setChecked(e)
+                        }}
+                    >
+                        Kredit Qo'mitasi qorariga asosan
+                    </Checkbox>
+            )
+        }
+    }
 
     // Edit
     function Edit() {
@@ -85,6 +147,7 @@ function EditBuyurtma() {
             })
             .catch(err => {
                 console.log(err);
+                Warn()
             })
     }
 
@@ -93,7 +156,6 @@ function EditBuyurtma() {
         setOrder(backOrder)
     }
     function putTextArea() {
-
         if (status === "denied") {
             return (
                 <div className='buyurtma_textarea'>
@@ -105,6 +167,7 @@ function EditBuyurtma() {
                         color="secondary"
                         className='kl1_input'
                         placeholder='Rad Etilgan Sabab'
+                        value={(order?.reason).join(' ')}
                         label='Sabab'       
                         onChange={(e) => {
                             let newOrder = { ...order }
@@ -126,7 +189,12 @@ function EditBuyurtma() {
                 </Link>
             </div>
             <div className='FilialEditTable single_buyurtma'>
-                <h1 className='text_center filial_edit_text'>{order?.client?.name}</h1>
+                <h1 className='text_center filial_edit_text'>{client?.name}</h1>
+                <div className='shart-check margin_top_20'>
+                    {
+                        CheckboxFun()
+                    }
+                </div>
                 <Input
                     width='100%'
                     bordered
@@ -169,32 +237,12 @@ function EditBuyurtma() {
                         setOrder(newOrder)
                     }}
                 />
-                <div className='shart-check'>
-                    <Checkbox
-                        value="Kredit Qo'mitasi qorariga asosan"
-                        size='sm'
-                        checked={checked}
-                        defaultChecked={checked}
-                        defaultValue={checked}
-                        color="secondary"
-                        onChange={(e) => {
-                            let newOrder = { ...order }
-                            newOrder.sign_committee = e
-                            setOrder(newOrder)
-                            setChecked(e)
-                        }}
-                    >
-                        Kredit Qo'mitasi qorariga asosan
-                    </Checkbox>
-                </div>
                 <div className='shart-select'>
                     <p>Mahsulot</p>
                     <Select
-                        // value={selectedOption}
-                        defaultValue={options[order?.product_id]}
-                        value={options[order?.product_id]}
-                        // styles={customStyles}
-                        options={options}
+                        defaultValue={sectionOptions.find(x => x.value == order.product_id)}
+                        value={sectionOptions.find(x => x.value == order.product_id)}
+                        options={sectionOptions}
                         className='buyurtma_select_new'
                         styles={customStyles}
                         theme={(theme) => ({
@@ -241,22 +289,9 @@ function EditBuyurtma() {
                         setOrder(newOrder)
                     }}
                 />
-                <Radio.Group
-                    label=' '
-                    defaultValue={status}
-                    value={status}
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.status = e
-                        setOrder(newOrder)
-                        setStatus(e)
-                    }}
-                    size='sm'
-                    className='kl1_accepting_radio buyurtma_radio'
-                >
-                    <div className='kl1_accept'><Radio color='success' className='radio_end' value={"accepted"}>Tasdiqlash</Radio></div>
-                    <div className='kl1_accept'><Radio color='error' className='radio_end' value={"denied"}>Rad etish</Radio></div>
-                </Radio.Group>
+                {
+                    RadioButton()
+                }
                 {
                     putTextArea()
                 }

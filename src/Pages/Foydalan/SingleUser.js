@@ -11,9 +11,10 @@ function SingleUser() {
     // Get user Data
     useEffect(() => {
         https
-            .get(`/user/${id}`)
+            .get(`/users/${id}`)
             .then(res => {
-                setUser(res.data.data)
+                setUser(res?.data)
+                console.log(res?.data);
             })
             .catch(err => {
                 console.log(err);
@@ -37,7 +38,7 @@ function SingleUser() {
                         </div>
                         <div className='single_buyurtma_inputs'>
                             <p>Role:</p>
-                            <p>{user?.role?.name}</p>
+                            <p>{user?.name}</p>
                         </div>
                     </div>
                 </div>

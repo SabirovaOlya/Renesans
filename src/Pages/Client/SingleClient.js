@@ -89,9 +89,9 @@ function SingleClient() {
                             <p>Ish:</p>
                             <p>{client?.job}</p>
                         </div>
-                        <div className='single_group margin_top_30'>
+                        {/* <div className='single_group margin_top_30'>
                             <p className='text_single_group'>Guruh: <span className='first_elem'><Link to={`${client?.group?.id ? `/client/single_group/${client?.group?.id}` : `/client/singleClient/${id}`}`}>{client?.group?.name ? client?.group?.name : 'yoq' }</Link></span></p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

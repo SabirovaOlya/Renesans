@@ -21,11 +21,21 @@ function SingleBuyurtnama() {
             })
     }, [])
     function returnStatus(status){
-        if(status === "accepted"){
-            return(<div className='kl1_accept'><Radio color='success' className='radio_end' value={"accepted"}>Tasdiqlangan</Radio></div>)
-        }else{
+        if(status){
             return(
-                <div className='kl1_accept'><Radio color='error' className='radio_end' value={"denied"}>Rad Etilgan</Radio></div>)
+                <Radio.Group
+                    label=' '
+                    value={status == 'pending' ? true : false}
+                    size='sm'
+                    orientation='vertical'
+                    className='kl1_accepting_radio buyurtma_radio'
+                >
+                    <div className='kl1_accept'><Radio color='success' className='radio_end' value={true}>Tasdiqlash</Radio></div>
+                    <div className='kl1_accept margin_left'><Radio color='error' className='radio_end' value={false}>Rad etish</Radio></div>
+                </Radio.Group>
+            )
+        }else{
+            return(<></>)
         }
     }
     function returnReason(data){
@@ -47,6 +57,28 @@ function SingleBuyurtnama() {
             )
         }
     }
+
+    function CheckboxFun(){
+        if(order){
+            return(
+                <div className='shart-check'>
+                    <Checkbox
+                        value="Kredit Qo'mitasi qorariga asosan"
+                        size='sm'
+                        className='margin_bottom'
+                        color="secondary"
+                        isReadOnly
+                        isSelected={order?.sign_committee}
+                    >
+                        Kredit Qo'mitasi qorariga asosan
+                    </Checkbox>
+                </div>
+            )
+        }else{
+            return(<></>)
+        }
+    }
+
     return (
         <>
             <div className='buyurtma_topPart'>
@@ -75,6 +107,9 @@ function SingleBuyurtnama() {
             <section className='single_buyurtma'>
                 <div className='single_buyurtma_info'>
                     <p className='single_buyurtma_title'>{order?.client?.name}</p>
+                    {
+                        CheckboxFun()
+                    }
                     <div className='single_buyurtma_inputs'>
                         <p>Code:</p>
                         <p>{order?.code}</p>
@@ -86,18 +121,6 @@ function SingleBuyurtnama() {
                     <div className='single_buyurtma_inputs'>
                         <p>So'ralayotgan qarz miqdor:</p>
                         <p>{order?.sum?.toLocaleString()} som</p>
-                    </div>
-                    <div className='shart-check'>
-                        <Checkbox
-                            value="Kredit Qo'mitasi qorariga asosan"
-                            size='sm'
-                            className='margin_bottom'
-                            color="secondary"
-                            isReadOnly
-                            defaultChecked={order?.sign_committee}
-                        >
-                            Kredit Qo'mitasi qorariga asosan
-                        </Checkbox>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>So'ralayotgan muddat:</p>

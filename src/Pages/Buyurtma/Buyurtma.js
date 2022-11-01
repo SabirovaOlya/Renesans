@@ -3,25 +3,37 @@ import { Link, useNavigate } from 'react-router-dom'
 // Components
 import { Input } from '@nextui-org/react'
 import { Tabs } from 'antd';
+// Alert
+import Swal from 'sweetalert2'
 // Api
 import https from '../../assets/https';
 // Styles
 import './Buyurtma.css'
 
 function Buyurtma() {
+
+    // Alert
+    function Warn() {
+        Swal.fire({
+            title: "Parolni kiriting",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function Error404() {
+        Swal.fire({
+            title: "Bunday buyurtma yo'q",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     
-    const onChange = (key) => {
-        
-    };
+    const onChange = (key) => {};
     const { TabPane } = Tabs;
     // Modalka
     const [modalka, setModalka] = useState('shartnoma_modal close');
     const [modalCode, setModalCode] = useState('');
-    let navigate = useNavigate();
-    function navigateAdd() {
-        navigate("/buyurtma/form", { replace: true })
-    }
-
+    let navigate = useNavigate()
 
     // Buyurtma
     const [urls, setUrls] = useState([
@@ -46,13 +58,40 @@ function Buyurtma() {
     }
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label.split('')[0] === 'N') {
+        if (label === 'pagination.next') {
             return '>'
-        } else if (label.split('')[0] === '&') {
+        } else if (label === 'pagination.previous') {
             return '<'
         } else {
             return label
         }
+    }
+
+    // Navigation Function
+    function navigateAdd(id) {
+        if(!id){
+            return Warn()
+        }
+        
+        let dataId ={
+          code: Number(id)
+        }
+        
+        https
+        .post('/check/client/code', dataId)
+        .then(res =>{
+            navigate("/buyurtma/form", {state:{id:res?.data?.client_id}})
+        })
+        .catch(err =>{
+            if(err?.request?.status === 404){
+              console.log(err);
+                return(
+                    Error404()
+                )
+            }else{
+                console.log(err);
+            }
+        })
     }
 
     useEffect(() => {
@@ -64,8 +103,10 @@ function Buyurtma() {
             return "tasdiqlangan"
         } else if (data === "denied") {
             return "rad etilgan"
+        }else if(data === 'pending'){
+            return "kutilmoqda"
         }else{
-            return "unknown"
+            return 'unknown'
         }
         
     }
@@ -115,7 +156,7 @@ function Buyurtma() {
                 ></Input>
                 <div>
                     <button
-                        onClick={navigateAdd}
+                        onClick={() =>{navigateAdd(modalCode)}}
                         className='shartnoma_modal_button'>Qo'shish</button>
                     <button onClick={() => setModalka('shartnoma_modal close')} className='shartnoma_modal_button'>Orqaga</button>
                 </div>

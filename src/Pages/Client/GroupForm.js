@@ -5,6 +5,7 @@ import { Input, Radio } from '@nextui-org/react';
 import { BiTrash } from 'react-icons/bi'
 import { AiOutlineUsergroupAdd, AiOutlineClear, AiOutlineRollback, AiOutlineUser } from 'react-icons/ai';
 import Select from 'react-select';
+import { render } from 'react-dom';
 import { v4 as uuidv4 } from 'uuid';
 // Components
 import Swal from 'sweetalert2';
@@ -18,7 +19,7 @@ import https from '../../assets/https';
     const [variant, setVariant] = useState()
     const [groups, setGroups] = useState([])
     const [groupId, setGroupId] = useState([])
-    const [ selector, setSelector] = useState('variant 1')
+    const [num, setNum] = useState(0);
     // Input States to put in Data
     const { TabPane } = Tabs;
     // Alerts Add
@@ -37,7 +38,29 @@ import https from '../../assets/https';
             confirmButtonText: 'Ok'
         })
     }
+    function Success() {
+      Swal.fire({
+          title: "Guruh qoshildi",
+          icon: 'success',
+          confirmButtonText: 'Ok'
+      })
+    }
 
+     // Section
+  const [sectionOptions, setSectionOptions] = useState([
+    { value: '1', label: "O'zR fuqarosining ID kartasi" },
+    { value: '2', label: "O'zR Fuqarosining pasporti" },
+    { value: '3', label: "Harbiy xizmatchi guvohnomasi" },
+    { value: '4', label: "Xizmat guvohnomasi" },
+    { value: '5', label: "Xorijiy fuqaro pasporti" },
+    { value: '6', label: "Yashash guvohnomasi" },
+    { value: '7', label: "O'zR Fuqarosining biometrik pasporti" },
+    { value: '8', label: "Tug'ulganlik haqidagi guvohnoma" },
+    { value: '9', label: "O'zR fuqarosining yangi namunadagi haydovchilik guvohnomasi" },
+    { value: '10', label: "Boshqa" }
+  ])
+  const [section, setSection] = useState(sectionOptions[0])
+  const [sectionRole, setSectionRole] = useState(sectionOptions[0].label)
 
     useEffect(() => {
       setGroups([
@@ -53,7 +76,7 @@ import https from '../../assets/https';
           nationality: '',
           pinfl: '',
           phone: '',
-          doc_type: 'variant 1',
+          doc_type: sectionOptions[0],
           serial_num: '',
           issued_by: '',
           issued_date: '',
@@ -71,7 +94,7 @@ import https from '../../assets/https';
           nationality: '',
           pinfl: '',
           phone: '',
-          doc_type: 'variant 1',
+          doc_type: sectionOptions[0],
           serial_num: '',
           issued_by: '',
           issued_date: '',
@@ -89,7 +112,7 @@ import https from '../../assets/https';
           nationality: '',
           pinfl: '',
           phone: '',
-          doc_type: 'variant 1',
+          doc_type: sectionOptions[0],
           serial_num: '',
           issued_by:'',
           issued_date: '',
@@ -114,7 +137,7 @@ import https from '../../assets/https';
         nationality: '',
         pinfl: '',
         phone: '',
-        doc_type: 'variant 1',
+        doc_type: sectionOptions[0],
         serial_num: '',
         issued_by: '',
         issued_date: '',
@@ -132,15 +155,7 @@ import https from '../../assets/https';
     }
   }
 
-  // Selector
-  const options = [
-    { value: '1', label: 'variant 1' },
-    { value: '2', label: 'variant 2' },
-    { value: '3', label: 'variant 3' },
-    { value: '4', label: 'variant 4' },
-    { value: '5', label: 'variant 5' },
-    { value: '6', label: 'variant 6' }
-  ];
+  // Selector Style
   const customStyles = {
       option: (provided, state) => ({
           ...provided,
@@ -180,21 +195,24 @@ import https from '../../assets/https';
       })
       newvalue.push(nameGroup)
       let mainObj = (newvalue.join()).split(',');
-      
 
       if(!mainObj.some(even)){
+
         let data = {
           group_name: nameGroup,
-          code:123,
+          code:Math.floor(Math.random() * (10000 - 1 + 1)) + 10000,
           client: groups
         }
         https
         .post('/clients', data)
         .then(res=>{
-          Addition()
+          console.log(data)
+          // Addition()
+          Success()
         })
         .catch(err =>{
-          console.log(err);
+          console.log(err)
+          console.log(data)
         })
       }else{
         Empty()
@@ -248,6 +266,7 @@ import https from '../../assets/https';
                 placeholder='1234'
                 className='vall'
                 bordered
+                type='number'
                 color="secondary"
                 value={groups.find(x => x.id === item.id).code}
                 onChange={e => {
@@ -376,6 +395,7 @@ import https from '../../assets/https';
                 bordered
                 className='vall'
                 placeholder='12345678901234'
+                type='number'
                 color="secondary"
                 value={groups.find(x => x.id === item.id).pinfl}
                 onChange={e => {
@@ -403,11 +423,11 @@ import https from '../../assets/https';
                 }}
               />
               <div className='clientForm_selector'>
-                <p>Sektor</p>
+                <p>Shaxsini tasdiqlovchi hujjat</p>
                 <Select
-                    // value={selectedOption}
-                    defaultValue={options[0]}
-                    options={options}
+                    defaultValue={sectionOptions.find(x => x === item.doc_type)}
+                    value={sectionOptions.find(x => x === item.doc_type)}
+                    options={sectionOptions}
                     className='buyurtma_select_new'
                     styles={customStyles}
                     theme={(theme) => ({
@@ -421,8 +441,10 @@ import https from '../../assets/https';
                     })}
                     onChange={(e)=>{
                       let newGroupInfo = [...groups]
-                    newGroupInfo[index].doc_type = e.label
-                    setGroups(newGroupInfo)
+                      newGroupInfo[index].doc_type = e.label
+                      setGroups(newGroupInfo)
+                      setSectionRole(e.label)
+                      setSection(e)
                     }}
                 />
               </div>

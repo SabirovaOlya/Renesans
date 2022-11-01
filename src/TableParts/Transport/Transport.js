@@ -240,7 +240,7 @@ function Transport({orderId}) {
         Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
         Object.assign(info, {percent: (giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)})
 
-        if((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1) <= 100){
+        if((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1) <= 80){
             
             let postInfo = JSON.parse(JSON.stringify(info))
             if(possessor === "client"){
@@ -540,7 +540,7 @@ function Transport({orderId}) {
                         bordered 
                         value={(giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)}
                         status={
-                            ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 100 ? 'error' : ''
+                            ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 80 ? 'error' : ''
                         }
                         readOnly
                     >
@@ -560,7 +560,8 @@ function Transport({orderId}) {
                         }}
                     >
                     </Input> 
-                    <p className='photo_text'>Rasimlar</p>
+
+                    {/* <p className='photo_text'>Rasimlar</p>
                     <div className='taminot_photo_add'>
                         <div className='photo_add_buttons'>
                             <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
@@ -578,7 +579,8 @@ function Transport({orderId}) {
                             })
                         }
                         </div>
-                    </div> 
+                    </div>  */}
+
                 </div>
                 
                 {/* Owner */}

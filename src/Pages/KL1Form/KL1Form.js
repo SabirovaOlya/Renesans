@@ -52,9 +52,9 @@ function KL1Form() {
   }
 
   function Label(a){
-    if(a == '&laquo; Previous'){
+    if(a == 'pagination.previous'){
       return '<'
-    }else if(a == 'Next &raquo;'){
+    }else if(a == 'pagination.next'){
       return '>'
     }else{
       return a

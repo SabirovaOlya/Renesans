@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 // Styles
@@ -25,15 +25,39 @@ function CLientForm() {
     formState: { errors, isValid }
   } = useForm();
 
-  const onSubmit = (data) => {
-    https
-    .post('/clients', data)
-    .then(res => {
-      Success()
-      console.log(data);
-    })
-    .catch(err => Warn())
-  }
+  // Section
+  const [sectionOptions, setSectionOptions] = useState([
+    { value: '1', label: "O'zR fuqarosining ID kartasi" },
+    { value: '2', label: "O'zR Fuqarosining pasporti" },
+    { value: '3', label: "Harbiy xizmatchi guvohnomasi" },
+    { value: '4', label: "Xizmat guvohnomasi" },
+    { value: '5', label: "Xorijiy fuqaro pasporti" },
+    { value: '6', label: "Yashash guvohnomasi" },
+    { value: '7', label: "O'zR Fuqarosining biometrik pasporti" },
+    { value: '8', label: "Tug'ulganlik haqidagi guvohnoma" },
+    { value: '9', label: "O'zR fuqarosining yangi namunadagi haydovchilik guvohnomasi" },
+    { value: '10', label: "Boshqa" }
+  ])
+  const [section, setSection] = useState(sectionOptions[0])
+  const [sectionRole, setSectionRole] = useState(sectionOptions[0].label)
+
+  // async function fetchSection() {
+  //   const ress = await https.get('/all/sections')
+  //   let selectSection = []
+  //   ress?.data?.data?.map((item)=>{
+  //       selectSection.push(
+  //           { value: item?.id, label: item?.name }
+  //       )
+  //   })
+  //   setSectionOptions(selectSection)
+  //   setSection(selectSection[0])
+  //   setSectionRole(selectSection[0].label)
+  // }
+
+  // useEffect(() => {
+  //   fetchSection()
+  // },[]);
+
   // Multi DatePicker Configure
 
   const data = ['06/22/2022', '06/23/2022', '06/24/2022', '06/25/2022']
@@ -64,26 +88,16 @@ function CLientForm() {
         icon: 'success',
         confirmButtonText: 'Ok'
     })
-}
-function Warn() {
-    Swal.fire({
-        title: "Error",
-        icon: 'error',
-        confirmButtonText: 'Ok'
-    })
-}
+  }
+  function Warn() {
+      Swal.fire({
+          title: "Error",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+      })
+  }
 
-
-  // Selector
-  const options = [
-    { value: '1', label: 'variant 1' },
-    { value: '2', label: 'variant 2' },
-    { value: '3', label: 'variant 3' },
-    { value: '4', label: 'variant 4' },
-    { value: '5', label: 'variant 5' },
-    { value: '6', label: 'variant 6' }
-  ];
-  const [variant, setVariant] = useState(options[0].label)
+  // Select Style
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -96,6 +110,21 @@ function Warn() {
 
       return { ...provided, opacity, transition };
     }
+  }
+
+  const onSubmit = (data) => {
+    let info = {...data, doc_type: sectionRole}
+    https
+    .post('/clients', info)
+    .then(res => {
+      Success()
+      console.log(info);
+    })
+    .catch(err => {
+      console.log(err)
+      console.log(info)
+      Warn()
+    })
   }
 
   return (
@@ -131,6 +160,7 @@ function Warn() {
             color="secondary"
             minLength={1}
             maxLength={10}
+            type='number'
             {...register("code", { required: true })}
           />
           <Input
@@ -218,6 +248,7 @@ function Warn() {
             placeholder='12345678901234'
             color="secondary"
             required
+            type='number'
             {...register("pinfl", { required: true })}
           />
           <Input
@@ -235,11 +266,11 @@ function Warn() {
             {...register("phone", { required: true })}
           />
           <div className='clientForm_selector'>
-            <p>Sektor</p>
+            <p>Shaxsini tasdiqlovchi hujjat</p>
             <Select
-              // value={selectedOption}
-              defaultValue={options[0]}
-              options={options}
+              defaultValue={section}
+              value={section}
+              options={sectionOptions}
               className='buyurtma_select_new'
               styles={customStyles}
               theme={(theme) => ({
@@ -251,9 +282,11 @@ function Warn() {
                   primary: '#7828c8',
                 },
               })}
-              onChange={(event) => setVariant(event.label)}
+              onChange={(event) => {
+                setSectionRole(event.label)
+                setSection(event)
+              }}
             />
-            <input hidden value={variant} {...register("doc_type", { required: true })}/>
           </div>
           <Input
             width='100%'

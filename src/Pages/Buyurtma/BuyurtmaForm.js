@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input, Checkbox, Radio, Textarea } from '@nextui-org/react'
 import { AiOutlineRollback } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineFileAdd, AiOutlineClear } from 'react-icons/ai';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
@@ -21,6 +21,42 @@ function BuyurtmaForm() {
     const [permission, setPermission] = useState(false)
     const [status, setStatus] = useState("accepted")
     const [reason, setReason] = useState([])
+    const [clientInfo, setClientInfo] = useState({})
+
+    const location = useLocation()
+    const clientId = location?.state?.id
+
+    useEffect(() => {
+        https
+        .get(`/clients/${clientId}`)
+        .then(res =>{
+            setClientInfo(res?.data)
+        })
+    }, [])
+
+    // Filial Section
+    const [sectionOptions, setSectionOptions] = useState([])
+    const [section, setSection] = useState()
+    const [sectionRole, setSectionRole] = useState()
+
+    async function fetchSection() {
+        const ress = await https.get('/products')
+        let selectSection = []
+        ress?.data?.data?.map((item)=>{
+            selectSection.push(
+                { value: item?.id, label: item?.name }
+            )
+        })
+        setSectionOptions(selectSection)
+        setSection(selectSection[0])
+        setSectionRole(selectSection[0].value)
+    }
+
+    useEffect(()=>{
+        fetchSection()
+    },[])
+
+
     // Sending Data to API
     const { register,
         handleSubmit,
@@ -42,26 +78,6 @@ function BuyurtmaForm() {
             confirmButtonText: 'Ok'
         })
     }
-    const onSubmit = (data) => {
-        if (status === "accepted") {
-            submitData({ ...data, product_id: variant, sign_committee: permission, status: status })
-        } else {
-            submitData({ ...data, product_id: variant, sign_committee: permission, status: status, reason: reason })
-        }
-        function submitData(newData){
-            https
-            .post('orders', newData)
-            .then(res => Success())
-            .catch(err => Warn())
-        }
-    }
-    // const [ money, setMoney ] = useState(0);
-
-    // Number Spacing
-    // function NumberSpace(value){
-    //     return value.toLocaleString()
-    //     console.log(value)
-    // }
 
     const [resetWarning, setResetWarning] = useState('warning_reset_main close')
 
@@ -119,6 +135,27 @@ function BuyurtmaForm() {
         }
     }
 
+    const onSubmit = (data) => {
+        if (status === "accepted") {
+            submitData({ ...data, product_id: sectionRole, sign_committee: permission, status: status })
+        } else {
+            submitData({ ...data, product_id: sectionRole, sign_committee: permission, status: status, reason: reason })
+        }
+        function submitData(newData){
+            https
+            .post('orders', newData)
+            .then(res => {
+                console.log(newData)
+                Success()
+            })
+            .catch(err => {
+                Warn()
+                console.log(err)
+                console.log(newData);
+            })
+        }
+    }
+
 
     return (
         <>
@@ -142,16 +179,19 @@ function BuyurtmaForm() {
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'
-                            label="Client Nomer"
+                            label="Klient id"
                             bordered
                             color="secondary"
                             type='number'
+                            value={clientInfo?.id}
+                            readOnly
                             {...register("client_id", { required: true })}
                         />
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'
-                            label="Code"
+                            label="Buyurtma kod"
+                            placeholder='1234'
                             bordered
                             color="secondary"
                             type='number'
@@ -176,18 +216,7 @@ function BuyurtmaForm() {
                             bordered
                             color="secondary"
                             {...register("sum", { required: true })}
-                        // value={money}
-                        // onInput={(event)=>setMoney(event.target.value.replace(/(?:(^\d{1,3})(?=(?:\d{3})*$)|(\d{3}))(?!$)/mg, '$1$2.'))}
                         />
-                        {/* <Input
-                        className='buyurtma_form_inputs'
-                        width='100%'
-                        clearable
-                        label="Qarz miqdori, yozuvda"
-                        placeholder="Yigirma million som 00 tiyin"
-                        bordered
-                        color="secondary"
-                    /> */}
                         <div className='shart-check'>
                             <Checkbox
                                 value="Kredit Qo'mitasi qorariga asosan"
@@ -206,15 +235,15 @@ function BuyurtmaForm() {
                             placeholder="4 oy"
                             bordered
                             color="secondary"
+                            type='number'
                             {...register("time", { required: true })}
                         />
                         <div className='shart-select'>
                             <p>Mahsulot</p>
                             <Select
-                                // value={selectedOption}
-                                defaultValue={options[0]}
-                                // styles={customStyles}
-                                options={options}
+                                value={section}
+                                defaultValue={section}
+                                options={sectionOptions}
                                 className='buyurtma_select_new'
                                 styles={customStyles}
                                 theme={(theme) => ({
@@ -226,10 +255,12 @@ function BuyurtmaForm() {
                                         primary: '#7828c8',
                                     },
                                 })}
-                                onChange={(event) => setVariant(event.value)}
+                                onChange={(event) => {
+                                    setSection(event)
+                                    setSectionRole(event.value)
+                                }}
                             />
                         </div>
-                        <input hidden value={variant} {...register("variant", { required: true })} />
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'

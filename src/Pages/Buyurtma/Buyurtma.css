@@ -287,7 +287,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
-.buyurtma_form_main_forma .shart-select p{
+.shart-select p{
     font-size: 14px;
     margin-bottom: 7px;
     color: #7828c8;
@@ -328,6 +328,9 @@
 }
 .buyurtma_form_main_forma .back-back{
     margin-bottom: 20px;
+}
+.margin_left{
+    margin-left: 20px;
 }
 
 

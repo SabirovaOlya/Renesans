@@ -30,17 +30,18 @@ function Shartnama() {
         https
             .get(`/${newUrl}`)
             .then(res => {
-                setPaginations(res.data.meta.links)
-                setShartnamalar(res.data.data)
+                setPaginations(res?.data?.meta?.links)
+                setShartnamalar(res?.data?.data)
                 // setLoading(false)
+                // console.log(res?.data);
             })
     }
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label.split('')[0] === 'N') {
+        if (label === 'pagination.next') {
             return '>'
-        } else if (label.split('')[0] === '&') {
+        } else if (label === 'pagination.previous') {
             return '<'
         } else {
             return label

@@ -47,8 +47,11 @@ function EditMahsulot() {
     },[])
 
     function Edit(){
+        let data = JSON.parse(JSON.stringify(product))
+        delete data.id
+        console.log(data);
         https
-        .put(`/products/${id}`,product)
+        .put(`/products/${id}`,data)
         .then(res =>{
             if(res.request.status === 200){
                 Success()

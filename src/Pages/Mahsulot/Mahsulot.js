@@ -117,9 +117,9 @@ function Mahsulot() {
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label.split('')[0] === 'N') {
+        if (label === 'pagination.next') {
             return '>'
-        } else if (label.split('')[0] === '&') {
+        } else if (label === 'pagination.previous') {
             return '<'
         } else {
             return label
