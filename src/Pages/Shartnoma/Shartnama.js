@@ -1,22 +1,65 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import https from '../../assets/https';
 // Components
 import { Input } from '@nextui-org/react'
+import Swal from 'sweetalert2';
 // Styles
 import './Shartnama.css'
 import '../../assets/pagination.css'
 
-// API
-import https from '../../assets/https';
-
 function Shartnama() {
 
+    // Alerts
+    function Warn() {
+        Swal.fire({
+            title: "Parolni kiriting",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function SuccessDelete() {
+        Swal.fire({
+            title: "Shartnoma o'chirildi",
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function Error404() {
+        Swal.fire({
+            title: "Bunday buyurtma yo'q",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     // Modalka
     const [modalka, setModalka] = useState('shartnoma_modal close');
     const [modalCode, setModalCode] = useState('');
     let navigate = useNavigate();
-    function navigateAdd() {
-        navigate("/shartnama/addshartnama", { replace: true })
+    function navigateAdd(id) {
+        if(!id){
+            return Warn()
+        }
+        
+        let dataId ={
+            code: Number(id)
+        }
+        
+        https
+        .post('/check/order/code', dataId)
+        .then(res =>{
+            navigate("/shartnama/addshartnama", {state:{id:res?.data?.data?.order?.id}})
+            console.log(res.data.data.order.id);
+        })
+        .catch(err =>{
+            if(err?.request?.status === 404){
+                return(
+                    Error404()
+                )
+            }else{
+                console.log(err);
+            }
+        })
     }
 
     const [shartnamalar, setShartnamalar] = useState([]);
@@ -58,11 +101,12 @@ function Shartnama() {
     // Delete Shartnama
     function deleteShartnama(shartnamaIndex) {
         https
-            .delete(`/contracts/${shartnamaIndex}`)
-            .then(res => {
-                setShartnamalar(shartnamalar.filter((contract, contractIndex) => contract.id !== shartnamaIndex))
-            })
-            .catch(err => console.log(err))
+        .delete(`/contracts/${shartnamaIndex}`)
+        .then(res => {
+            setShartnamalar(shartnamalar.filter((contract, contractIndex) => contract.id !== shartnamaIndex))
+            SuccessDelete()
+        })
+        .catch(err => console.log(err))
     }
 
     return (
@@ -81,7 +125,7 @@ function Shartnama() {
                 ></Input>
                 <div>
                     <button
-                        onClick={navigateAdd}
+                        onClick={()=>{navigateAdd(modalCode)}}
                         className='shartnoma_modal_button'>Qo'shish</button>
                     <button onClick={() => setModalka('shartnoma_modal close')} className='shartnoma_modal_button'>Orqaga</button>
                 </div>

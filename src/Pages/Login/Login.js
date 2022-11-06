@@ -40,9 +40,10 @@ function Login() {
     }
 
     async function onSubmit(data) {
+        console.log(data);
         await https
             .get('/sanctum/csrf-cookie')
-            .then(response => {
+            .then(res=> {
                 https
                     .post('/login', data)
                     .then(res => {

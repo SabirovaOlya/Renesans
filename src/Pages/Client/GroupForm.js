@@ -203,6 +203,11 @@ import https from '../../assets/https';
           code:Math.floor(Math.random() * (10000 - 1 + 1)) + 10000,
           client: groups
         }
+        data.client?.map(item =>{
+          if(item.doc_type.label){
+            item.doc_type = item.doc_type.label
+          }
+        })
         https
         .post('/clients', data)
         .then(res=>{

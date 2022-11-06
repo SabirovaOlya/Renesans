@@ -113,7 +113,7 @@ function CLientForm() {
   }
 
   const onSubmit = (data) => {
-    let info = {...data, doc_type: sectionRole}
+    let info = {...data, doc_type: sectionRole.label}
     https
     .post('/clients', info)
     .then(res => {

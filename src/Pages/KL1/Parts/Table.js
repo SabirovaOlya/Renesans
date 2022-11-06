@@ -18,6 +18,13 @@ function Table() {
             confirmButtonText: 'Ok'
         })
     }
+    function Error() {
+        Swal.fire({
+            title: "Error",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
     const { dataTable, setDataTable } = useContext(Context)
@@ -115,6 +122,9 @@ function Table() {
                 })
                 .catch(err =>{
                     console.log(err)
+                    return(
+                        Error()
+                    )
                 })
 
                 // Boshqa
@@ -135,6 +145,9 @@ function Table() {
                     })
                     .catch(err =>{
                         console.log(err)
+                        return(
+                            Error()
+                        )
                     })
                 })
 
@@ -160,6 +173,9 @@ function Table() {
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
     
@@ -182,6 +198,9 @@ function Table() {
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
                 }
@@ -204,6 +223,9 @@ function Table() {
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
                 }
@@ -223,6 +245,9 @@ function Table() {
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
                 }
@@ -243,6 +268,9 @@ function Table() {
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
                 }
@@ -260,9 +288,15 @@ function Table() {
                         .post('/loans', clientKreditItem)
                         .then(res =>{
                             console.log(res)
+                            setTimeout(()=>{
+                                Success()
+                            },300)
                         })
                         .catch(err =>{
                             console.log(err)
+                            return(
+                                Error()
+                            )
                         })
                     })
                 }
@@ -272,6 +306,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
+            return(
+                Error()
+            )
         })
 
     }

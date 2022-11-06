@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import https from '../../assets/https';
 import { AiOutlineRollback } from 'react-icons/ai'
-
 
 
 function SingleShartnama() {

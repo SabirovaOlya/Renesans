@@ -34,6 +34,13 @@ function AddFoydalan() {
             confirmButtonText: 'Ok'
         })
     }
+    function Error() {
+        Swal.fire({
+            title: "Error",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     // UseForm
     const { register,
         handleSubmit,
@@ -49,11 +56,14 @@ function AddFoydalan() {
                 .post('/register', { ...data, role: role })
                 .then(res => {
                     Success()
+                    
                 })
                 .catch(err => {
                     if(err.response.status === 422){
-                        AlredyTaken()
+                        return(AlredyTaken())
                     }
+                    console.log({ ...data, role: role });
+                    Error()
                 })
         }
     }
@@ -88,12 +98,6 @@ function AddFoydalan() {
         setResetWarning('warning_reset_main close')
     }
 
-    // Sending Array
-    // let newResult = []
-    // function sendArray(event){
-    // newResult = [...new Set(newResult.concat( JSON.parse(JSON.stringify(event)).forEach(array => {newResult.push(array.label)})))]
-    // console.log(newResult)
-    // }
     return (
         <>
             {/* Reset Warning */}
@@ -177,13 +181,13 @@ function AddFoydalan() {
                         />
                     </div>
                     <div className='filial_buttons'>
+                        <button type='button' className='client_submit reset' onClick={openReset}>
+                            Formani tiklash
+                            <AiOutlineClear />
+                        </button>
                         <button type='submit' className='client_submit submit'>
                             Foydalanuvchini qo'shish
                             <AiOutlineUserAdd />
-                        </button>
-                        <button className='client_submit reset' onClick={openReset}>
-                            Formani tiklash
-                            <AiOutlineClear />
                         </button>
                     </div>
                 </form>

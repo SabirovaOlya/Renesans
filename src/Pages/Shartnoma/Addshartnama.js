@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineUserAdd, AiOutlineClear, AiOutlineRollback } from 'react-icons/ai'
 import { useForm } from "react-hook-form";
 import './Addshartnama.css'
@@ -10,6 +10,9 @@ import https from '../../assets/https';
 
 function Addshartnama() {
     const [ newData, setNewData ] = useState({})
+    const location = useLocation()
+    const orderId = location?.state?.id
+
     // Alert
     function Success() {
         Swal.fire({
@@ -36,9 +39,9 @@ function Addshartnama() {
 
     function checkingData(info){
         if(cash === "card"){
-            return ({...info, ...newData, type_repayment: type, type_credit: cash})
+            return ({...info, ...newData, type_repayment: type, type_credit: cash, order_id: orderId})
         }else{
-            return ({...info, type_repayment: type, type_credit: cash})
+            return ({...info, type_repayment: type, type_credit: cash, order_id: orderId})
         }
     }
     const onSubmit = (data) => {
@@ -46,9 +49,12 @@ function Addshartnama() {
         .post('/contracts', checkingData(data))
         .then(res => {
             Success()
+            console.log(checkingData(data))
         })
         .catch(err =>{
             Warn()
+            console.log(checkingData(data))
+            console.log(err);
         })
     }
     function cashInputAppearence() {
@@ -61,8 +67,10 @@ function Addshartnama() {
                         clearable
                         label="SSKS / Hisobraqam"
                         placeholder="8600 1223 3445 5667"
+                        type='number'
                         bordered
                         color="secondary"
+                        minLength={16}
                         onChange={(event)=> {
                             setNewData({...newData, ssks: event.target.value})
                         }}
@@ -85,6 +93,7 @@ function Addshartnama() {
                         clearable
                         label="Bank MFOsi"
                         placeholder="00996"
+                        type='number'
                         bordered
                         color="secondary"
                         onChange={(event)=> {
@@ -145,8 +154,8 @@ function Addshartnama() {
                     <Input
                         className='vall'
                         width='100%'
-                        clearable
-                        type='number'
+                        readOnly
+                        value={orderId}
                         label="Buyurtma Code"
                         placeholder="58,00%"
                         bordered
@@ -156,6 +165,7 @@ function Addshartnama() {
                     <Input
                         className='vall'
                         width='100%'
+                        type='number'
                         clearable
                         label="Ustama foiz stavkasi, yillik"
                         placeholder="58,00%"
@@ -168,6 +178,7 @@ function Addshartnama() {
                         width='100%'
                         clearable
                         label="Penya, kunlik"
+                        type='number'
                         placeholder="0,40%"
                         bordered
                         color="secondary"
@@ -177,6 +188,7 @@ function Addshartnama() {
                         className='vall'
                         width='100%'
                         clearable
+                        type='number'
                         label="Oylik komission yig'im, %da"
                         placeholder="0,40%"
                         bordered

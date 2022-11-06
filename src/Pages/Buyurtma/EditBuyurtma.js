@@ -71,15 +71,15 @@ function EditBuyurtma() {
         https
             .get(`/orders/${id}`)
             .then(res => {
+                setOrder(res?.data)
                 setClient(res?.data?.client)
-                const { client, product, ...newRes } = res.data
-                setOrder({ ...newRes, client_id: res.data.client.id, product_id: res.data.product[0]?.id })
-                setBackOrder({ ...newRes, client_id: res.data.client.id, product_id: res.data.product[0]?.id })
-                setStatus(res.data.status)
-                setChecked(res.data.sign_committee)
+                setBackOrder(res?.data)
+                setStatus(res?.data?.status)
+                setChecked(res?.data?.sign_committee)
+
             })
             .catch(err => {
-               console.log(err)
+                console.log(err);
             })
     }, []);
 
@@ -136,10 +136,58 @@ function EditBuyurtma() {
         }
     }
 
+    function SelectElement(){
+        if(sectionOptions){
+            return(
+                <>
+                    <p>Mahsulot</p>
+                    <Select
+                        defaultValue={sectionOptions.find(x => x.value == order?.product?.id)}
+                        value={sectionOptions.find(x => x.value == order?.product?.id)}
+                        options={sectionOptions}
+                        className='buyurtma_select_new'
+                        styles={customStyles}
+                        theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 12,
+                            colors: {
+                                ...theme.colors,
+                                primary25: '#7828c8',
+                                primary: '#7828c8',
+                            },
+                        })}
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.product.id = e.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                </>
+            )
+        }
+    }
+
     // Edit
     function Edit() {
+        let data = {
+            client_id : order?.client?.id,
+            order_date : order?.order_date,
+            sign_committee : order?.sign_committee,
+            sum : order?.sum,
+            time : order?.time,
+            aim : order?.aim,
+            salary : order?.salary,
+            code : order?.code,
+            product_id : order?.product?.id,
+            status : order?.status,
+            order_number:order?.order_number,
+            protocol_number:order?.protocol_number
+        }
+        if(order.status == 'denied'){
+            data = {...data, reason: order?.reason}
+        }
         https
-            .put(`/orders/${id}`, order)
+            .put(`/orders/${id}`, data)
             .then(res => {
                 if (res.request.status === 200) {
                     Success()
@@ -167,11 +215,11 @@ function EditBuyurtma() {
                         color="secondary"
                         className='kl1_input'
                         placeholder='Rad Etilgan Sabab'
-                        value={(order?.reason).join(' ')}
+                        value={(order?.reason)}
                         label='Sabab'       
                         onChange={(e) => {
                             let newOrder = { ...order }
-                            newOrder.reason = e.target.value.split(' ')
+                            newOrder.reason = e.target.value
                             setOrder(newOrder)
                         }}
                     />
@@ -238,28 +286,9 @@ function EditBuyurtma() {
                     }}
                 />
                 <div className='shart-select'>
-                    <p>Mahsulot</p>
-                    <Select
-                        defaultValue={sectionOptions.find(x => x.value == order.product_id)}
-                        value={sectionOptions.find(x => x.value == order.product_id)}
-                        options={sectionOptions}
-                        className='buyurtma_select_new'
-                        styles={customStyles}
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 12,
-                            colors: {
-                                ...theme.colors,
-                                primary25: '#7828c8',
-                                primary: '#7828c8',
-                            },
-                        })}
-                        onChange={(e) => {
-                            let newOrder = { ...order }
-                            newOrder.product_id = e.value
-                            setOrder(newOrder)
-                        }}
-                    />
+                    {
+                        SelectElement()
+                    }
                 </div>
                 <Input
                     width='100%'
@@ -286,6 +315,30 @@ function EditBuyurtma() {
                     onChange={(e) => {
                         let newOrder = { ...order }
                         newOrder.salary = e.target.value
+                        setOrder(newOrder)
+                    }}
+                />
+                <Input
+                    width='100%'
+                    bordered
+                    label="Buyurtma raqami"
+                    className='filial_input'
+                    color="secondary"
+                    onChange={(e) => {
+                        let newOrder = { ...order }
+                        newOrder.order_number = e.target.value
+                        setOrder(newOrder)
+                    }}
+                />
+                <Input
+                    width='100%'
+                    bordered
+                    label="Buyurtma protokol raqami"
+                    className='filial_input'
+                    color="secondary"
+                    onChange={(e) => {
+                        let newOrder = { ...order }
+                        newOrder.protocol_number = e.target.value
                         setOrder(newOrder)
                     }}
                 />

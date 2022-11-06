@@ -51,7 +51,7 @@ function SingleBuyurtnama() {
                         placeholder='Rad Etilgan Sabab'
                         label='Sabab'
                         readOnly
-                        initalValue = {data?.reason.join(' ')}
+                        value = {data?.reason}
                     />
                 </div>
             )
@@ -128,7 +128,7 @@ function SingleBuyurtnama() {
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Mahsulotlar:</p>
-                        <p>{order.product? order?.product?.map(item => {return item.name}) : 'Mahsulot yoq'}</p>
+                        <p>{order.product ? order?.product?.name : 'Mahsulot yoq'}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Maqsadi:</p>

@@ -201,7 +201,7 @@ function Buyurtma() {
                                     {/* <p className='liName li'><span>{index + 1 + (currentList-1)*10}.</span>{item.name}</p> */}
                                     <p className='li_buyurtma'>{index + 1}</p>
                                     <p className='li_buyurtma'>{item?.code}</p>
-                                    <p className='li_buyurtma'>{item?.product ? item?.product[0]?.name : 'Nothing'}</p>
+                                    <p className='li_buyurtma'>{item?.product ? item?.product?.name : 'Nothing'}</p>
                                     <p className='li_buyurtma' id={idSort(item?.status)}>{dataSort(item?.status)}</p>
                                     <div className='userButtons_buyurtma'>
                                         <button><Link to={`/buyurtma/singleBuyurtma/${item?.id}`}><i className='bx bx-user'></i></Link></button>

@@ -50,9 +50,11 @@ function EditClient() {
                 if (res.request.status === 200) {
                     Success()
                 };
+                console.log(client);
             })
             .catch(err => {
                     Warn()
+                    console.log(client);
             })
     }
 

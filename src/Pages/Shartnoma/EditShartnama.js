@@ -34,13 +34,6 @@ function EditShartnama() {
             confirmButtonText: 'Ok'
         })
     }
-    function checkingData(info) {
-        if (cash === "card") {
-            return ({ ...info, ...newData, type_repayment: type })
-        } else {
-            return ({ ...info, type_repayment: type })
-        }
-    }
 
     useEffect(() => {
         https
@@ -49,16 +42,24 @@ function EditShartnama() {
                 const { client, order, ...newRes } = res.data.data
                 setShartnama({ ...newRes, order_id: res.data.data.order.id })
                 setBackShartnama({ ...newRes, order_id: res.data.data.order.id })
-                // console.log(res.data.data.order.client.name)
-                Success()
-                setCash(res.data.type_credit)
-                setType(res.data.type_repayment)
+                setCash(res.data.data.type_credit)
+                console.log(res.data.data);
+                setType(res.data.data.type_repayment)
+                console.log(res.data.data.type_repayment);
                 setLoading(false)
             })
             .catch(err => {
                 Warn()
             })
     }, []);
+
+    function checkingData(info) {
+        if (cash === "card") {
+            return ({ ...info, ...newData, type_repayment: type })
+        } else {
+            return ({ ...info, type_repayment: type })
+        }
+    }
 
     // Edit
     function Edit() {
@@ -74,6 +75,60 @@ function EditShartnama() {
                 console.log(err);
                 Warn()
             })
+    }
+
+    // Radio
+    function PaymentType(){
+        if(cash){
+            return(
+                <div className='shart-selector'>
+                    <p>Kredit ajratish tartibi</p>
+                    <div className='margin_top_10'>
+                        <Radio.Group
+                            orientation="horizontal"
+                            size='sm'
+                            defaultValue={cash}
+                            onChange={(e) => {
+                                let newShartnama = { ...shartnama }
+                                newShartnama.type_credit = e
+                                setShartnama(newShartnama)
+                                setCash(e)
+                            }}
+                        >
+                            <Radio orientation="horizontal" value={"card"}>Plastik karta / Hisobraqam</Radio>
+                            <Radio orientation="horizontal" value={"cash"}>Naqd pul ko'rinishida</Radio>
+                        </Radio.Group>   
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    function TypeVer(){
+        if(type){
+            console.log(type);
+            return(
+                <div className='shart-selector'>
+                    <p>So'ndirish tartibi</p>
+                    <div className='margin_top_10'>
+                        <Radio.Group
+                            size='sm'
+                            defaultValue={type == 1 ? 1 : 2}
+                            className='shart-selector-group'
+                            onChange={(event) => {
+                                let newShartnama = { ...shartnama }
+                                newShartnama.type_repayment = event
+                                setShartnama(newShartnama)
+                                setType(event)
+                            }}
+                        >
+                            <Radio value={1}>Bir qil miqdor(Annuitet)</Radio>
+                            <Radio value={2}>Kamayib boruvshi(differensial)</Radio>
+                        </Radio.Group>
+                    </div>
+                </div>
+            )
+        }
     }
 
     // Back
@@ -102,7 +157,6 @@ function EditShartnama() {
                         className='vall'
                         width='100%'
                         clearable
-                        type='number'
                         label="Bank nomi"
                         value={shartnama?.bank_name}
                         bordered
@@ -145,25 +199,9 @@ function EditShartnama() {
                     </div>
                     <div className='FilialEditTable single_buyurtma'>
                         <h1 className='text_center filial_edit_text'>{shartnama?.order?.client?.name}</h1>
-                        <div className='shart-selector'>
-                            <p>Kredit ajratish tartibi</p>
-                            <div className='margin_top_10'>
-                                <Radio.Group
-                                    orientation="horizontal"
-                                    size='sm'
-                                    defaultValue={cash}
-                                    onChange={(e) => {
-                                        let newShartnama = { ...shartnama }
-                                        newShartnama.type_credit = e
-                                        setShartnama(newShartnama)
-                                        setCash(e)
-                                    }}
-                                >
-                                    <Radio orientation="horizontal" value={"card"}>Plastik karta / Hisobraqam</Radio>
-                                    <Radio orientation="horizontal" value={"cash"}>Naqd pul ko'rinishida</Radio>
-                                </Radio.Group>
-                            </div>
-                        </div>
+                        {
+                            PaymentType()
+                        }
                         <Input
                             className='vall'
                             width='100%'
@@ -224,29 +262,12 @@ function EditShartnama() {
                                 setShartnama(newShartnama)
                             }}
                         />
-                        <div className='shart-selector'>
-                            <p>So'ndirish tartibi</p>
-                            <div className='margin_top_10'>
-                                <Radio.Group
-                                    size='sm'
-                                    defaultValue={type}
-                                    className='shart-selector-group'
-                                    onChange={(event) => {
-                                        let newShartnama = { ...shartnama }
-                                        newShartnama.type_repayment = event
-                                        setShartnama(newShartnama)
-                                        setType(event)
-                                    }}
-                                >
-                                    <Radio value={1}>Bir qil miqdor(Annuitet)</Radio>
-                                    <Radio value={2}>Kamayib boruvshi(differensial)</Radio>
-                                </Radio.Group>
-                            </div>
-                        </div>
+                        {
+                            TypeVer()
+                        }
                         <Input
                             className='vall'
                             width='100%'
-                            clearable
                             type='date'
                             label="Mikroqarz berish sanasi"
                             value={shartnama?.credit_issue_date}
@@ -261,7 +282,6 @@ function EditShartnama() {
                         <Input
                             className='vall'
                             width='100%'
-                            clearable
                             type='date'
                             label="Birinchi tolov sonasi"
                             value={shartnama?.first_repayment_date}
@@ -276,7 +296,6 @@ function EditShartnama() {
                         <Input
                             className='vall'
                             width='100%'
-                            clearable
                             type='date'
                             label="Shartnoma sanasi"
                             value={shartnama?.contract_issue_date}
