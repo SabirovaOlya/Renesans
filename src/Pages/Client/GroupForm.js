@@ -188,8 +188,9 @@ import https from '../../assets/https';
   // Add Group
   function AddGroup() {
       const even = (element) => element == '';
+      let groupMembers = JSON.parse(JSON.stringify(groups))
       let newvalue =[]
-      groups?.map(item =>{
+      groupMembers?.map(item =>{
         newvalue.push(Object.values(Object.values(item)))
         delete item.id
       })
@@ -267,10 +268,11 @@ import https from '../../assets/https';
               <Input
                 width='100%'
                 clearable
-                label="Parol"
+                label="Klient kodi"
                 placeholder='1234'
                 className='vall'
                 bordered
+                labelLeft='99'
                 type='number'
                 color="secondary"
                 value={groups.find(x => x.id === item.id).code}
@@ -285,7 +287,7 @@ import https from '../../assets/https';
                 required
                 width='100%'
                 clearable
-                label="Ism"
+                label="F.I.SH."
                 placeholder='Abdikadir'
                 bordered
                 className='vall'
@@ -316,23 +318,7 @@ import https from '../../assets/https';
                 required
                 width='100%'
                 clearable
-                label="Vaqtinchalik yashash joyi"
-                bordered
-                className='vall'
-                placeholder='2nd Boulevar'
-                color="secondary"
-                value={groups.find(x => x.id === item.id).temp_address}
-                onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].temp_address = e.target.value
-                  setGroups(newGroupInfo)
-                }}
-              />
-              <Input
-                required
-                width='100%'
-                clearable
-                label="Tug‘ilgan joyi"
+                label="Doimi Manzil"
                 bordered
                 className='vall'
                 placeholder='2nd Boulevar'
@@ -357,6 +343,32 @@ import https from '../../assets/https';
                 onChange={e => {
                   let newGroupInfo = [...groups]
                   newGroupInfo[index].city = e.target.value
+                  setGroups(newGroupInfo)
+                }}
+              />
+              <Input
+                required
+                width='100%'
+                clearable
+                label="Tuman"
+                bordered
+                className='vall'
+                placeholder='tuman'
+                color="secondary"
+              />
+              <Input
+                required
+                width='100%'
+                clearable
+                label="Vaqtinchalik yashash joyi"
+                bordered
+                className='vall'
+                placeholder='2nd Boulevar'
+                color="secondary"
+                value={groups.find(x => x.id === item.id).temp_address}
+                onChange={e => {
+                  let newGroupInfo = [...groups]
+                  newGroupInfo[index].temp_address = e.target.value
                   setGroups(newGroupInfo)
                 }}
               />
@@ -396,7 +408,7 @@ import https from '../../assets/https';
                 required
                 width='100%'
                 clearable
-                label="pinfl"
+                label="PINFL"
                 bordered
                 className='vall'
                 placeholder='12345678901234'
@@ -418,7 +430,7 @@ import https from '../../assets/https';
                 className='vall'
                 labelLeft='+998'
                 placeholder='991235678'
-                type='number'
+                type="tel"
                 color="secondary"
                 value={groups.find(x => x.id === item.id).phone}
                 onChange={e => {
@@ -457,7 +469,7 @@ import https from '../../assets/https';
                 required
                 width='100%'
                 clearable
-                label="Ishlab chiqarish raqami"
+                label="Hujjat seriya raqami"
                 bordered
                 className='vall'
                 placeholder='AD123456789'
@@ -465,7 +477,7 @@ import https from '../../assets/https';
                 value={groups.find(x => x.id === item.id).serial_num}
                 onChange={e => {
                   let newGroupInfo = [...groups]
-                  newGroupInfo[index].serial_num = e.target.value
+                  newGroupInfo[index].serial_num = e.target.value.toUpperCase()
                   setGroups(newGroupInfo)
                 }}
               />
@@ -473,7 +485,7 @@ import https from '../../assets/https';
                 required
                 width='100%'
                 clearable
-                label="Kim bilan berilgan"
+                label="Kim tomondan berildi"
                 bordered
                 className='vall'
                 placeholder='Robert Pattison'
@@ -488,7 +500,7 @@ import https from '../../assets/https';
               <Input
                 required
                 width='100%'
-                label="Berilgan sana"
+                label="Hujjat berilgan sana"
                 bordered
                 className='vall'
                 type='date'
@@ -503,7 +515,7 @@ import https from '../../assets/https';
               <Input
                 required
                 width='100%'
-                label="Faoliyat turi"
+                label="Ish lavozmi"
                 bordered
                 className='vall'
                 color="secondary"

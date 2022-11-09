@@ -120,6 +120,7 @@ function BuyurtmaOylik() {
                                     placeholder="5 700 000,00"
                                     color="secondary"
                                     width='31%'
+                                    type='number'
                                     className='kl1_input'
                                     value={familyMavjud?.find(x => x.id === item.id).rest}
                                     onChange={(e)=>{
@@ -134,6 +135,7 @@ function BuyurtmaOylik() {
                                     label='Oylik tolov miqdori'
                                     placeholder="843 000,00"
                                     color="secondary"
+                                    type='number'
                                     width='31%'
                                     className='kl1_input'
                                     value={familyMavjud?.find(x => x.id === item.id).pay}

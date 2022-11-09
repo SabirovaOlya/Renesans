@@ -93,6 +93,8 @@ const { TabPane } = Tabs;
 
 function Main() {
     let token = window.localStorage.getItem('token')
+    let name = window.localStorage.getItem('name')
+    let role = window.localStorage.getItem('role')
 
     let path = (window.location.pathname).split('/')
 
@@ -177,8 +179,8 @@ function Main() {
                             <AiOutlineBell className='email' />
                             <div className='header_last'>
                                 <div className='header_info'>
-                                    <h2>John Doe</h2>
-                                    <p>admin</p>
+                                    <h2>{name}</h2>
+                                    <p>{role}</p>
                                 </div>
                                 <Avatar
                                     onClick={() => { setHeaderDropDown(!headerDropDown) }}

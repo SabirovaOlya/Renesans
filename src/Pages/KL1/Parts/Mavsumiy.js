@@ -18,8 +18,6 @@ function Mavsumiy() {
     const { monthDaromad, setMonthDaromad } = useContext(Context)
     const { mavsumiyXarajats, setMavsumiyXarajats } = useContext(Context)
     const { monthXarajat,setMonthXarajat } = useContext(Context)
-    // const [ mavsumiyWindow, setMavsumiyWindow ] = useContext(Context)
-    // console.log(useContext(Context));
     useEffect(() => {
         setActiveTab(4)
     }, [])

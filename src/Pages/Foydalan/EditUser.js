@@ -14,7 +14,6 @@ function EditUser() {
     const [user, setUser] = useState({})
     const [backUser, setBackUser] = useState({})
 
-
     // Alert
     function Success() {
         Swal.fire({
@@ -33,28 +32,33 @@ function EditUser() {
 
     useEffect(() => {
         https
-            .get(`/user/${id}`)
+            .get(`/users/${id}`)
             .then(res => {
-                setUser(res.data.data)
-                setBackUser(res.data.data)
+                setUser(res?.data)
+                setBackUser(res?.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, [])
+
+    // Edit
+    function Edit() {
+        let data ={
+            name:user?.name,
+            email:user?.email,
+            password:user?.password_origin,
+            password_confirmation:user?.password_origin
+        }
+        https
+            .patch(`/update/users/${id}`, data)
+            .then(res => {
                 Success()
             })
             .catch(err => {
                 Warn()
-            })
-    }, []);
-
-    // Edit
-    function Edit() {
-        https
-            .put(`/update/users/${id}`, user)
-            .then(res => {
-                if (res.request.status === 200) {
-                    Success()
-                };
-            })
-            .catch(err => {
-                Warn()
+                console.log(err);
+                console.log(data);
             })
     }
 
@@ -87,20 +91,6 @@ function EditUser() {
                         setUser(newUser)
                     }}
                 />
-                {/* <Input
-                    width='100%'
-                    bordered
-                    label="Nomi"
-                    value={user?.role}
-                    placeholder='filial'
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newUser = { ...user }
-                        newUser.role = e.target.value
-                        setUser(newUser)
-                    }}
-                /> */}
                 <Input
                     width='100%'
                     bordered
@@ -120,27 +110,13 @@ function EditUser() {
                     width='100%'
                     bordered
                     label="Parol"
-                    value={user?.password}
+                    value={user?.password_origin}
                     placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
                         let newUser = { ...user }
-                        newUser.password = e.target.value
-                        setUser(newUser)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Parolni tasdiqlash"
-                    value={user?.password}
-                    placeholder='filial'
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newUser = { ...user }
-                        newUser.password_confirmation = e.target.value
+                        newUser.password_origin = e.target.value
                         setUser(newUser)
                     }}
                 />

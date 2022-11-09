@@ -14,7 +14,6 @@ function SingleUser() {
             .get(`/users/${id}`)
             .then(res => {
                 setUser(res?.data)
-                console.log(res?.data);
             })
             .catch(err => {
                 console.log(err);
@@ -39,6 +38,10 @@ function SingleUser() {
                         <div className='single_buyurtma_inputs'>
                             <p>Role:</p>
                             <p>{user?.name}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Parol:</p>
+                            <p>{user?.password_origin}</p>
                         </div>
                     </div>
                 </div>

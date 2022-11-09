@@ -40,7 +40,6 @@ function Login() {
     }
 
     async function onSubmit(data) {
-        console.log(data);
         await https
             .get('/sanctum/csrf-cookie')
             .then(res=> {
@@ -49,12 +48,15 @@ function Login() {
                     .then(res => {
                         Success()
                         window.localStorage.setItem('token', res.data.token)
+                        window.localStorage.setItem('name', res.data.user.name)
+                        window.localStorage.setItem('role', res.data.user.role.name)
                         setToken(res.data.token)
                     })
                     .catch(err => {
                         if (err.response.status == 401){
                             Warn()
                         }
+                        console.log(err);
                     })
             })
             .catch(err => (console.log(err)))

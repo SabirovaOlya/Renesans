@@ -10,6 +10,8 @@ import https from '../../../assets/https';
 
 function Table() {
 
+    const [errorStatus, setErrorStatus] = useState(false)
+
     // Alerts
     function Success() {
         Swal.fire({
@@ -66,6 +68,117 @@ function Table() {
         formState: { errors, isValid }
     } = useForm();
 
+    async function PostFirst(dataBase){
+        await https
+        .post('/activities', dataBase)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+    async function PostBoshqa(firstItem){
+        await https
+        .post('/other-income', firstItem)
+        .then(res =>{
+            console.log(res);
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostBiznes(biznesPlusItem){
+        await https
+        .post('/business-incomes', biznesPlusItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostBiznesMinus(biznesMinusItem){
+        await https
+        .post('/business-expenses', biznesMinusItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostFamily(familyPlusItem){
+        await https
+        .post('/family-incomes', familyPlusItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostFamilyMinus(familyMinusItem){
+        await https
+        .post('/family-expenses', familyMinusItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostFamilyKredit(familyKreditItem){
+        await https
+        .post('/family-loans', familyKreditItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
+    async function PostClientKredit(clientKreditItem){
+        await https
+        .post('/loans', clientKreditItem)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+            return(
+                Error()
+            )
+        })
+    }
+
     const onSubmit = (data) =>{
 
         let familyMembersCopy = []
@@ -114,18 +227,7 @@ function Table() {
                     duration: dataFirstQism.duration,
                     client_mark_id: res?.data?.id
                 }
-
-                https
-                .post('/activities', dataBase)
-                .then(res =>{
-                    console.log(res)
-                })
-                .catch(err =>{
-                    console.log(err)
-                    return(
-                        Error()
-                    )
-                })
+                PostFirst(dataBase)
 
                 // Boshqa
                 myDaromads?.map(item =>{
@@ -137,18 +239,7 @@ function Table() {
                         comment: item?.izoh,
                         client_mark_id: res?.data?.id
                     }
-
-                    https
-                    .post('/other-income', firstItem)
-                    .then(res =>{
-                        console.log(res);
-                    })
-                    .catch(err =>{
-                        console.log(err)
-                        return(
-                            Error()
-                        )
-                    })
+                    PostBoshqa(firstItem)
                 })
 
                 // Biznes
@@ -164,19 +255,7 @@ function Table() {
                             "type" : 1,
                             "client_mark_id": res?.data?.id
                         }
-                        console.log(biznesPlusItem)
-
-                        https
-                        .post('/business-incomes', biznesPlusItem)
-                        .then(res =>{
-                            console.log(res)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostBiznes(biznesPlusItem)
                     })
     
                     biznesXarajats?.map(item =>{
@@ -190,18 +269,7 @@ function Table() {
                             "type" : 1,
                             "client_mark_id": res?.data?.id
                         }
-                        console.log(biznesMinusItem)
-                        https
-                        .post('/business-expenses', biznesMinusItem)
-                        .then(res =>{
-                            console.log(res)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostBiznesMinus(biznesMinusItem)
                     })
                 }
 
@@ -216,17 +284,7 @@ function Table() {
                             "comment": item?.commit,
                             "client_mark_id": res?.data?.id
                         }
-                        https
-                        .post('/family-incomes', familyPlusItem)
-                        .then(res =>{
-                            console.log(res)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostFamily(familyPlusItem)
                     })
                 }
 
@@ -238,17 +296,7 @@ function Table() {
                             "comment": item?.commit,
                             "client_mark_id": res?.data?.id
                         } 
-                        https
-                        .post('/family-expenses', familyMinusItem)
-                        .then(res =>{
-                            console.log(res)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostFamilyMinus(familyMinusItem)
                     })
                 }
 
@@ -261,17 +309,7 @@ function Table() {
                             "comment": item?.commit,
                             "client_mark_id": res?.data?.id
                         }
-                        https
-                        .post('/family-loans', familyKreditItem)
-                        .then(res =>{
-                            console.log(res)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostFamilyKredit(familyKreditItem)
                     })
                 }
 
@@ -284,23 +322,13 @@ function Table() {
                             "comment": item?.commit,
                             "client_mark_id": res?.data?.id
                         }
-                        https
-                        .post('/loans', clientKreditItem)
-                        .then(res =>{
-                            console.log(res)
-                            setTimeout(()=>{
-                                Success()
-                            },300)
-                        })
-                        .catch(err =>{
-                            console.log(err)
-                            return(
-                                Error()
-                            )
-                        })
+                        PostClientKredit(clientKreditItem)
                     })
                 }
-
+                
+                setTimeout(()=>{
+                    Success()
+                },1000)
             }
 
         })

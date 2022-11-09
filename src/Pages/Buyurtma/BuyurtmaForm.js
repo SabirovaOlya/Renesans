@@ -212,7 +212,9 @@ function BuyurtmaForm() {
                             clearable
                             label="So'ralayotgan qarz miqdor"
                             placeholder="20 000 000 som"
-                            type='number'
+                            type='text'
+                            inputMode='numeric'
+                            autoComplete="on"
                             bordered
                             color="secondary"
                             {...register("sum", { required: true })}

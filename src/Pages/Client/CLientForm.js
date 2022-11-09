@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 // Styles
@@ -18,6 +18,13 @@ import https from '../../assets/https';
 
 
 function CLientForm() {
+
+  const [document, setDocument] = useState('')
+  const handleChange = event => {
+    const result = event.target.value.toUpperCase();
+    setDocument(result)
+  };
+
   // UseForm
   const { register,
     handleSubmit,
@@ -84,7 +91,7 @@ function CLientForm() {
   // Alerts
   function Success() {
     Swal.fire({
-        title: "CLient qoshildi",
+        title: "Client qoshildi",
         icon: 'success',
         confirmButtonText: 'Ok'
     })
@@ -113,7 +120,7 @@ function CLientForm() {
   }
 
   const onSubmit = (data) => {
-    let info = {...data, doc_type: sectionRole.label}
+    let info = {...data, doc_type: sectionRole}
     https
     .post('/clients', info)
     .then(res => {
@@ -153,20 +160,19 @@ function CLientForm() {
           <Input
             width='100%'
             clearable
-            label="Parol"
+            label="Klient kodi"
             placeholder='1234'
+            labelLeft='99'
             className='vall'
             bordered
             color="secondary"
-            minLength={1}
-            maxLength={10}
             type='number'
-            {...register("code", { required: true })}
+            {...register("code", { required: true, minLength: 8, maxLength: 8})}
           />
           <Input
             width='100%'
             clearable
-            label="Ism"
+            label="F.I.SH."
             placeholder='Jane'
             bordered
             className='vall'
@@ -187,13 +193,35 @@ function CLientForm() {
           <Input
             width='100%'
             clearable
-            label="Manzil"
+            label="Doimi manzil"
             bordered
             className='vall'
             placeholder='2nd Boulevar'
             color="secondary"
             required
             {...register("address", { required: true })}
+          />
+          <Input
+            width='100%'
+            clearable
+            label="Shahar"
+            bordered
+            className='vall'
+            placeholder='2nd Boulevar'
+            color="secondary"
+            required
+            {...register("city", { required: true })}
+          />
+          <Input
+            width='100%'
+            clearable
+            label="Tuman"
+            bordered
+            className='vall'
+            placeholder='2nd Boulevar'
+            color="secondary"
+            required
+            // {...register("region", { required: false })}
           />
           <Input
             width='100%'
@@ -205,17 +233,6 @@ function CLientForm() {
             color="secondary"
             required
             {...register("temp_address", { required: true })}
-          />
-          <Input
-            width='100%'
-            clearable
-            label="Shahar"
-            bordered
-            className='vall'
-            placeholder='Manhetton'
-            color="secondary"
-            required
-            {...register("city", { required: true })}
           />
           <Input
             width='100%'
@@ -249,7 +266,7 @@ function CLientForm() {
             color="secondary"
             required
             type='number'
-            {...register("pinfl", { required: true })}
+            {...register("pinfl", { required: true,  minLength: 14, maxLength: 14 })}
           />
           <Input
             width='100%'
@@ -260,7 +277,7 @@ function CLientForm() {
             pattern='[0-9]'
             labelLeft='+998'
             placeholder='991235678'
-            type='number'
+            type="tel"
             color="secondary"
             required
             {...register("phone", { required: true })}
@@ -291,18 +308,20 @@ function CLientForm() {
           <Input
             width='100%'
             clearable
-            label="Ishlab chiqarish raqami"
+            label="Hujjat seriya raqami"
             bordered
-            className='vall'
+            value={document}
+            className='vall bigLetter'
             placeholder='AD123456789'
             color="secondary"
             required
             {...register("serial_num", { required: true })}
+            onChange={(e)=>{handleChange(e)}}
           />
           <Input
             width='100%'
             clearable
-            label="Kim bilan chiqarildi"
+            label="Kim tomondan berildi"
             bordered
             placeholder='Mamedov Kamal'
             className='vall'
@@ -312,7 +331,7 @@ function CLientForm() {
           />
           <Input
             width='100%'
-            label="Chiqarilgan sana"
+            label="Hujjat berilgan sana"
             bordered
             className='vall'
             type='date'
@@ -322,7 +341,7 @@ function CLientForm() {
           />
           <Input
             width='100%'
-            label="Ish"
+            label="Ish lavozmi"
             placeholder='Web-Developer'
             bordered
             className='vall'

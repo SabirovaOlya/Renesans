@@ -17,7 +17,7 @@ function EditClient() {
     // Alert
     function Success() {
         Swal.fire({
-            title: "CLient o'zgartirildi",
+            title: "Klient o'zgartirildi",
             icon: 'success',
             confirmButtonText: 'Ok'
         })
@@ -76,7 +76,7 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Nomi"
+                    label="F.I.SH."
                     value={client?.name}
                     placeholder='filial'
                     className='filial_input'
@@ -90,7 +90,7 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Parol"
+                    label="Klient kodi"
                     type='number'
                     value={client?.code}
                     placeholder='filial'
@@ -120,7 +120,7 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Manzil"
+                    label="Doimi manzil"
                     value={client?.address}
                     placeholder='filial'
                     className='filial_input'
@@ -128,20 +128,6 @@ function EditClient() {
                     onChange={(e) => {
                         let newClient = { ...client }
                         newClient.address = e.target.value
-                        setClient(newClient)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Vaqtinchalik yashash joyi"
-                    value={client?.temp_address}
-                    placeholder='filial'
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newClient = { ...client }
-                        newClient.temp_address = e.target.value
                         setClient(newClient)
                     }}
                 />
@@ -156,6 +142,20 @@ function EditClient() {
                     onChange={(e) => {
                         let newClient = { ...client }
                         newClient.city = e.target.value
+                        setClient(newClient)
+                    }}
+                />
+                <Input
+                    width='100%'
+                    bordered
+                    label="Vaqtinchalik yashash joyi"
+                    value={client?.temp_address}
+                    placeholder='filial'
+                    className='filial_input'
+                    color="secondary"
+                    onChange={(e) => {
+                        let newClient = { ...client }
+                        newClient.temp_address = e.target.value
                         setClient(newClient)
                     }}
                 />
@@ -263,6 +263,7 @@ function EditClient() {
                     width='100%'
                     bordered
                     label="Chiqarilgan sana"
+                    type='date'
                     value={client?.issued_date}
                     placeholder='filial'
                     className='filial_input'

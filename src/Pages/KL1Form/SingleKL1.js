@@ -16,7 +16,6 @@ function SingleKL1() {
         await https
         .get(`/client-marks/${id}`)
         .then(res =>{
-            console.log(res?.data)
             setMainInfo(res?.data)
         })
         .catch(err =>{
@@ -28,6 +27,135 @@ function SingleKL1() {
         GetMainInfo()
     },[])
 
+    // Boshqa Daromad
+    function BoshqaSum(){
+        let array = []
+        mainInfo?.other_income?.map(item =>{
+            array.push(item?.volume * item?.unit_price)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }
+
+    // MonthDaromad
+    function MonthlyDaromad(){
+        if(mainInfo?.monthly_income){
+            let MonthArrSum1 = Object.values(mainInfo?.monthly_income);
+            let totalMonth1 = MonthArrSum1.reduce((prev,current)=> Number(prev) + Number(current), 0)
+            return totalMonth1.toLocaleString()
+        }
+    }
+
+    // MonthXarajat
+    function MonthlyXarajat(){
+        if(mainInfo?.monthly_expense){
+            let MonthArrSum2 = Object.values(mainInfo?.monthly_expense);
+            let totalMonth2 = MonthArrSum2.reduce((prev,current)=> Number(prev) + Number(current), 0)
+            return totalMonth2.toLocaleString()
+        }
+    }
+
+    // Biznes Xarajat
+    function BiznesDaromad(){
+        let array = []
+        mainInfo?.business_incomes?.map(item =>{
+            array.push(item?.monthly_income)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }
+
+    // Biznes Xarajat
+    function BiznesXarajat(){
+        let array = []
+        mainInfo?.business_expenses?.map(item =>{
+            array.push(item?.average_monthly_expense)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }
+
+    // Family Daromad
+    function FamilyDaromad(){
+        let array = []
+        mainInfo?.family_incomes?.map(item =>{
+            array.push(item?.monthly_income)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }   
+    
+    // Family Xarajat
+    function FamilyXarajat(){
+        let array = []
+        mainInfo?.family_expenses?.map(item =>{
+            array.push(item?.expense)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+
+    }   
+
+    // Family Daromad
+    function FamilyDaromadText(){
+        let array = []
+        mainInfo?.family_incomes?.map(item =>{
+            array.push(item?.monthly_income)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }   
+    
+    // Family Xarajat
+    function FamilyXarajatText(){
+        let array = []
+        mainInfo?.family_expenses?.map(item =>{
+            array.push(item?.expense)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+
+    }   
+
+    // Family Loans
+    function FamilyLoansMain(){
+        let array = []
+        mainInfo?.family_loans?.map(item =>{
+            array.push(item?.main)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }   
+
+    // Family Loans
+    function FamilyLoansMonth(){
+        let array = []
+        mainInfo?.family_loans?.map(item =>{
+            array.push(item?.monthly)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }   
+
+    // Loans
+    function ClientLoansMain(){
+        let array = []
+        mainInfo?.loans?.map(item =>{
+            array.push(item?.main)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }
+
+    // Loans
+    function ClientLoansMonth(){
+        let array = []
+        mainInfo?.loans?.map(item =>{
+            array.push(item?.monthly)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices.toLocaleString()
+    }
 
 
   return (
@@ -81,14 +209,13 @@ function SingleKL1() {
             <p className='kl1_formtitle text_center'>Birgalikda istiqomat qiluvchilar</p>
             <div className='list_sinlge_form'>
                 <p>Istiqomat qiluvchi:</p>
-                {/* {
+                {
                     mainInfo?.family?.map((item,index)=>{
                         return(
                             <p key={index}>{index + 1}. {item}</p>
                         )
                     })
-                    // console.log(typeof mainInfo?.property)
-                } */}
+                }
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Oila azolari bilan suhbat davomida aniqlangan muhim malumotlar:</p>
@@ -97,13 +224,13 @@ function SingleKL1() {
             <p className='kl1_formtitle text_center'>Buyurtmachining boshqa mulklari</p>
             <div className='list_sinlge_form'>
                 <p>Mulk nomi:</p>
-                {/* {
+                {
                     mainInfo?.property?.map((item,index)=>{
                         return(
-                            <p>{index + 1}. {item}</p>
+                            <p key={index}>{index + 1}. {item}</p>
                         )
                     })
-                } */}
+                }
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Yashash sharoiti:</p>
@@ -130,70 +257,47 @@ function SingleKL1() {
             {/* ********___Boshqa___********* */}
             <h2 className='kl1_subtitle margin_top_30'>Buyurtmachining daromadlari</h2>
             <p className='kl1_formtitle text_center'>Boshqa daromad turlari shuningdek passiv daromadlar</p>
-            <div className='single_boshqa_product'>
-                <div className='kl1_product_title'>
-                    <p>Daromad { 1}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Daromad nomi:</p>
-                    <p>{`Name`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Hajmi:</p>
-                    <p>{`100`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Birlik narxi:</p>
-                    <p>{`250 000 so'm`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Qiymati:</p>
-                    <p>{`2 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Oylik daromad:</p>
-                    <p>{`25 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Izoh:</p>
-                    <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                </div>
-            </div>
-            <div className='single_boshqa_product'>
-                <div className='kl1_product_title'>
-                    <p>Daromad { 2}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Daromad nomi:</p>
-                    <p>{`Name`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Hajmi:</p>
-                    <p>{`100`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Birlik narxi:</p>
-                    <p>{`250 000 so'm`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Qiymati:</p>
-                    <p>{`2 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Oylik daromad:</p>
-                    <p>{`25 000 000`}</p>
-                </div>
-                <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                    <p>Izoh:</p>
-                    <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                </div>
-            </div>
-            <p className='kl1_jami margin_top_15'>Jami o'rtacha oylik daromadlari: {1000000} so`m</p>
+            {
+                mainInfo?.other_income?.map((item, index)=>{
+                    return(
+                        <div className='single_boshqa_product' key={item?.id}>
+                            <div className='kl1_product_title'>
+                                <p>Daromad {index + 1}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Daromad nomi:</p>
+                                <p>{item?.name}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Hajmi:</p>
+                                <p>{item?.volume}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Birlik narxi:</p>
+                                <p>{item?.unit_price}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Qiymati:</p>
+                                <p>{item?.worth}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Oylik daromad:</p>
+                                <p>{item?.volume * item?.unit_price}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                <p>Izoh:</p>
+                                <p>{item?.comment}</p>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            <p className='kl1_jami margin_top_15'>Jami o'rtacha oylik daromadlari: {BoshqaSum()} so`m</p>
 
             {/******___Mavsumiy___******/}
             <div>
-                <p className='kl1_formtitle text_center'>Mavsumiy daromad turi, manbasi va faoliyat joyi</p>
-                <div className='single_form_table_mavsumiy margin_top_15'>
+                {/* <p className='kl1_formtitle text_center'>Mavsumiy daromad turi, manbasi va faoliyat joyi</p> */}
+                {/* <div className='single_form_table_mavsumiy margin_top_15'>
                     <div className='form_mavsumiy_header'>
                         <p className='text_bold'>№</p>
                         <p className='text_bold'>Daromad nomi</p>
@@ -225,62 +329,66 @@ function SingleKL1() {
                         <p>1 000 000 so'm</p>
                     </div>
                 </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>
+                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p> */}
+                {
+                    MonthlyDaromad() ? <>
+                        <p className='kl1_formtitle text_center'>Mavsumiy daromadlarning oylar bo'yicha taqsimlanishi</p>
+                    
+                        <div className='kl1_calendar_single'>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Yanvar:</p>
+                                <p>{mainInfo?.monthly_income?.january}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Fevral:</p>
+                                <p>{mainInfo?.monthly_income?.february}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Mart:</p>
+                                <p>{mainInfo?.monthly_income?.march}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Aprel:</p>
+                                <p>{mainInfo?.monthly_income?.april}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>May:</p>
+                                <p>{mainInfo?.monthly_income?.may}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Iyun:</p>
+                                <p>{mainInfo?.monthly_income?.june}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Iyul:</p>
+                                <p>{mainInfo?.monthly_income?.july}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Avgust:</p>
+                                <p>{mainInfo?.monthly_income?.august}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Sentabr:</p>
+                                <p>{mainInfo?.monthly_income?.september}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Oktabr:</p>
+                                <p>{mainInfo?.monthly_income?.october}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Noyabr:</p>
+                                <p>{mainInfo?.monthly_income?.november}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Dekabr:</p>
+                                <p>{mainInfo?.monthly_income?.december}</p>
+                            </div>
+                        </div>
+                        <p className='kl1_jami margin_top_15'>Jami: {MonthlyDaromad()} so'm</p>
+                    </> : <></>
+                }
 
-                <p className='kl1_formtitle text_center'>Mavsumiy daromadlarning oylar bo'yicha taqsimlanishi</p>
-            
-                <div className='kl1_calendar_single'>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Yanvar:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Fevral:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Mart:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Aprel:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>May:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Iyun:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Iyul:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Avgust:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Sentabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oktabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Noyabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Dekabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>
-                <p className='kl1_formtitle text_center'>Mavsumiy xarajatlar</p>
+                {/* <p className='kl1_formtitle text_center'>Mavsumiy xarajatlar</p>
                 <div className='single_form_table_mavsumiy margin_top_15'>
                     <div className='form_mavsumiy_header'>
                         <p className='text_bold'>№</p>
@@ -313,472 +421,302 @@ function SingleKL1() {
                         <p>1 000 000 so'm</p>
                     </div>
                 </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so`m</p>
-                <p className='kl1_formtitle text_center'>Mavsumiy xarajatlarning oylar bo'yicha taqsimlanishi</p>
-                <div className='kl1_calendar_single'>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Yanvar:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Fevral:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Mart:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Aprel:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>May:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Iyun:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Iyul:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Avgust:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Sentabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oktabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Noyabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Dekabr:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>      
+                <p className='kl1_jami margin_top_15'>Jami: {1000000} so`m</p> */}
+
+                {
+                    MonthlyXarajat() ? <>
+                        <p className='kl1_formtitle text_center'>Mavsumiy xarajatlarning oylar bo'yicha taqsimlanishi</p>
+                        <div className='kl1_calendar_single'>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Yanvar:</p>
+                                <p>{mainInfo?.monthly_expense?.january}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Fevral:</p>
+                                <p>{mainInfo?.monthly_expense?.february}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Mart:</p>
+                                <p>{mainInfo?.monthly_expense?.march}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Aprel:</p>
+                                <p>{mainInfo?.monthly_expense?.april}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>May:</p>
+                                <p>{mainInfo?.monthly_expense?.may}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Iyun:</p>
+                                <p>{mainInfo?.monthly_expense?.june}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Iyul:</p>
+                                <p>{mainInfo?.monthly_expense?.july}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Avgust:</p>
+                                <p>{mainInfo?.monthly_expense?.august}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Sentabr:</p>
+                                <p>{mainInfo?.monthly_expense?.september}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Oktabr:</p>
+                                <p>{mainInfo?.monthly_expense?.october}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Noyabr:</p>
+                                <p>{mainInfo?.monthly_expense?.november}</p>
+                            </div>
+                            <div className='single_buyurtma_inputs'>
+                                <p>Dekabr:</p>
+                                <p>{mainInfo?.monthly_expense?.december}</p>
+                            </div>
+                        </div>
+                        <p className='kl1_jami margin_top_15'>Jami: {MonthlyXarajat()} so'm</p>      
+                    </> : <></>
+                }
             </div>
 
             {/******___Biznes___******/}
             <div>
-                <p className='kl1_formtitle text_center'>Biznes daromadlar turi</p>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes daromad {1}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Daromad nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>1 birlikning o`rtacha sotish naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha ustamasi % da:</p>
-                        <p>{`40%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Bir oylik daromad:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes daromad {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Daromad nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>1 birlikning o`rtacha sotish naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha ustamasi % da:</p>
-                        <p>{`25%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Bir oylik daromad:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes daromad {3}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Daromad nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>1 birlikning o`rtacha sotish naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha ustamasi % da:</p>
-                        <p>{`20%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Bir oylik daromad:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p> 
-                <p className='kl1_formtitle text_center'>Biznes uchun xarajatlar</p>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes xarajat {1}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Qiymati:</p>
-                        <p>{`40%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha oylik xarajat:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes xarajat {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Qiymati:</p>
-                        <p>{`40%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha oylik xarajat:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <div className='single_boshqa_product'>
-                    <div className='kl1_product_title'>
-                        <p>Biznes xarajat {3}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`Name`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Oylik hajm:</p>
-                        <p>{`100`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Naxri:</p>
-                        <p>{`250 000 so'm`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Qiymati:</p>
-                        <p>{`40%`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>O`rtacha oylik xarajat:</p>
-                        <p>{`25 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                        <p>Izoh:</p>
-                        <p>{'Commit commit commit commit commit commitcommit commit commit commit commit commit commit commit commit commit commit commit'}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>
+                {
+                    mainInfo?.business_incomes?.length != 0 ? <>
+                        <p className='kl1_formtitle text_center'>Biznes daromadlar turi</p>
+                        {
+                            mainInfo?.business_incomes?.map((item, index)=>{
+                                return(
+                                    <div className='single_boshqa_product' key={item?.id}>
+                                        <div className='kl1_product_title'>
+                                            <p>Biznes daromad {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Daromad nomi:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Oylik hajm:</p>
+                                            <p>{item?.monthly_volume}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>1 birlikning o`rtacha sotish naxri:</p>
+                                            <p>{item?.unit_price}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>O`rtacha ustamasi % da:</p>
+                                            <p>{item?.average_price}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Bir oylik daromad:</p>
+                                            <p>{item?.monthly_income}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Izoh:</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        <p className='kl1_jami margin_top_15'>Jami: {BiznesDaromad()} so'm</p> 
+                    </> : <></>
+                }
+                {
+                    mainInfo?.business_expenses?.length != 0 ? <>
+                        <p className='kl1_formtitle text_center'>Biznes uchun xarajatlar</p>
+                        {
+                            mainInfo?.business_expenses?.map((item, index)=>{
+                                return(
+                                    <div className='single_boshqa_product' key={item?.id}>
+                                        <div className='kl1_product_title'>
+                                            <p>Biznes xarajat {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Xarajat nomi:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Oylik hajm:</p>
+                                            <p>{item?.volume}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Naxri:</p>
+                                            <p>{item?.price}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Qiymati:</p>
+                                            <p>{item?.value}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>O`rtacha oylik xarajat:</p>
+                                            <p>{item?.average_monthly_expense}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                                            <p>Izoh:</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>       
+                                )
+                            })
+                        }
+                        <p className='kl1_jami margin_top_15'>Jami: {BiznesXarajat()} so'm</p>
+                    </> : <></>
+                }
             </div>
 
             {/******___6-Qism___******/}
             <div>
-                <h2 className='kl1_subtitle margin_top_30'>Oilaviy daromadlar va xarajatlar (Uy xo'jaligining daromad va xarajatlari)</h2>
-                <p className='kl1_formtitle text_center'>Oila azolarining daromadlar , shuningdek uy xojaligining boshqa daromadlari</p>
-                <div className='single_form_product_first'>
-                    <div>
-                        <p>Odam {1}</p>
+                {
+                    mainInfo?.family_incomes?.length != 0 ? <>
+                        <p className='kl1_formtitle text_center'>Oila azolarining daromadlar , shuningdek uy xojaligining boshqa daromadlari</p>
+                        {
+                            mainInfo?.family_incomes?.map((item, index)=>{
+                                return(
+                                    <div className='single_form_product_first' key={item?.id}>
+                                        <div>
+                                            <p>Odam {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Daromad Egasi:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Faoliyat Turi:</p>
+                                            <p>{item?.activity_type}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Faoliyat Joyi:</p>
+                                            <p>{item?.activity_address}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Bir oylik daromad:</p>
+                                            <p>{item?.monthly_income}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Izoh</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        <p className='kl1_jami margin_top_15'>Jami: {FamilyDaromadText()} so'm</p>
+                    </> : <></>
+                }
+                {
+                    mainInfo?.family_expenses?.length != 0 ? <>
+                        <p className='kl1_formtitle text_center'>Uy xojaligining xarajatlari</p>
+                        {
+                            mainInfo?.family_expenses?.map((item, index)=>{
+                                return(
+                                    <div className='single_form_product_first' key={item?.id}>
+                                        <div>
+                                            <p>Xarajat {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Xarajat nomi:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Ortaja oylik xarajat:</p>
+                                            <p>{item?.expense}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Izoh</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        <p className='kl1_jami margin_top_15'>Jami: {FamilyXarajatText()} so'm</p>
+                    </> : <></>
+                }
+                {
+                    mainInfo?.family_loans ? <>
+                        <p className='kl1_formtitle text_center'>Uy xojaligi azolarining mavjud kredit va qarzdorliklari togrisidagi malumotlar</p>
+                        {
+                            mainInfo?.family_loans?.map((item,index)=>{
+                                return(
+                                    <div className='single_form_product_second' key={item?.id}>
+                                        <div>
+                                            <p>Malumot {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Malumot nomi:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Asosiy qarz qoldigi:</p>
+                                            <p>{item?.main}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Oylik tolov miqdori:</p>
+                                            <p>{item?.monthly}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Izoh</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    <div className='flex_column margin_top_10'>
+                        <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {FamilyLoansMain()} so`m</p>
+                        <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {FamilyLoansMonth()} so`m</p>
                     </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Daromad Egasi:</p>
-                        <p>{`Otasi`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Faoliyat Turi:</p>
-                        <p>{`Nafaqada`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Faoliyat Joyi:</p>
-                        <p>{`Yuqorichirchiq tuman 54-maktab`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Bir oylik daromad:</p>
-                        <p>{`2 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Commit commit commit commit commit commit commit`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_first'>
-                    <div>
-                        <p>Odam {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Daromad Egasi:</p>
-                        <p>{`Otasi`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Faoliyat Turi:</p>
-                        <p>{`Nafaqada`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Faoliyat Joyi:</p>
-                        <p>{`Yuqorichirchiq tuman 54-maktab`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Bir oylik daromad:</p>
-                        <p>{`2 000 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Commit commit commit commit commit commit commit`}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>
-                <p className='kl1_formtitle text_center'>Uy xojaligining xarajatlari</p>
-                <div className='single_form_product_first'>
-                    <div>
-                        <p>Xarajat {1}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`sadik`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Ortaja oylik xarajat:</p>
-                        <p>{`700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Commit commit commit commit commit commit commit`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_first'>
-                    <div>
-                        <p>Xarajat {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`sadik`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Ortaja oylik xarajat:</p>
-                        <p>{`700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Commit commit commit commit commit commit commit`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_first'>
-                    <div>
-                        <p>Xarajat {3}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Xarajat nomi:</p>
-                        <p>{`sadik`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Ortaja oylik xarajat:</p>
-                        <p>{`700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Commit commit commit commit commit commit commit`}</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p>
-                <p className='kl1_formtitle text_center'>Uy xojaligi azolarining mavjud kredit va qarzdorliklari togrisidagi malumotlar</p>
-                <div className='single_form_product_second'>
-                    <div>
-                        <p>Malumot {1}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Malumot nomi:</p>
-                        <p>{`Qishloq Qurilish bank`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Asosiy qarz qoldigi:</p>
-                        <p>{`3 700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oylik tolov miqdori:</p>
-                        <p>{`480 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Istemol krediti 23%dan`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_second'>
-                    <div>
-                        <p>Malumot {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Malumot nomi:</p>
-                        <p>{`Qishloq Qurilish bank`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Asosiy qarz qoldigi:</p>
-                        <p>{`3 700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oylik tolov miqdori:</p>
-                        <p>{`480 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Istemol krediti 23%dan`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_second'>
-                    <div>
-                        <p>Malumot {3}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Malumot nomi:</p>
-                        <p>{`Qishloq Qurilish bank`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Asosiy qarz qoldigi:</p>
-                        <p>{`3 700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oylik tolov miqdori:</p>
-                        <p>{`480 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Istemol krediti 23%dan`}</p>
-                    </div>
-                </div>
-                <div className='flex_column margin_top_10'>
-                    <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {1000000} so`m</p>
-                    <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {1000000} so`m</p>
-                </div>
-                <p className={(1)? 'text_black_18 green_text' : 'text_black_18 red_text'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: 100 000 so`m</p>
+                    </> : <></>
+                }
+                {
+                    mainInfo?.family_expenses?.length != 0 ? <>
+                        <p className={(FamilyDaromad() - FamilyXarajat()) >0 ? 'text_black_18 green_text margin_top_10' : 'text_black_18 red_text margin_top_10'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: {(FamilyDaromad() - FamilyXarajat())} so`m</p>
+                    </> : <></>
+                }
             </div>
 
             {/******___7-Qism___******/}
             <div>
-                <h2 className='kl1_subtitle margin_top_30'>Buyurtmachining mavjud kredit va qarz majburiyatlari</h2>
-                <div className='single_form_product_second'>
-                    <div>
-                        <p>Mavjud malumot {1}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Mavjud kredit va qarzlar:</p>
-                        <p>{`Qishloq Qurilish bank`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Asosiy qarz qoldigi:</p>
-                        <p>{`3 700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oylik tolov miqdori:</p>
-                        <p>{`480 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Istemol krediti 23%dan`}</p>
-                    </div>
-                </div>
-                <div className='single_form_product_second'>
-                    <div>
-                        <p>Mavjud malumot {2}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Mavjud kredit va qarzlar:</p>
-                        <p>{`Qishloq Qurilish bank`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Asosiy qarz qoldigi:</p>
-                        <p>{`3 700 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Oylik tolov miqdori:</p>
-                        <p>{`480 000`}</p>
-                    </div>
-                    <div className='single_buyurtma_inputs'>
-                        <p>Izoh</p>
-                        <p>{`Istemol krediti 23%dan`}</p>
-                    </div>
-                </div>
-                <div className='flex_column margin_top_15'>
-                    <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {10000000} so`m</p>
-                    <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {1000000} so`m</p>
-                    <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {'22%'}</p>
-                </div>
+                {
+                    mainInfo?.loans?.length != 0 ? <>
+                        <h2 className='kl1_subtitle margin_top_30'>Buyurtmachining mavjud kredit va qarz majburiyatlari</h2>
+                        {
+                            mainInfo?.loans?.map((item,index)=>{
+                                return(
+                                    <div className='single_form_product_second' key={item?.id}>
+                                        <div>
+                                            <p>Mavjud malumot {index + 1}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Mavjud kredit va qarzlar:</p>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Asosiy qarz qoldigi:</p>
+                                            <p>{item?.main}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Oylik tolov miqdori:</p>
+                                            <p>{item?.monthly}</p>
+                                        </div>
+                                        <div className='single_buyurtma_inputs'>
+                                            <p>Izoh</p>
+                                            <p>{item?.comment}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        <div className='flex_column margin_top_15'>
+                            <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {ClientLoansMain()} so`m</p>
+                            <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {ClientLoansMonth()} so`m</p>
+                            <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {'32%'}</p>
+                        </div>
+                    </> : <></>
+                }
                 <h2 className='kl1_subtitle margin_top_30'>Oylik kredit tolovi ( eng katta tolov miqdori )</h2>
                 <div className='single_form_product_third'>
                     <div className='single_buyurtma_inputs'>
@@ -800,7 +738,7 @@ function SingleKL1() {
                 </div>
                 <div className='single_buyurtma_inputs margin_top_10'>
                     <p>Kredit tarixi</p>
-                    <p>{`Jami 7 marotaba kredit olgan, shu jumladan, Renesansdan 2 marotaba. Muntazam o‘z vaqtida to‘lagan. 30 kungacha kechiktirishlar soni - 0, 30 kundan ortiq kechiktirishlar soni - 0`}</p>
+                    <p>{mainInfo?.credit_history}</p>
                 </div>
             </div>
 
@@ -858,15 +796,15 @@ function SingleKL1() {
                 </div>
                 <div className='single_buyurtma_inputs'>
                     <p>Ajratilgan kreditning buyurtmachi uchun tasirini baholash:</p>
-                    <p>{`Ajratiladigan kreditga mijoz qoshimcha 150 litr LukOil moylarini, shuningdek, moy alishtirish jarayonida zaruriy bolgan avto ehtiyot qismlar savdosini ham yolga qoymoqchi. Birlamchi hisob kitoblar buyurtmachi daromadi qoshimcha 1 500 000 somga oshishini korsatmoqda.`}</p>
+                    <p>{mainInfo?.credit_impact}</p>
                 </div>
                 <div className='single_buyurtma_inputs margin_top_20'>
                     <p>Monitoring boyicha masul xodimning yakuniy xulosasi:</p>
-                    <p>{`дохода клиента достаточно для получения кредита`}</p>
+                    <p>{mainInfo?.conclusion}</p>
                 </div>
                 <div className='kl1_accepting'>
                     <p>Taqdim etilgan va toplangan malumotlar hamda kredit byurosidan olingan kredit tarixiga asoslanib men tomonimdan otkazilgan organish va tahlillar asosida ushbu buyurtma boyicha quiydagi yakuniy xulosamni kredit komissiyasida korib chiqish uchun taqdim etaman</p>
-                    <Radio.Group label=' ' value={true} size='sm' className='kl1_accepting_radio'>
+                    <Radio.Group label=' ' value={mainInfo?.status == 1 ? true : false} size='sm' className='kl1_accepting_radio'>
                         <div className='kl1_accept margin_bottom'><Radio color='success' className='radio_end' value={true}>Kredit ajratish</Radio></div>
                         <div className='kl1_accept'><Radio color='error' className='radio_end' value={false}>Rad etish</Radio></div>
                     </Radio.Group>
