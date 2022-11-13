@@ -153,10 +153,10 @@ function SingleAvto() {
                                 <p>Ro'yxat bo'yicha yashash manzili:</p>
                                 <p>{avtoInfo?.owner?.address}</p>
                             </div>
-                            <div className='single_buyurtma_inputs'>
+                            {/* <div className='single_buyurtma_inputs'>
                                 <p>Telefon raqami:</p>
                                 <p>{avtoInfo?.owner?.phone}</p>
-                            </div>
+                            </div> */}
                             <div className='single_buyurtma_inputs'>
                                 <p>Identifikatsiya raqami (JShShIR) :</p>
                                 <p>{avtoInfo?.owner?.pinfl}</p>
@@ -239,14 +239,14 @@ function SingleAvto() {
                                     }
                             
                                 </tbody>
-                                </table>
-                                <div className='endRow margin_top_20'>
-                                    <p className='kl1_jami'>JAMI: {totalSum()} so`m</p>
-                                </div>
+                            </table>
+                            <div className='endRow margin_top_20'>
+                                <p className='kl1_jami'>JAMI: {totalSum()} so`m</p>
                             </div>
+                        </div>
                     </div>
-                    </div>
-                </>
+                </div>
+            </>
             )
         }
       </div>

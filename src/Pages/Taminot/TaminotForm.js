@@ -13,7 +13,6 @@ function TaminotForm() {
 
     const location = useLocation()
     const orderId = location?.state?.id
-    console.log(orderId)
 
     const colourStyles = {
         control: styles => ({ ...styles, backgroundColor: 'white' }),

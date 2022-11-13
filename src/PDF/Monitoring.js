@@ -1,10 +1,13 @@
 import React, {useState,useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineRollback, AiOutlinePrinter } from 'react-icons/ai'
 
 function Monitoring() {
 
     const [cars,setCars] = useState([])
+
+    const location = useLocation()
+    const orderId = location?.state?.id
 
     useEffect(()=>{
         setCars(
@@ -33,7 +36,7 @@ function Monitoring() {
   return (
     <>
         <div className='pdf_header'>
-            <Link to='/buyurtma/singleBuyurtma' className='clientform_back'>
+            <Link to={`/buyurtma/singleBuyurtma/${orderId}`} className='clientform_back'>
             <AiOutlineRollback/>
                 Back
             </Link>

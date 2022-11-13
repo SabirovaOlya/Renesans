@@ -17,7 +17,7 @@ function Section() {
     // Alert
     function Success() {
         Swal.fire({
-            title: "Bo'lim o'zgartirildi",
+            title: "Bo'lim qo'shildi",
             icon: 'success',
             confirmButtonText: 'Ok'
         })
@@ -87,9 +87,9 @@ function Section() {
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label === 'pagination.next') {
+        if (label === 'Next &raquo;') {
             return '>'
-        } else if (label === 'pagination.previous') {
+        } else if (label === '&laquo; Previous') {
             return '<'
         } else {
             return label

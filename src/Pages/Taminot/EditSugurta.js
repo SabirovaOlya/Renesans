@@ -68,7 +68,8 @@ function EditSugurta() {
         let info = {
             order_id:orderId,
             type:'insurance',
-            insurance:{...data, id:sugurtaEdit?.id}
+            insurance:{...data, id:sugurtaEdit?.id},
+            paths:[]
         }
 
         https
@@ -124,7 +125,7 @@ function EditSugurta() {
                 >  
                 </Input>
                 <Input 
-                    label="Siyosat raqami"
+                    label="Sugurta polis raqami"
                     width='100%'
                     color="secondary"
                     bordered 

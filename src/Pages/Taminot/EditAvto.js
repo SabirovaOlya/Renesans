@@ -511,7 +511,7 @@ function EditAvto() {
                                                 value={cars?.find(x => x.id === item.id).number}
                                                 onChange={(e)=>{
                                                     const newArray = [...cars]
-                                                    newArray[index].number = e.target.value
+                                                    newArray[index].number = e.target.value.toUpperCase()
                                                     setCars(newArray)
                                                 }}
                                             >

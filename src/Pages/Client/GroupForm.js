@@ -192,6 +192,8 @@ import https from '../../assets/https';
       let newvalue =[]
       groupMembers?.map(item =>{
         newvalue.push(Object.values(Object.values(item)))
+        item.code = `99${item.code}`
+        console.log(item.code);
         delete item.id
       })
       newvalue.push(nameGroup)
@@ -202,7 +204,7 @@ import https from '../../assets/https';
         let data = {
           group_name: nameGroup,
           code:Math.floor(Math.random() * (10000 - 1 + 1)) + 10000,
-          client: groups
+          client: groupMembers
         }
         data.client?.map(item =>{
           if(item.doc_type.label){
@@ -213,7 +215,6 @@ import https from '../../assets/https';
         .post('/clients', data)
         .then(res=>{
           console.log(data)
-          // Addition()
           Success()
         })
         .catch(err =>{
@@ -346,7 +347,7 @@ import https from '../../assets/https';
                   setGroups(newGroupInfo)
                 }}
               />
-              <Input
+              {/* <Input
                 required
                 width='100%'
                 clearable
@@ -355,7 +356,7 @@ import https from '../../assets/https';
                 className='vall'
                 placeholder='tuman'
                 color="secondary"
-              />
+              /> */}
               <Input
                 required
                 width='100%'
@@ -430,7 +431,7 @@ import https from '../../assets/https';
                 className='vall'
                 labelLeft='+998'
                 placeholder='991235678'
-                type="tel"
+                type="number"
                 color="secondary"
                 value={groups.find(x => x.id === item.id).phone}
                 onChange={e => {

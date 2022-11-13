@@ -18,7 +18,7 @@ function Taminot() {
 
     function Warn() {
         Swal.fire({
-            title: "Parolni kiriting",
+            title: "Kodni kiriting",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -55,6 +55,7 @@ function Taminot() {
         .post('/check/order/code', dataId)
         .then(res =>{
             navigate("/taminot/form", {state:{id:res?.data?.order_id}})
+            console.log(res?.data?.order_id)
         })
         .catch(err =>{
             if(err?.request?.status === 404){
@@ -97,9 +98,9 @@ function Taminot() {
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label === 'pagination.next') {
+        if (label === 'Next &raquo;') {
             return '>'
-        } else if (label === 'pagination.previous') {
+        } else if (label === '&laquo; Previous') {
             return '<'
         } else {
             return label
@@ -158,7 +159,7 @@ function Taminot() {
                     bordered
                     width='300px'
                     color='secondary'
-                    label='Buyurtma paroli'
+                    label='Buyurtma kodi'
                     placeholder='12345'
                     type='number'
                     clearable

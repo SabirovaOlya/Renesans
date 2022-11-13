@@ -22,7 +22,7 @@ function Buyurtma() {
     }
     function Error404() {
         Swal.fire({
-            title: "Bunday buyurtma yo'q",
+            title: "Bunday klient yo'q",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -58,9 +58,9 @@ function Buyurtma() {
     }
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label === 'pagination.next') {
+        if (label === 'Next &raquo;') {
             return '>'
-        } else if (label === 'pagination.previous') {
+        } else if (label === '&laquo; Previous') {
             return '<'
         } else {
             return label
@@ -149,7 +149,7 @@ function Buyurtma() {
                     bordered
                     width='300px'
                     color='secondary'
-                    label='Foydalanuvchi paroli'
+                    label='Klient kodi'
                     placeholder='12345'
                     clearable
                     onChange={(e) => setModalCode(e.target.value)}

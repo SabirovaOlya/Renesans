@@ -26,10 +26,6 @@
     margin-left: 10px;
 }
 .pdf_container{
-    /* position: fixed;
-    z-index: 1999;
-    top: 0;
-    left: 0; */
     width: 100%;
     min-height: 100vh;
     display: flex;
@@ -546,19 +542,20 @@
 
 /* MEDIA PRINT */
 @media print {
+    .body{
+        position: relative;
+    }
     .pdf_container{
         position: absolute;
         z-index: 1999;
-        overflow-x:scroll;
+        overflow-y:scroll;
         top: 0;
         left: 0;
         width: 110vw;
-        /* padding-top: 30px; */
         margin-top: 0;
         margin: 0 !important;
         font-size: 14px;
-        padding-left: 0px;
-        padding-right: 0px;
+        padding: 0px;
     }
     main{
         margin-left: 0 !important;

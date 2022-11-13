@@ -43,10 +43,14 @@ function EditShartnama() {
                 setShartnama({ ...newRes, order_id: res.data.data.order.id })
                 setBackShartnama({ ...newRes, order_id: res.data.data.order.id })
                 setCash(res.data.data.type_credit)
-                console.log(res.data.data);
                 setType(res.data.data.type_repayment)
-                console.log(res.data.data.type_repayment);
                 setLoading(false)
+                let bank_info={
+                    ssks:res?.data?.data?.ssks,
+                    bank_name:res?.data?.data?.bank_name,
+                    bank_code:res?.data?.data?.bank_code
+                }
+                setNewData(bank_info)
             })
             .catch(err => {
                 Warn()
@@ -63,7 +67,6 @@ function EditShartnama() {
 
     // Edit
     function Edit() {
-        console.log(shartnama)
         https
             .patch(`/contracts/${id}`, checkingData(shartnama))
             .then(res => {
@@ -106,7 +109,6 @@ function EditShartnama() {
 
     function TypeVer(){
         if(type){
-            console.log(type);
             return(
                 <div className='shart-selector'>
                     <p>So'ndirish tartibi</p>
@@ -146,7 +148,7 @@ function EditShartnama() {
                         clearable
                         type='number'
                         label="SSKS / Hisobraqam"
-                        value={shartnama?.ssks}
+                        value={newData?.ssks}
                         bordered
                         color="secondary"
                         onChange={(event) => {
@@ -158,7 +160,7 @@ function EditShartnama() {
                         width='100%'
                         clearable
                         label="Bank nomi"
-                        value={shartnama?.bank_name}
+                        value={newData?.bank_name}
                         bordered
                         color="secondary"
                         onChange={(event) => {
@@ -171,7 +173,7 @@ function EditShartnama() {
                         clearable
                         type='number'
                         label="Bank MFOsi"
-                        value={shartnama?.bank_code}
+                        value={newData?.bank_code}
                         bordered
                         color="secondary"
                         onChange={(event) => {
@@ -311,7 +313,7 @@ function EditShartnama() {
                             className='vall'
                             width='100%'
                             clearable
-                            type='number'
+                            type='text'
                             label="Shartnoma raqami"
                             value={shartnama?.contract_num}
                             bordered

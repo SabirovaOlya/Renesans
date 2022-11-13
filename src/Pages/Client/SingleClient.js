@@ -34,7 +34,7 @@ function SingleClient() {
                 <div className='pdf_margin_top_15'>
                     <div className='single_buyurtma_info'>
                         <div className='single_buyurtma_inputs'>
-                            <p>Parol:</p>
+                            <p>Klient kodi:</p>
                             <p>{client?.code}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
@@ -42,16 +42,16 @@ function SingleClient() {
                             <p>{client?.birth_date}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Manzil:</p>
+                            <p>Doimi manzil:</p>
                             <p>{client?.address}</p>
-                        </div>
-                        <div className='single_buyurtma_inputs'>
-                            <p>Vaqtinchalik yashash joyi:</p>
-                            <p>{client?.temp_address}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
                             <p>Shahar:</p>
                             <p>{client?.city}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Vaqtinchalik yashash joyi:</p>
+                            <p>{client?.temp_address}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
                             <p>Fuqarolik:</p>
@@ -66,7 +66,7 @@ function SingleClient() {
                             <p>{client?.pinfl}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Telefon Nomer:</p>
+                            <p>Telefon raqami:</p>
                             <p>+998 {client?.phone}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
@@ -74,19 +74,19 @@ function SingleClient() {
                             <p>{client?.doc_type}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Ishlab chiqarish raqami:</p>
+                            <p>Hujjat seriya raqami:</p>
                             <p>{client?.serial_num}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Kim bilan chiqarildi:</p>
+                            <p>Kim tomondan berildi:</p>
                             <p>{client?.issued_by}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Chiqarilgan sana:</p>
+                            <p>Hujjat berilgan sana:</p>
                             <p>{client?.issued_date}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Ish:</p>
+                            <p>Ish lavozmi:</p>
                             <p>{client?.job}</p>
                         </div>
                         {/* <div className='single_group margin_top_30'>

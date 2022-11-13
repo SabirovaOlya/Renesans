@@ -27,7 +27,8 @@ function Sugurta({orderId}) {
       let info = {
           order_id:orderId,
           type:'insurance',
-          insurance:data
+          insurance:data,
+          paths:[]
       }
       https
       .post('/supply-info', info)
@@ -58,7 +59,7 @@ function Sugurta({orderId}) {
             >  
             </Input>
             <Input 
-                label='Siyosat raqami'
+                label='Sugurta polis raqami'
                 placeholder='12345678'
                 width='100%'
                 color="secondary"

@@ -52,9 +52,9 @@ function KL1Form() {
   }
 
   function Label(a){
-    if(a == 'pagination.previous'){
+    if(a == '&laquo; Previous'){
       return '<'
-    }else if(a == 'pagination.next'){
+    }else if(a == 'Next &raquo;'){
       return '>'
     }else{
       return a
@@ -77,7 +77,7 @@ function KL1Form() {
       https
       .post('/check/order/code', dataId)
       .then(res =>{
-          navigate("/kl1/addkl1", {state:{id:res?.data?.data?.order?.id}})
+          navigate("/kl1/addkl1", {state:{id:res?.data?.order_id}})
       })
       .catch(err =>{
           if(err?.request?.status === 404){
@@ -166,7 +166,7 @@ function KL1Form() {
                                   <p className='li_shartnoma'>{item?.mark_date}</p>
                                   <div className='userButtons_shartnoma'>
                                       <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                      <button><Link to={`/kl1/editkl1/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                      <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                       <button onClick={() => Delete(item?.id)}><i className='bx bx-trash'></i></button>
                                   </div>
                               </li>

@@ -1,14 +1,19 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineRollback, AiOutlinePrinter } from 'react-icons/ai'
 import { WindowSharp } from '@mui/icons-material'
 
 function S1Form() {
+
     const [ state, setState ] = useState(true)
+
+    const location = useLocation()
+    const orderId = location?.state?.id
+
     return (
         <>
             <div className='pdf_header'>
-                <Link to='/buyurtma/singleBuyurtma' className='clientform_back'>
+                <Link to={`/buyurtma/singleBuyurtma/${orderId}`} className='clientform_back'>
                 <AiOutlineRollback/>
                 Back
                 </Link>

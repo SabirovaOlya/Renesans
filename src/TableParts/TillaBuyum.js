@@ -1,8 +1,8 @@
-import { Input } from '@nextui-org/react';
 import React, { useState } from 'react';
-import { Radio } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
 import https from '../assets/https';
+import { useForm } from "react-hook-form";
+import { Input } from '@nextui-org/react';
+import { Radio } from "@nextui-org/react";
 
 // Icons
 import { AiOutlineClear, AiOutlineUserAdd} from 'react-icons/ai';
@@ -14,6 +14,8 @@ import { v4 as uuidv4 } from 'uuid';
 import '../Pages/Taminot/Taminot.css';
 
 function TillaBuyum({orderId}) {
+    console.log(orderId);
+
     // Alert
     function Success() {
         Swal.fire({
@@ -111,7 +113,8 @@ function TillaBuyum({orderId}) {
             type:'gold',
             possessor:'client',
             valued_by:bahoType,
-            gold: products
+            gold: products,
+            paths:[]
         }
         Object.assign(info, {percent:(giveSum == 0 || TotalSum() == 0) ? 0 : ((giveSum / TotalSum())*100).toFixed(1)})
 
@@ -230,8 +233,8 @@ function TillaBuyum({orderId}) {
                     label='Tilla buyumlarning baholangan qiymati'
                     className='taminot_tableform_input'
                     width='100%'
-                    type='number'
-                    value={TotalSum()}
+                    type='text'
+                    value={TotalSum().toLocaleString()}
                     color="secondary"
                     readOnly
                 />
@@ -372,14 +375,13 @@ function TillaBuyum({orderId}) {
                                 />
                                 <Input
                                     bordered
-                                    type='number'
+                                    type='text'
                                     label='Baholangan qiymati(som)'
                                     className='taminot_tableform_input'
                                     placeholder="1"
                                     color="secondary"
                                     readOnly
-                                    value={bahoItems.find(x => x.id === item.id).sum}
-                                    
+                                    value={bahoItems.find(x => x.id === item.id).sum.toLocaleString()} 
                                 />
                             </div>
                         </div>

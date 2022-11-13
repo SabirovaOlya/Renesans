@@ -48,8 +48,7 @@ function Shartnama() {
         https
         .post('/check/order/code', dataId)
         .then(res =>{
-            navigate("/shartnama/addshartnama", {state:{id:res?.data?.data?.order?.id}})
-            console.log(res.data.data.order.id);
+            navigate("/shartnama/addshartnama", {state:{id:res?.data?.order_id}})
         })
         .catch(err =>{
             if(err?.request?.status === 404){
@@ -82,9 +81,9 @@ function Shartnama() {
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label === 'pagination.next') {
+        if (label === 'Next &raquo;') {
             return '>'
-        } else if (label === 'pagination.previous') {
+        } else if (label === '&laquo; Previous') {
             return '<'
         } else {
             return label
@@ -118,7 +117,7 @@ function Shartnama() {
                     bordered
                     width='300px'
                     color='secondary'
-                    label='Buyurtma code'
+                    label='Buyurtma kodi'
                     placeholder='12345'
                     clearable
                     onChange={(e) => setModalCode(e.target.value)}

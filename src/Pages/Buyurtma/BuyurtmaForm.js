@@ -73,7 +73,7 @@ function BuyurtmaForm() {
     }
     function Warn() {
         Swal.fire({
-            title: "Error",
+            title: "Xato",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -136,24 +136,18 @@ function BuyurtmaForm() {
     }
 
     const onSubmit = (data) => {
-        if (status === "accepted") {
-            submitData({ ...data, product_id: sectionRole, sign_committee: permission, status: status })
-        } else {
-            submitData({ ...data, product_id: sectionRole, sign_committee: permission, status: status, reason: reason })
-        }
-        function submitData(newData){
-            https
-            .post('orders', newData)
-            .then(res => {
-                console.log(newData)
-                Success()
-            })
-            .catch(err => {
-                Warn()
-                console.log(err)
-                console.log(newData);
-            })
-        }
+        let newData = { ...data, product_id: sectionRole, sign_committee: permission, end_date:''}
+        https
+        .post('orders', newData)
+        .then(res => {
+            console.log(newData)
+            Success()
+        })
+        .catch(err => {
+            Warn()
+            console.log(err)
+            console.log(newData);
+        })
     }
 
 
@@ -190,7 +184,7 @@ function BuyurtmaForm() {
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'
-                            label="Buyurtma kod"
+                            label="Buyurtma kodi"
                             placeholder='1234'
                             bordered
                             color="secondary"
@@ -212,9 +206,7 @@ function BuyurtmaForm() {
                             clearable
                             label="So'ralayotgan qarz miqdor"
                             placeholder="20 000 000 som"
-                            type='text'
-                            inputMode='numeric'
-                            autoComplete="on"
+                            type='number'
                             bordered
                             color="secondary"
                             {...register("sum", { required: true })}
@@ -233,7 +225,7 @@ function BuyurtmaForm() {
                             className='buyurtma_form_inputs'
                             width='100%'
                             clearable
-                            label="So'ralayotgan muddat"
+                            label="So'ralayotgan muddat (oy)"
                             placeholder="4 oy"
                             bordered
                             color="secondary"
@@ -284,13 +276,13 @@ function BuyurtmaForm() {
                             color="secondary"
                             {...register("salary", { required: true })}
                         />
-                        <Radio.Group label=' ' defaultValue={"accepted"} onChange={(e) => setStatus(e)} size='sm' className='kl1_accepting_radio buyurtma_radio'>
+                        {/* <Radio.Group label=' ' defaultValue={"accepted"} onChange={(e) => setStatus(e)} size='sm' className='kl1_accepting_radio buyurtma_radio'>
                             <div className='kl1_accept'><Radio color='success' className='radio_end' value={"accepted"}>Tasdiqlash</Radio></div>
                             <div className='kl1_accept'><Radio color='error' className='radio_end' value={"denied"}>Rad etish</Radio></div>
-                        </Radio.Group>
-                        {
+                        </Radio.Group> */}
+                        {/* {
                             putTextArea()
-                        }
+                        } */}
                     </div>
                     <div className='submit-buttons'>
                         <button className='client_submit reset' onClick={openReset}>

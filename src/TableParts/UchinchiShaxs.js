@@ -79,7 +79,8 @@ function UchinchiShaxs({orderId}) {
         let info = {
             order_id:orderId,
             type:'guarrantor',
-            owner:newData
+            owner:newData,
+            paths:[]
         }
 
         https

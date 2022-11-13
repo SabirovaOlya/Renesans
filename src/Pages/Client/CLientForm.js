@@ -48,25 +48,7 @@ function CLientForm() {
   const [section, setSection] = useState(sectionOptions[0])
   const [sectionRole, setSectionRole] = useState(sectionOptions[0].label)
 
-  // async function fetchSection() {
-  //   const ress = await https.get('/all/sections')
-  //   let selectSection = []
-  //   ress?.data?.data?.map((item)=>{
-  //       selectSection.push(
-  //           { value: item?.id, label: item?.name }
-  //       )
-  //   })
-  //   setSectionOptions(selectSection)
-  //   setSection(selectSection[0])
-  //   setSectionRole(selectSection[0].label)
-  // }
-
-  // useEffect(() => {
-  //   fetchSection()
-  // },[]);
-
   // Multi DatePicker Configure
-
   const data = ['06/22/2022', '06/23/2022', '06/24/2022', '06/25/2022']
 
   let newData = data.map((data) => new Date(data))
@@ -91,14 +73,14 @@ function CLientForm() {
   // Alerts
   function Success() {
     Swal.fire({
-        title: "Client qoshildi",
+        title: "Klient qoshildi",
         icon: 'success',
         confirmButtonText: 'Ok'
     })
   }
   function Warn() {
       Swal.fire({
-          title: "Error",
+          title: "Xato",
           icon: 'error',
           confirmButtonText: 'Ok'
       })
@@ -120,7 +102,10 @@ function CLientForm() {
   }
 
   const onSubmit = (data) => {
-    let info = {...data, doc_type: sectionRole}
+    let newData = JSON.parse(JSON.stringify(data))
+    let info = {...newData, doc_type: sectionRole}
+    info.code = `99${info?.code}`
+    
     https
     .post('/clients', info)
     .then(res => {
@@ -167,7 +152,7 @@ function CLientForm() {
             bordered
             color="secondary"
             type='number'
-            {...register("code", { required: true, minLength: 8, maxLength: 8})}
+            {...register("code", { required: true, minLength:6, maxLength: 6})}
           />
           <Input
             width='100%'
@@ -212,7 +197,7 @@ function CLientForm() {
             required
             {...register("city", { required: true })}
           />
-          <Input
+          {/* <Input
             width='100%'
             clearable
             label="Tuman"
@@ -222,7 +207,7 @@ function CLientForm() {
             color="secondary"
             required
             // {...register("region", { required: false })}
-          />
+          /> */}
           <Input
             width='100%'
             clearable
@@ -277,7 +262,7 @@ function CLientForm() {
             pattern='[0-9]'
             labelLeft='+998'
             placeholder='991235678'
-            type="tel"
+            type="number"
             color="secondary"
             required
             {...register("phone", { required: true })}

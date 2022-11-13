@@ -1,12 +1,35 @@
 import React, {useState,useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineRollback, AiOutlinePrinter } from 'react-icons/ai'
+import https from '../assets/https'
 
 function G1Form() {
 
     const [products, setProducts] = useState([])
 
+    const location = useLocation()
+    const orderId = location?.state?.id
+
+    const [ documentInfo, setDocumentInfo] = useState({})
+    const [orderInfo, setOrderInfo] = useState({})
+
     useEffect(()=>{
+        https
+        .post(`/g1/${orderId}`, {})
+        .then(res =>{
+            setDocumentInfo(res?.data)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+
+        https
+        .get(`/orders/${orderId}`)
+        .then(res =>{
+            setOrderInfo(res?.data)
+        })
+
+
         setProducts(
             [
                 {
@@ -36,43 +59,30 @@ function G1Form() {
                 }
             ]
         )
-    })
+    },[])
 
-    function NumberSpace(a){
-        return (a).toLocaleString()
-    }
-
-    const getMiqdor = () => {
-        const newMiqdor = []
-        products.map((item, index) => {
-            newMiqdor.push(item.miqdor)
+    function GetSummaText(arr, section){
+        let array = []
+        arr?.map((item, index) => {
+            array.push(item[section])
         })
-        let totalMiqdor = newMiqdor.reduce((prev, current) => prev + current, 0)
-        return totalMiqdor.toLocaleString()
+        let total = array.reduce((prev, current) => prev + current, 0)
+        return total.toLocaleString()
     }
 
-    const getFoiz = () => {
-        const newFoiz = []
-        products.map((item, index) => {
-            newFoiz.push(item.foiz)
+    function GetSumma(arr, section){
+        let array = []
+        arr?.map((item, index) => {
+            array.push(item[section])
         })
-        let totalFoiz = newFoiz.reduce((prev, current) => prev + current, 0)
-        return totalFoiz.toLocaleString()
-    }
-
-    const getJami = () => {
-        const newJami = []
-        products.map((item, index) => {
-            newJami.push(item.foiz +item.miqdor)
-        })
-        let totalJami = newJami.reduce((prev, current) => prev + current, 0)
-        return totalJami.toLocaleString()
-    }
+        let total = array.reduce((prev, current) => prev + current, 0)
+        return total
+    }  
 
   return (
     <>
         <div className='pdf_header'>
-            <Link to='/buyurtma/singleBuyurtma' className='clientform_back'>
+            <Link to={`/buyurtma/singleBuyurtma/${orderId}`} className='clientform_back'>
             <AiOutlineRollback/>
             Back
             </Link>
@@ -95,20 +105,20 @@ function G1Form() {
                 JADVALI
             </p>
             <p className='text_black_18 text_center pdf_margin_top_10'>
-                Usmonova Muyassar Abduvaliyevna
+                {documentInfo?.client?.name}
             </p>
             <div className='pdf_g1_table_first pdf_margin_top_20'>
                 <div>
                     <p>Mikroqarzning umumiy miqdori</p>
-                    <p>20 000 000,00 so‘m</p>
+                    <p>{documentInfo?.order?.sum?.toLocaleString()} so‘m</p>
                 </div>
                 <div>
                     <p>Mikroqarz berilgan sana</p>
-                    <p>26.03.2022</p>
+                    <p>{documentInfo?.order?.order_date}</p>
                 </div>
                 <div>
                     <p>Mikroqarzni so‘ndirish sanasi</p>
-                    <p>26.07.2022</p>
+                    <p>{documentInfo?.graph?.[documentInfo?.graph?.length - 1]?.date_of_payment}</p>
                 </div>
             </div>
             <div className='pdf_g1_table_second pdf_margin_top_30'>
@@ -121,15 +131,15 @@ function G1Form() {
                     <p>Jami</p>
                 </div>
                 {
-                    products?.map((item,index)=>{
+                    documentInfo?.graph?.map((item,index)=>{
                         return(
-                            <div className='g1_table2_header'>
-                                <p>{item?(index +1):0}</p>
-                                <p>{item?.date}</p>
-                                <p>{NumberSpace(item?.qoldi)} so'm</p>
-                                <p>{NumberSpace(item?.miqdor)} so'm</p>
-                                <p>{NumberSpace(item?.foiz)} so'm</p>
-                                <p>{NumberSpace(item?(item.miqdor+ item.foiz):0)} so'm</p>
+                            <div className='g1_table2_header' key={item?.['#']}>
+                                <p>{index +1}</p>
+                                <p>{item?.date_of_payment}</p>
+                                <p>{item?.principal_debt_left?.toLocaleString()} so'm</p>
+                                <p>{item?.monthly_payment?.toLocaleString()} so'm</p>
+                                <p>{item?.principal_debt?.toLocaleString()} so'm</p>
+                                <p>{(item?.monthly_payment + item?.principal_debt)?.toLocaleString()} so'm</p>
                             </div>
                         )
                     })
@@ -138,9 +148,9 @@ function G1Form() {
                     <p></p>
                     <p className='black_text'>Jami:</p>
                     <p></p>
-                    <p className='black_text'>{getMiqdor()} so'm</p>
-                    <p className='black_text'>{getFoiz()} so'm</p>
-                    <p className='black_text'>{getJami()} so'm</p>
+                    <p className='black_text'>{GetSummaText(documentInfo?.graph, 'monthly_payment')} so'm</p>
+                    <p className='black_text'>{GetSummaText(documentInfo?.graph, 'principal_debt')} so'm</p>
+                    <p className='black_text'>{(GetSumma(documentInfo?.graph, 'monthly_payment') + GetSumma(documentInfo?.graph, 'principal_debt'))?.toLocaleString()} so'm</p>
                 </div>
             </div>
             <div className='text_degree'>
@@ -148,20 +158,20 @@ function G1Form() {
                     <div className='pdf_end_2sections_section'>
                         <p className='black_text'>Qarz beruvchi:</p>
                         <div className='pdf_margin_top_20 section_space_pdf'>
-                            <p className='black_text text_center'>"Renesans Mikrokredit Tashkiloti" MChJ Guliston filiali</p>
-                            <p className='pdf_margin_top_20'>Sirdaryo viloyati, Guliston shahri, Samarqand ko‘chasi, Yangi bozor mavzesi, Xumo savdo majmuasi.</p>
-                            <p>H/r 20 216 000 004 636 656 001 MFO 00996 ATB Universal Bank Toshkent filiali</p>
-                            <p>STIR 300 515 648    OKED 64920</p>
+                            <p className='black_text text_center'>{documentInfo?.branch?.name}</p>
+                            <p className='pdf_margin_top_20'>{documentInfo?.branch?.address}</p>
+                            <p>STIR:{documentInfo?.branch?.requisite}  OKED:{documentInfo?.branch?.int}</p>
+                            <p>Tel:{documentInfo?.branch?.phone}</p>
                         </div>
                     </div>
                     <div className='pdf_end_2sections_section'>
                         <p className='black_text'>Qarz oluvchi:</p>
                         <div className='pdf_margin_top_20 section_space_pdf'>
-                            <p className='black_text text_center'>Usmonova Muyassar Abduvaliyevna</p>
-                            <p className='pdf_margin_top_20'>AB2300850 raqamli O‘zR Fuqarosining biometrik pasporti   17.12.2015 da Sirdaryo viloyati Guliston shahar IIB tomonidan berilgan.</p>
-                            <p>Yashash manzili: Sirdaryo viloyati Guliston shahri Begmatov ko‘chasi 46-uy 10-xonadon</p>
-                            <p>JSh ShIR: 41-3077-9287-0060</p>
-                            <p>Telefon: 99/4703535"</p>
+                            <p className='black_text text_center'>{documentInfo?.client?.name}</p>
+                            <p className='pdf_margin_top_20'>{documentInfo?.client?.serial_num} raqamli {documentInfo?.client?.doc_type} {documentInfo?.client?.issued_date} da {documentInfo?.client?.issued_by} tomonidan berilgan.</p>
+                            <p>Yashash manzili: {documentInfo?.client?.address}</p>
+                            <p>JSh ShIR: {documentInfo?.client?.pinfl}</p>
+                            {/* <p>Telefon: {documentInfo?.client?.}</p> */}
                         </div>
                     </div>
                 </div>
@@ -169,16 +179,16 @@ function G1Form() {
                     <div className='pdf_end_2sections_section'>
                         <div className='between'>
                             <p>Boshqaruvchi</p>
-                            <p>Muxammadov B.M.</p>
+                            <p>{documentInfo?.branch?.head_of_branch}</p>
                         </div>
                         <div className='between pdf_margin_top_20'>
                             <p>Bosh buxgalter</p>
-                            <p>Sultonova G.M.</p>
+                            <p>{documentInfo?.branch?.chief_accountant}</p>
                         </div>
                     </div>
                     <div className='pdf_end_2sections_section'>
                         <div className='between'>
-                            <p>Usmonova Muyassar Abduvaliyevna</p>
+                            <p>{documentInfo?.client?.name}</p>
                             <p></p>
                         </div>
                         <div className='between pdf_margin_top_20'>

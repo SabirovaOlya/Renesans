@@ -1,10 +1,12 @@
 import React, {useState,useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useLocation } from 'react-router-dom'
 import { AiOutlineRollback, AiOutlinePrinter } from 'react-icons/ai'
 
 function AvtoForm() {
 
     const [products, setProducts] = useState([])
+    const location = useLocation()
+    const orderId = location?.state?.id
 
     useEffect(()=>{
         setProducts(
@@ -72,7 +74,7 @@ function AvtoForm() {
   return (
     <>
        <div className='pdf_header'>
-            <Link to='/buyurtma/singleBuyurtma' className='clientform_back'>
+            <Link to={`/buyurtma/singleBuyurtma/${orderId}`} className='clientform_back'>
             <AiOutlineRollback/>
             Back
             </Link>

@@ -29,9 +29,9 @@ function Client() {
 
     // Arrow putting Function
     function arrowFunc(label) {
-        if (label === 'pagination.next') {
+        if (label === 'Next &raquo;') {
             return '>'
-        } else if (label === 'pagination.previous') {
+        } else if (label === '&laquo; Previous') {
             return '<'
         } else {
             return label
@@ -48,12 +48,17 @@ function Client() {
             .delete(`/clients/${clientIndex}`)
             .then(res => {
                 setClients(clients.filter((client, clientId) => client.id !== clientIndex))
+                deleteWarn()
             })
             .catch(err => console.log(err))
     }
     // Alert Modals
     function deleteWarn(){
-        
+        Swal.fire({
+            title: "Klient o'chirildi",
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        })
     }
 
     return (

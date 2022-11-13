@@ -24,7 +24,7 @@ function EditClient() {
     }
     function Warn() {
         Swal.fire({
-            title: "Error",
+            title: "Xato",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -234,21 +234,21 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Ishlab chiqarish raqami"
+                    label="Hujjat seriya raqami"
                     value={client?.serial_num}
                     placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
                         let newClient = { ...client }
-                        newClient.serial_num = e.target.value
+                        newClient.serial_num = e.target.value.toUpperCase()
                         setClient(newClient)
                     }}
                 />
                 <Input
                     width='100%'
                     bordered
-                    label="Kim bilan chiqarildi"
+                    label="Kim tomondan berildi"
                     value={client?.issued_by}
                     placeholder='filial'
                     className='filial_input'
@@ -262,7 +262,7 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Chiqarilgan sana"
+                    label="Hujjat berilgan sana"
                     type='date'
                     value={client?.issued_date}
                     placeholder='filial'
@@ -277,7 +277,7 @@ function EditClient() {
                 <Input
                     width='100%'
                     bordered
-                    label="Ish"
+                    label="Ish lavozmi"
                     value={client?.job}
                     placeholder='filial'
                     className='filial_input'

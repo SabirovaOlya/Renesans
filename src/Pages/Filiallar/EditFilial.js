@@ -37,10 +37,9 @@ function EditFilial() {
             .then(res => {
                 setFilial(res.data.data)
                 setBackFilial(res.data.data)
-                Success()
             })
             .catch(err => {
-                Warn()
+                console.log(err);
             })
     }, []);
 

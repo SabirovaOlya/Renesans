@@ -234,7 +234,7 @@ function Transport({orderId}) {
             possessor: possessor,
             valued_by: valuedNumber,
             auto: transports,
-            images: image
+            paths: image
         }
         Object.assign(info.owner, {doc_type: ownerSelector})
         Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
@@ -357,7 +357,8 @@ function Transport({orderId}) {
                     </Input>  
                     <Input 
                         label='Baholangan qiymati'
-                        value={GetTotalSum()}
+                        type='text'
+                        value={GetTotalSum().toLocaleString()}
                         readOnly
                         width='100%'
                         color="secondary"
@@ -423,7 +424,7 @@ function Transport({orderId}) {
                                                 value={transportProducts?.find(x => x.id === item.id).number}
                                                 onChange={(e)=>{
                                                     const newArray = [...transportProducts]
-                                                    newArray[index].number = e.target.value
+                                                    newArray[index].number = e.target.value.toUpperCase()
                                                     setTransportProducts(newArray)
                                                 }}
                                             >

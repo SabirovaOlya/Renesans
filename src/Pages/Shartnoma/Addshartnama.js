@@ -157,7 +157,6 @@ function Addshartnama() {
                         readOnly
                         value={orderId}
                         label="Buyurtma Code"
-                        placeholder="58,00%"
                         bordered
                         color="secondary"
                         {...register("order_id", { required: true })}
@@ -240,7 +239,7 @@ function Addshartnama() {
                         className='vall'
                         width='100%'
                         clearable
-                        type='number'
+                        type='text'
                         label="Shartnoma raqami"
                         placeholder="34"
                         bordered

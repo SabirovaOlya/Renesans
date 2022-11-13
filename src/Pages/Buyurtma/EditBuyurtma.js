@@ -76,7 +76,7 @@ function EditBuyurtma() {
                 setBackOrder(res?.data)
                 setStatus(res?.data?.status)
                 setChecked(res?.data?.sign_committee)
-
+                console.log(res?.data);
             })
             .catch(err => {
                 console.log(err);
@@ -196,6 +196,7 @@ function EditBuyurtma() {
             .catch(err => {
                 console.log(err);
                 Warn()
+                console.log(data);
             })
     }
 
@@ -246,7 +247,7 @@ function EditBuyurtma() {
                 <Input
                     width='100%'
                     bordered
-                    label="Buyurtma Code"
+                    label="Buyurtma kodi"
                     value={order?.code}
                     placeholder='filial'
                     className='filial_input'
@@ -291,6 +292,21 @@ function EditBuyurtma() {
                     }
                 </div>
                 <Input
+                    className='filial_input'
+                    width='100%'
+                    label="So'ralayotgan muddat (oy)"
+                    placeholder="4 oy"
+                    value={order?.time}
+                    bordered
+                    color="secondary"
+                    type='number'
+                    onChange={(e) => {
+                        let newOrder = { ...order}
+                        newOrder.time = e.target.value
+                        setOrder(newOrder)
+                    }}
+                        />
+                <Input
                     width='100%'
                     bordered
                     label="Maqsadi"
@@ -322,6 +338,7 @@ function EditBuyurtma() {
                     width='100%'
                     bordered
                     label="Buyurtma raqami"
+                    value={order?.order_number}
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -335,6 +352,7 @@ function EditBuyurtma() {
                     bordered
                     label="Buyurtma protokol raqami"
                     className='filial_input'
+                    value={order?.protocol_number}
                     color="secondary"
                     onChange={(e) => {
                         let newOrder = { ...order }
@@ -342,12 +360,12 @@ function EditBuyurtma() {
                         setOrder(newOrder)
                     }}
                 />
-                {
+                {/* {
                     RadioButton()
                 }
                 {
                     putTextArea()
-                }
+                } */}
                 <div className='xodim_buttons'>
                     <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>
                         O'zgarishni bekor qilish

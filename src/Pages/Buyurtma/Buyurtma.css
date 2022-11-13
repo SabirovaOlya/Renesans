@@ -400,7 +400,13 @@
     grid-gap: 10px;
     column-gap: 20px;
 }
-.buyurtma_buttons a{
+.buyurtma_page_buttons{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    column-gap: 20px;
+}
+.buyurtma_page_buttons .page_button{
     display:flex;
     height: 40px;
     width: 50px;
@@ -417,6 +423,27 @@
     background-color: white;
     border: 2px solid #7828c8;
     box-shadow: 3px 3px 7px rgb(158, 157, 157);
+}
+.buyurtma_buttons button{
+    display:flex;
+    height: 40px;
+    width: 50px;
+    justify-content:center;
+    align-items:center;
+    padding: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #7828c8;
+    border: none;
+    border-radius: 10px;
+    transition: linear all .2s;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid #7828c8;
+    box-shadow: 3px 3px 7px rgb(158, 157, 157);
+}
+.buyurtma_page_buttons .page_button:hover{
+    transform: scale(1.2);
 }
 .buyurtma_buttons a:hover{
     transform: scale(1.2);

@@ -64,7 +64,7 @@ function SingleSugurta() {
                         <p>{sugurtaInfo?.insurance?.company_name}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
-                        <p>Siyosat raqami:</p>
+                        <p>Sugurta polis raqami:</p>
                         <p>{sugurtaInfo?.insurance?.policy}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>

@@ -83,7 +83,7 @@ function SingleGold() {
                             </div>
                             <div className='single_buyurtma_inputs'>
                                 <p>Qabul qilish qiymati, somda:</p>
-                                <p>{goldInfo?.sum}</p>
+                                <p>{goldInfo?.sum?.toLocaleString()}</p>
                             </div>
 
                             <div className='margin_top_30'>
@@ -148,7 +148,7 @@ function SingleGold() {
                                                     <td>{item?.stone_weight}</td>
                                                     <td>{item?.clean_weight}</td>
                                                     <td>{item?.gold_num_sum}</td>
-                                                    <td>{item?.sum}</td>
+                                                    <td>{item?.sum?.toLocaleString()}</td>
                                                 </tr>
                                                 )
                                             })

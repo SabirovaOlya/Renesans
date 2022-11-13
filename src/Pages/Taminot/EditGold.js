@@ -150,7 +150,8 @@ function EditGold() {
             percent: goldInfo?.percent,
             company:data.company,
             valued_by: goldInfo?.valued_by,
-            gold:goldsNoId
+            gold:goldsNoId,
+            paths:goldInfo?.images
         }
         let postInfo = JSON.parse(JSON.stringify(info))
         if(postInfo?.valued_by == 1){
@@ -294,8 +295,8 @@ function EditGold() {
                             label='Tilla buyumlarning baholangan qiymati'
                             className='vall'
                             width='100%'
-                            type='number'
-                            value={TotalSum()}
+                            type='text'
+                            value={TotalSum().toLocaleString()}
                             color="secondary"
                             readOnly
                         />
@@ -443,13 +444,13 @@ function EditGold() {
                                         />
                                         <Input
                                             bordered
-                                            type='number'
+                                            type='text'
                                             label='Baholangan qiymati(som)'
                                             className='vall'
                                             placeholder="1"
                                             color="secondary"
                                             readOnly
-                                            value={golds.find(x => x.id === item.id).sum}                                       
+                                            value={golds.find(x => x.id === item.id).sum.toLocaleString()}                                       
                                         />
                                     </div>
                                 </div>
