@@ -4,6 +4,8 @@ import { AiOutlineRollback, AiOutlineClear, AiOutlineUserAdd } from 'react-icons
 import { Input, Checkbox, Radio, Textarea } from '@nextui-org/react'
 import https from '../../assets/https'
 import Select from 'react-select';
+// UseForm
+import { useForm } from "react-hook-form";
 
 // Alert
 import Swal from 'sweetalert2'
@@ -33,6 +35,13 @@ function EditBuyurtma() {
             return { ...provided, opacity, transition };
         }
     }
+
+    // Sending Data to API
+    const { register,
+        handleSubmit,
+        watch,
+        formState: { errors, isValid }
+    } = useForm();
 
     // Alert
     function Success() {
@@ -167,39 +176,6 @@ function EditBuyurtma() {
         }
     }
 
-    // Edit
-    function Edit() {
-        let data = {
-            client_id : order?.client?.id,
-            order_date : order?.order_date,
-            sign_committee : order?.sign_committee,
-            sum : order?.sum,
-            time : order?.time,
-            aim : order?.aim,
-            salary : order?.salary,
-            code : order?.code,
-            product_id : order?.product?.id,
-            status : order?.status,
-            order_number:order?.order_number,
-            protocol_number:order?.protocol_number
-        }
-        if(order.status == 'denied'){
-            data = {...data, reason: order?.reason}
-        }
-        https
-            .put(`/orders/${id}`, data)
-            .then(res => {
-                if (res.request.status === 200) {
-                    Success()
-                };
-            })
-            .catch(err => {
-                console.log(err);
-                Warn()
-                console.log(data);
-            })
-    }
-
     // Back
     function BackFun() {
         setOrder(backOrder)
@@ -229,6 +205,38 @@ function EditBuyurtma() {
         }
     }
 
+    const onSubmit = (data) =>{
+        let info = {
+            client_id : order?.client?.id,
+            order_date : order?.order_date,
+            sign_committee : order?.sign_committee,
+            sum : order?.sum,
+            time : order?.time,
+            aim : order?.aim,
+            salary : order?.salary,
+            code : order?.code,
+            product_id : order?.product?.id,
+            status : order?.status,
+            order_number:order?.order_number,
+            protocol_number:order?.protocol_number
+        }
+        if(order?.status == 'denied'){
+            info = {...info, reason: order?.reason}
+        }
+        https
+            .put(`/orders/${id}`, info)
+            .then(res => {
+                if (res.request.status === 200) {
+                    Success()
+                };
+            })
+            .catch(err => {
+                console.log(err);
+                Warn()
+                console.log(info);
+            })
+    }
+
     return (
         <section>
             <div className='filialform_header'>
@@ -237,7 +245,7 @@ function EditBuyurtma() {
                     Orqaga
                 </Link>
             </div>
-            <div className='FilialEditTable single_buyurtma'>
+            <form className='FilialEditTable single_buyurtma' onSubmit={handleSubmit(onSubmit)}>
                 <h1 className='text_center filial_edit_text'>{client?.name}</h1>
                 <div className='shart-check margin_top_20'>
                     {
@@ -339,6 +347,7 @@ function EditBuyurtma() {
                     bordered
                     label="Buyurtma raqami"
                     value={order?.order_number}
+                    {...register("order_number", { required: true })}
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -354,6 +363,7 @@ function EditBuyurtma() {
                     className='filial_input'
                     value={order?.protocol_number}
                     color="secondary"
+                    {...register("protocol_number", { required: true })}
                     onChange={(e) => {
                         let newOrder = { ...order }
                         newOrder.protocol_number = e.target.value
@@ -371,12 +381,12 @@ function EditBuyurtma() {
                         O'zgarishni bekor qilish
                         <AiOutlineClear />
                     </button>
-                    <button type='submit' className='client_submit submit back_green' onClick={() => { Edit() }}>
+                    <button type='submit' className='client_submit submit back_green'>
                         O'zgarishni kiritish
                         <AiOutlineUserAdd />
                     </button>
                 </div>
-            </div>
+            </form>
         </section>
     )
 }

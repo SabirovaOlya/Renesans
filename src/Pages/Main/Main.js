@@ -105,18 +105,18 @@ function Main() {
 
     const [tabDefaultKey, setTabDefaultKey] = useState()
     let sidebars = [
-        { to: '/', icon: <HomeOutlinedIcon />, span: 'Statistika', keys: 1 },
-        { to: '/client', icon: <PersonOutlineOutlinedIcon />, span: 'Klientlar', keys: 2 },
-        { to: '/buyurtma', icon: <AiFillFileText />, span: 'Buyurtma', keys: 3 },
-        { to: '/taminot', icon: <AiFillFolderOpen />, span: "Ta'minot", keys: 4 },
-        { to: '/shartnama', icon: <AiFillFile />, span: 'Shartnoma', keys: 5 },
-        { to: '/kl1', icon: <AiOutlineBook />, span: 'KL1', keys: 6 },
-        { to: '/filials', icon: <BsBuilding />, span: 'Filiallar', keys: 7 },
-        { to: '/xodim', icon: <AiOutlineUsergroupAdd />, span: 'Xodimlar', keys: 8 },
-        { to: '/mahsulot', icon: <AiOutlineFileAdd />, span: 'Mahsulotlar', keys: 9 },
-        { to: '/section', icon: <AiFillDatabase />, span: "Bo'limlar", keys: 11 },
-        { to: '/foydalanuvchi', icon: <AiOutlineUsergroupAdd />, span: 'Foydalanuvchilar', keys: 12 },
-        { to: '/calendar', icon: <AiOutlineCalendar />, span: 'Calendar', keys: 13 }
+        { to: '/', icon: <HomeOutlinedIcon />, span: 'Statistika', keys: 1, visible:"visible"},
+        { to: '/client', icon: <PersonOutlineOutlinedIcon />, span: 'Klientlar', keys: 2, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
+        { to: '/buyurtma', icon: <AiFillFileText />, span: 'Buyurtma', keys: 3, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
+        { to: '/taminot', icon: <AiFillFolderOpen />, span: "Ta'minot", keys: 4, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
+        { to: '/shartnama', icon: <AiFillFile />, span: 'Shartnoma', keys: 5, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
+        { to: '/kl1', icon: <AiOutlineBook />, span: 'KL1', keys: 6, visible: role == 'admin' || role == "director" || role == "monitoring" ? "visible" : "hidden" },
+        { to: '/filials', icon: <BsBuilding />, span: 'Filiallar', keys: 7, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/xodim', icon: <AiOutlineUsergroupAdd />, span: 'Xodimlar', keys: 8, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/mahsulot', icon: <AiOutlineFileAdd />, span: 'Mahsulotlar', keys: 9, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/section', icon: <AiFillDatabase />, span: "Bo'limlar", keys: 11, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/foydalanuvchi', icon: <AiOutlineUsergroupAdd />, span: 'Foydalanuvchilar', keys: 12, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/calendar', icon: <AiOutlineCalendar />, span: 'Calendar', keys: 13, visible: role == 'admin' ? "visible" : "hidden" }
     ]
     const [sideBar, setSideBar] = useState(sidebars);
 
@@ -149,6 +149,13 @@ function Main() {
         }
     }
 
+    function RemoteData(){
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('name');
+        window.localStorage.removeItem('role');
+        window.localStorage.removeItem('user_id');
+    }
+
     if (token) {
         return (
             <section className='main'>
@@ -161,7 +168,7 @@ function Main() {
                                     return (
                                         <TabPane
                                             tab={
-                                                <Link to={item?.to} className='nav-item'>
+                                                <Link to={item?.to} className={`nav-item ${item?.visible}`}>
                                                     <div className='nav-item_icon'>
                                                         {item?.icon}
                                                     </div>
@@ -189,7 +196,7 @@ function Main() {
                                     sx={{ width: 50, height: 50 }}
                                     src='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/demo-1/static/media/avatar-s-11.1d46cc62.jpg' />
                                 <ul className={headerDropDown ? 'header_dropdown header_dropdown_active' : 'header_dropdown'} ref={catalogRef}>
-                                    <div className='header_dropdown_item' onClick={() => { window.localStorage.removeItem('token'); }}>
+                                    <div className='header_dropdown_item' onClick={() => { RemoteData() }}>
                                         <Link to='/' onClick={() => { setHeaderDropDown(false) }} >
                                             <div className='header_dropdown_icon' >
                                                 <PowerSettingsNewOutlinedIcon

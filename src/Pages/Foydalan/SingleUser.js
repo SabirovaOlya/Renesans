@@ -13,7 +13,7 @@ function SingleUser() {
         https
             .get(`/users/${id}`)
             .then(res => {
-                setUser(res?.data)
+                setUser(res?.data?.data)
             })
             .catch(err => {
                 console.log(err);
@@ -32,16 +32,20 @@ function SingleUser() {
                 <div className='pdf_margin_top_15'>
                     <div className='single_buyurtma_info'>
                         <div className='single_buyurtma_inputs'>
+                            <p>F.I.Sh:</p>
+                            <p>{user?.name}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Lavozim:</p>
+                            <p>{user?.employee?.job}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
                             <p>Email:</p>
                             <p>{user?.email}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Role:</p>
-                            <p>{user?.name}</p>
-                        </div>
-                        <div className='single_buyurtma_inputs'>
                             <p>Parol:</p>
-                            <p>{user?.password_origin}</p>
+                            <p>{user?.password}</p>
                         </div>
                     </div>
                 </div>

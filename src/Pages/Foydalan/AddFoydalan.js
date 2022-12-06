@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input } from '@nextui-org/react'
 import Select from 'react-select';
@@ -48,30 +48,32 @@ function AddFoydalan() {
         formState: { errors, isValid }
     } = useForm();
 
-    const onSubmit = (data) => {
-        if ({ ...data, role: role }.password !== { ...data, role: role }.password_confirmation) {
-            Warn()
-        } else {
-            https
-                .post('/register', { ...data, role: role })
-                .then(res => {
-                    Success()
-                    
-                })
-                .catch(err => {
-                    if(err.response.status === 422){
-                        return(AlredyTaken())
-                    }
-                    console.log({ ...data, role: role });
-                    Error()
-                })
-        }
+    // Filial Section
+    const [workerOptions, setWorkerOptions] = useState({})
+    const [worker, setWorker] = useState([])
+
+    async function fetchWorkers() {
+        const res = await https.get('/employees-all')
+        let selectWorkers = []
+        res?.data?.data?.map((item)=>{
+            selectWorkers.push(
+                { value: item?.id, label: item?.name }
+            )
+        })
+        setWorkerOptions(selectWorkers)
+        setWorker(selectWorkers[0])
     }
 
+    useEffect(()=>{
+        fetchWorkers()
+    },[])
+
     // Selector
-    const maqsads = [
+    const roles = [
         { value: '1', label: "user" },
         { value: '2', label: "admin" },
+        { value: '3', label: "director" },
+        { value: '4', label: "monitoring" }
     ];
     const customStyles = {
         option: (provided, state) => ({
@@ -85,7 +87,7 @@ function AddFoydalan() {
             return { ...provided, opacity, transition };
         }
     }
-    const [role, setRole] = useState(maqsads[0].label)
+    const [role, setRole] = useState(roles[0].label)
     // WARNING MODALKA
     const [resetWarning, setResetWarning] = useState('warning_reset_main close')
 
@@ -96,6 +98,26 @@ function AddFoydalan() {
     function closeReset(e) {
         e.preventDefault()
         setResetWarning('warning_reset_main close')
+    }
+
+    const onSubmit = (data) => {
+        if ({ ...data, role: role }.password !== { ...data, role: role }.password_confirmation) {
+            Warn()
+        } else {
+            https
+                .post('/register', { ...data, role: role, employee_id:worker?.value })
+                .then(res => {
+                    Success()
+                    
+                })
+                .catch(err => {
+                    // if(err.response.status === 422){
+                    //     return(AlredyTaken())
+                    // }
+                    console.log({ ...data, role: role });
+                    Error()
+                })
+        }
     }
 
     return (
@@ -122,7 +144,7 @@ function AddFoydalan() {
                         width='100%'
                         clearable
                         bordered
-                        label="Ism"
+                        label="F.I.Sh"
                         placeholder='ismi...'
                         className='filial_input'
                         color="secondary"
@@ -159,12 +181,34 @@ function AddFoydalan() {
                         {...register("password_confirmation", { required: true })}
                     />
                     <div className='xodim_selectform'>
+                        <p>Xodim</p>
+                        <Select
+                            width='10%'
+                            defaultValue={worker}
+                            value={worker}
+                            options={workerOptions}
+                            className='xodim_select basic-multi-select'
+                            classNamePrefix="select"
+                            styles={customStyles}
+                            theme={(theme) => ({
+                                ...theme,   
+                                borderRadius: 12,
+                                colors: {
+                                    ...theme.colors,
+                                    primary25: 'rgb(216,215,215)',
+                                    primary: '#7828c8',
+                                },
+                            })}
+                            onChange={(event) => { setWorker(event) }}
+                        />
+                    </div>
+                    <div className='xodim_selectform'>
                         <p>Roli</p>
                         <Select
                             width='10%'
-                            defaultValue={[maqsads[0]]}
+                            defaultValue={[roles[0]]}
                             // isMulti
-                            options={maqsads}
+                            options={roles}
                             className='xodim_select basic-multi-select'
                             classNamePrefix="select"
                             styles={customStyles}

@@ -2,17 +2,27 @@ import React,{useState, useEffect} from 'react'
 import DemoDualAxes from '../../Charts/ChartBar'
 import DemoBar from '../../Charts/ChartHoriz.js'
 import DemoRingProgress from '../../Charts/ChartCircle'
+import DemoRingProgress2 from '../../Charts/ChartCircle2'
+import https from '../../assets/https'
 
 import './Home.css'
 function Home() {
 
   const [pieSize, setPieSize] = useState(80);
+  const [statisticInfo, setStatisticInfo] = useState({})
   
   useEffect(()=>{
     if(window.innerWidth >= 1600){
       setPieSize(100)
     }
-
+    https
+    .get('/statistics')
+    .then(res =>{
+      setStatisticInfo(res?.data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
   },[])
  
 
@@ -25,10 +35,10 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              $34,152
+              {((statisticInfo?.first?.total_revenue)/1000000).toFixed(2)} mln so'm
             </p>
             <p className='total-text'>
-              Total Revenue
+              Portfel
             </p>
           </div>
           <div className='total-part-circle-blue'>
@@ -37,7 +47,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i> 2.65%</span> since last week
+            <span><i className='bx bx-up-arrow-alt'></i>{statisticInfo?.first?.changedTR}%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -47,19 +57,19 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              5,643
+              {statisticInfo?.second?.new_orders} dona
             </p>
             <p className='total-text'>
-              Orders
+              Buyurtma
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress size={pieSize}/>
+            <DemoRingProgress procent={(statisticInfo?.second?.new_orders/statisticInfo?.second?.all_orders).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
           <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i> 0.82%</span> since last week
+            <span><i className='bx bx-down-arrow-alt'></i> {(statisticInfo?.second?.new_orders/statisticInfo?.second?.all_orders).toFixed(2)}%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -69,19 +79,19 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              45,254
+              {statisticInfo?.third?.new_clients} {statisticInfo?.third?.new_clients == 1 ? 'klient' : 'klientlar'}
             </p>
             <p className='total-text'>
-              Customers
+              Klient
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress size={pieSize}/>
+            <DemoRingProgress2 procent={(statisticInfo?.third?.new_clients/statisticInfo?.third?.all_clients).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
           <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i> 6.24%</span> since last week
+            <span><i className='bx bx-down-arrow-alt'></i>{(statisticInfo?.third?.new_clients/statisticInfo?.third?.all_clients).toFixed(2)}%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -103,7 +113,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span> since last week
+            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -116,7 +126,7 @@ function Home() {
       </div>
       
       <div className='horizChart'>
-        <DemoBar></DemoBar>
+        <DemoBar products={statisticInfo?.products}></DemoBar>
       </div>
     </div>
     </section>

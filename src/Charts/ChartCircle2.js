@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { RingProgress } from '@ant-design/plots';
 
 
-function DemoRingProgress({size, procent}){
+function DemoRingProgress2({size, procent}){
 
   const [circle, setCircle] = useState(70)
 
@@ -22,4 +22,4 @@ function DemoRingProgress({size, procent}){
   };
   return <RingProgress {...config} />;
 }
-export default DemoRingProgress
+export default DemoRingProgress2

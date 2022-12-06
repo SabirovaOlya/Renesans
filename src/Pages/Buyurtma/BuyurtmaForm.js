@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 // import 'antd/dist/antd.css';
 import https from '../../assets/https'
 import './Buyurtma.css'
-// const { Option } = Select;
 
 // UseForm
 import { useForm } from "react-hook-form";
@@ -51,6 +50,7 @@ function BuyurtmaForm() {
         setSection(selectSection[0])
         setSectionRole(selectSection[0].value)
     }
+
 
     useEffect(()=>{
         fetchSection()
@@ -136,7 +136,7 @@ function BuyurtmaForm() {
     }
 
     const onSubmit = (data) => {
-        let newData = { ...data, product_id: sectionRole, sign_committee: permission, end_date:''}
+        let newData = { ...data, product_id: sectionRole, sign_committee: permission, end_date:'', client_id:clientInfo?.id}
         https
         .post('orders', newData)
         .then(res => {
@@ -173,13 +173,12 @@ function BuyurtmaForm() {
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'
-                            label="Klient id"
+                            label="Klient kodi"
                             bordered
                             color="secondary"
                             type='number'
-                            value={clientInfo?.id}
+                            value={clientInfo?.code}
                             readOnly
-                            {...register("client_id", { required: true })}
                         />
                         <Input
                             className='buyurtma_form_inputs'

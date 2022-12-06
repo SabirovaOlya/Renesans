@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import https from '../../assets/https';
 import { AiOutlineRollback } from 'react-icons/ai'
+import './Client.css'
 
 
 
@@ -9,6 +10,7 @@ function SingleClient() {
 
     const [client, setClient] = useState({});
     let { id } = useParams()
+    let navigate = useNavigate()
 
     useEffect(() => {
         https
@@ -21,6 +23,13 @@ function SingleClient() {
             })
     }, [])
 
+    function ToBuyurtma(){
+        navigate("/buyurtma/form", {state:{id:id}})
+        setTimeout(()=>{
+            window.location.reload(false);
+        },50)
+    }
+
     return (
         <section>
             <div className='filialform_header'>
@@ -28,6 +37,9 @@ function SingleClient() {
                     <AiOutlineRollback />
                     Orqaga
                 </Link>
+                <button className='pathButton' onClick={()=>{ToBuyurtma()}}>
+                    Buyurtma
+                </button>
             </div>
             <div className='single_buyurtma'>
                 <h1 className='text_center filial_edit_text'>{client?.name}</h1>

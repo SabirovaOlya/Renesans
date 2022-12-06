@@ -187,7 +187,7 @@ function AddXodim() {
                         width='100%'
                         clearable
                         bordered
-                        label="Ismi"
+                        label="F.I.Sh"
                         placeholder='Name'
                         className='xodim_input'
                         color="secondary"

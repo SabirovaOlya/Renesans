@@ -47,9 +47,11 @@ function Login() {
                     .post('/login', data)
                     .then(res => {
                         Success()
-                        window.localStorage.setItem('token', res.data.token)
-                        window.localStorage.setItem('name', res.data.user.name)
-                        window.localStorage.setItem('role', res.data.user.role.name)
+                        window.localStorage.setItem('token', res?.data?.token)
+                        window.localStorage.setItem('name', res?.data?.user?.name)
+                        window.localStorage.setItem('role', res?.data?.user?.role?.name)
+                        window.localStorage.setItem('user_id', res?.data?.user?.id)
+
                         setToken(res.data.token)
                     })
                     .catch(err => {

@@ -643,6 +643,17 @@ input::-webkit-inner-spin-button {
 .clientform_gender_radio label{
     margin-top: 0px !important;
 }
+.pathButton{
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border: 2px solid #7828c8;
+    border-radius: 10px;
+    transition-duration: 0.2s;
+}
+.pathButton:hover{
+    transform: scale(1.1);
+}
 
 /* Reset Warning */
 .warning_reset_main{

@@ -13,6 +13,7 @@ function EditUser() {
     let { id } = useParams()
     const [user, setUser] = useState({})
     const [backUser, setBackUser] = useState({})
+    const userID = window.localStorage.getItem('user_id')
 
     // Alert
     function Success() {
@@ -34,8 +35,8 @@ function EditUser() {
         https
             .get(`/users/${id}`)
             .then(res => {
-                setUser(res?.data)
-                setBackUser(res?.data);
+                setUser(res?.data?.data)
+                setBackUser(res?.data?.data);
             })
             .catch(err => {
                 console.log(err);
@@ -47,13 +48,18 @@ function EditUser() {
         let data ={
             name:user?.name,
             email:user?.email,
-            password:user?.password_origin,
-            password_confirmation:user?.password_origin
+            password:user?.password,
+            password_confirmation:user?.password,
+            employee_id:user?.employee?.id
         }
         https
             .patch(`/update/users/${id}`, data)
             .then(res => {
                 Success()
+                if(user?.id == userID){
+                    window.localStorage.removeItem('name')
+                    window.localStorage.setItem('name', user?.name)
+                }
             })
             .catch(err => {
                 Warn()
@@ -80,7 +86,7 @@ function EditUser() {
                 <Input
                     width='100%'
                     bordered
-                    label="Ismi"
+                    label="F.I.Sh."
                     value={user?.name}
                     placeholder='filial'
                     className='filial_input'
@@ -110,13 +116,13 @@ function EditUser() {
                     width='100%'
                     bordered
                     label="Parol"
-                    value={user?.password_origin}
+                    value={user?.password}
                     placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
                         let newUser = { ...user }
-                        newUser.password_origin = e.target.value
+                        newUser.password = e.target.value
                         setUser(newUser)
                     }}
                 />

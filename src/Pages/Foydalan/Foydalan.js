@@ -17,8 +17,7 @@ function Foydalan() {
         https
             .get(`/${newUrl}`)
             .then(res => {
-                setPaginations(res?.data?.links)
-                
+                setPaginations(res?.data?.data?.meta?.link)
                 setUsers(res?.data?.data)
                 // setLoading(false)
             })
@@ -72,14 +71,14 @@ function Foydalan() {
 
             <div className='foydalan_table'>
                 <div className='foydalan_table_headers'>
-                    <p>Foydalanuvchi ismi</p>
+                    <p>F.I.Sh</p>
                     <p>Foydalanuvchi email</p>
                     <p>Foydalanuvchi role</p>
                 </div>
 
                 <div className='foydalan_table_products'>
                     {
-                        users.map((item, index) => {
+                        users?.map((item, index) => {
                             return (
                                 <div key={index} className='foydalan_table_product client_row'>
                                     <p className='foydalan_table_product_title'>{item?.name}</p>

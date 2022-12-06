@@ -1,29 +1,15 @@
 import React from 'react';
 import { Bar } from '@ant-design/plots';
 
-const DemoBar = () => {
-  const data = [
-    {
-      year: 'Desktops',
-      value: 38,
-    },
-    {
-      year: 'iPhones',
-      value: 52,
-    },
-    {
-      year: 'Android',
-      value: 61,
-    },
-    {
-      year: 'Tables',
-      value: 115,
-    },
-    {
-      year: 'Cables',
-      value: 48,
-    }
-  ];
+const DemoBar = ({products}) => {
+  
+  const data = [];
+  products?.map(item =>{
+    data.push({
+      year:item?.name,
+      value:item?.order_count
+    })
+  })
   const config = {
     data,
     xField: 'value',
