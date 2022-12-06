@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 function Client() {
 
     const [clients, setClients] = useState([]);
-
+    const role = window.localStorage.getItem('role')
     // PAGINATION
     const [paginations, setPaginations] = useState([])
     const [currentUrl, setCurrentUrl] = useState('clients')
@@ -69,12 +69,11 @@ function Client() {
             <div className='client_addition'>
                 <div>
                     <Link className='client_button gradient-border' to='/client/single_form'><p>Klient</p> <i className='bx bx-plus-circle'></i></Link>
-                    <Link className='client_button gradient-border' to='/client/group_form'><p>Guruh</p> <i className='bx bx-plus-circle'></i></Link>
                 </div>
                 <Input
                     rounded
                     bordered
-                    placeholder="Foydalanuvchi paroli..."
+                    placeholder="Foydalanuvchi kodi..."
                     color="secondary"
                     label=' '
                     width='300px'
@@ -87,8 +86,8 @@ function Client() {
             <div className='clientTablePart'>
                 <div className='clientTable'>
                     <div className='clienttableHeader'>
-                        <p className='clientheaderTable-title'>Ism</p>
-                        <p className='clientheaderTable-title'>Parol</p>
+                        <p className='clientheaderTable-title'>F.I.Sh.</p>
+                        <p className='clientheaderTable-title'>Kod</p>
                         <p className='clientheaderTable-title'>PinFl</p>
                         <p className='clientheaderTable-title'>Shahar</p>
                     </div>
@@ -103,7 +102,9 @@ function Client() {
                                     <div className='clientuserButtons'>
                                         <button><Link to={`/client/singleClient/${item?.id}`}><i className='bx bx-user'></i></Link></button>
                                         <button><Link to={`/client/editClient/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
-                                        <button onClick={() => deleteClient(item.id)}><i className='bx bx-trash'></i></button>
+                                        { role == 'admin' ? (
+                                            <button onClick={() => deleteClient(item.id)}><i className='bx bx-trash'></i></button>
+                                        ) : <></>}   
                                     </div>
                                 </li>
                             })

@@ -488,7 +488,7 @@ input::-webkit-inner-spin-button {
 .liName span{
     margin-right: 7px;
 }
-.clienttableInfo li .clientuserButtons{
+.clientuserButtons{
     width: 15%;
     display: flex;
     flex-direction: row;

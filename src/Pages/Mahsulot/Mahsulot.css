@@ -85,11 +85,11 @@
     cursor: pointer;
 }
 .mahsulot_product_buttons button:nth-child(1){
-    background-color: red;
+    background-color: green;
     margin-right: 10px;
 }
 .mahsulot_product_buttons button:nth-child(2){
-    background-color: green;
+    background-color: red;
     margin-left: 10px;
 }
 .mahsulot_product_buttons button:hover{

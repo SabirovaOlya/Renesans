@@ -231,7 +231,7 @@ import https from '../../assets/https';
   return(
   <>
     <div className='back-but'>
-      <Link to='/client' className='clientform_back'>
+      <Link to='/group' className='clientform_back'>
         <AiOutlineRollback/>
         Orqaga
       </Link>

@@ -1,16 +1,20 @@
 import React, { useState, useContext,useEffect } from 'react'
 // Components
-import { Textarea, Radio } from '@nextui-org/react'
+import { Textarea, Radio, Input } from '@nextui-org/react'
 import { useForm } from "react-hook-form";
 import { Context } from '../../../Context';
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import https from '../../../assets/https';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+
+import '../KL1.css'
 
 function Table() {
 
     const [errorStatus, setErrorStatus] = useState(false)
+    const [show, setShow] = useState(false)
 
     // Alerts
     function Success() {
@@ -50,7 +54,9 @@ function Table() {
         // 6 Qism
         familyDaromad, familyXarajat, familyMalumot,
         // 7 Qism
-        familyMavjud, dataSeventhQism, historyKredit
+        familyMavjud, dataSeventhQism, historyKredit,
+        // Table
+        geoLocation, setGeoLocation
     } = useContext(Context)
 
     let navigate = useNavigate()
@@ -67,6 +73,27 @@ function Table() {
         watch,
         formState: { errors, isValid }
     } = useForm();
+
+    // Location
+    const defaultState = {
+        center: [geoLocation?.latitude, geoLocation?.longitude],
+        zoom: 14,
+    };
+    function Location(){
+        if(geoLocation?.latitude && geoLocation?.longitude){
+            return(
+                <div className='location_field'>
+                    <YMaps>
+                        <Map defaultState={defaultState}>
+                            <Placemark geometry={[geoLocation?.latitude, geoLocation?.longitude]} />
+                        </Map>
+                    </YMaps>
+                </div>
+            )
+        }else{
+            return(<></>)
+        }
+    }
 
     async function PostFirst(dataBase){
         await https
@@ -510,6 +537,40 @@ function Table() {
                         setDataTable(array)
                     }}
                 />
+                <Input
+                    rounded
+                    bordered
+                    label='Kenglik'
+                    color="secondary"
+                    width='100%'
+                    className='kl1_input'
+                    value={geoLocation?.latitude}
+                    {...register("location.latitude", { required: true })}
+                    onChange={(e)=>{
+                        let newLocation = {...geoLocation}
+                        newLocation.latitude = e.target.value
+                        setGeoLocation(newLocation)
+                    }}
+                />
+                <Input
+                    rounded
+                    bordered
+                    label='Uzunlik'
+                    color="secondary"
+                    width='100%'
+                    className='kl1_input'
+                    value={geoLocation?.longitude}
+                    {...register("location.longitude", { required: true })}
+                    onChange={(e)=>{
+                        let newLocation = {...geoLocation}
+                        newLocation.longitude = e.target.value
+                        setGeoLocation(newLocation)
+                    }}
+                />
+                <button type='button' className='location_button' onClick={()=>{setShow(true)}}>Kartada ko'rish</button>
+                {
+                    show ? Location() : <></>
+                }
                 <div className='kl1_accepting'>
                     <p>Taqdim etilgan va toplangan malumotlar hamda kredit byurosidan olingan kredit tarixiga asoslanib men tomonimdan otkazilgan organish va tahlillar asosida ushbu buyurtma boyicha quiydagi yakuniy xulosamni kredit komissiyasida korib chiqish uchun taqdim etaman</p>
                     <Radio.Group label=' ' value={dataTable?.status} size='sm' className='kl1_accepting_radio'

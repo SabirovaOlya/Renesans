@@ -87,7 +87,7 @@ function EditGroup() {
   return (
     <section>
         <div className='filialform_header'>
-            <Link to={`/client/single_group/${id}`} className='clientform_back'>
+            <Link to={`/group`} className='clientform_back'>
                 <AiOutlineRollback />
                 Orqaga
             </Link>

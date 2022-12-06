@@ -18,8 +18,7 @@ import Swal from 'sweetalert2'
 function Mahsulot() {
     // Warning Modal
     // const [open, setOpen] = useState(false);
-
-
+    const role = window.localStorage.getItem('role')
 
 
     // Alert
@@ -190,8 +189,10 @@ function Mahsulot() {
                                         <p>{item.name}</p>
                                         <p>{item.code}</p>
                                         <div className='mahsulot_product_buttons'>
-                                            <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
                                             <button><Link to={`/mahsulot/editmahsulot/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                            {role == "admin" ? (
+                                                <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
+                                            ) : <></>}
                                         </div>
                                     </div>
                                 )

@@ -8,6 +8,7 @@ import https from '../../assets/https'
 function Foydalan() {
 
     const [users, setUsers] = useState([])
+    const role = window.localStorage.getItem('role')
 
     const [paginations, setPaginations] = useState([])
     const [currentUrl, setCurrentUrl] = useState('users')
@@ -88,7 +89,9 @@ function Foydalan() {
                                     <div className='foydalan_product_buttons'>
                                         <button><Link to={`/foydalanuvchi/singlefoydalanuvchi/${item.id}`}><i className='bx bx-user'></i></Link></button>
                                         <button><Link to={`/foydalanuvchi/editfoydalanuvchi/${item.id}`}><i className='bx bx-edit-alt'></i></Link></button>
-                                        <button onClick={() => deleteUser(item.id)}><i className='bx bx-trash'></i></button>
+                                        {role == "admin" ? (
+                                            <button onClick={() => deleteUser(item.id)}><i className='bx bx-trash'></i></button>
+                                        ) : <></>}
                                     </div>
                                 </div>
                             )

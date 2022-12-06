@@ -48,7 +48,7 @@ function SingleGroup() {
   return (
     <section>
         <div className='filialform_header'>
-            <Link to='/client' className='clientform_back'>
+            <Link to='/group' className='clientform_back'>
                 <AiOutlineRollback />
                 Orqaga
             </Link>

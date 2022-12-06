@@ -10,6 +10,8 @@ import '../../assets/pagination.css'
 
 function Shartnama() {
 
+    const role = window.localStorage.getItem('role')
+
     // Alerts
     function Warn() {
         Swal.fire({
@@ -167,7 +169,9 @@ function Shartnama() {
                                             <div className='userButtons_shartnoma'>
                                                 <button> <Link to={`/shartnama/singleshartnama/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
                                                 <button><Link to={`/shartnama/editshartnama/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
-                                                <button onClick={() => deleteShartnama(item?.id)}><i className='bx bx-trash'></i></button>
+                                                {role == "admin" ? (
+                                                    <button onClick={() => deleteShartnama(item?.id)}><i className='bx bx-trash'></i></button>
+                                                ) : <></>}
                                             </div>
                                         </li>
                                     })

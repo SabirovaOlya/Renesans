@@ -225,7 +225,10 @@ function StepperForm() {
         conclusion:'',
         status:true
     })
-
+    const [geoLocation, setGeoLocation] = useState({
+        latitude:0,
+        longitude:0
+    })
 
 
     function showMavsumiy(){
@@ -300,7 +303,8 @@ function StepperForm() {
                 dataSeventhQism, setDataSeventhQism,
                 historyKredit, setHistoryKredit,
                 // Table
-                dataTable, setDataTable
+                dataTable, setDataTable,
+                geoLocation, setGeoLocation
             }}>
                 <Routes>
                     <Route path='/' element={<Shaxshiy/>}/>

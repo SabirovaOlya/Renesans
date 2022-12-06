@@ -34,6 +34,7 @@ function Buyurtma() {
     const [modalka, setModalka] = useState('shartnoma_modal close');
     const [modalCode, setModalCode] = useState('');
     let navigate = useNavigate()
+    const role = window.localStorage.getItem('role')
 
     // Buyurtma
     const [urls, setUrls] = useState([
@@ -206,7 +207,9 @@ function Buyurtma() {
                                     <div className='userButtons_buyurtma'>
                                         <button><Link to={`/buyurtma/singleBuyurtma/${item?.id}`}><i className='bx bx-user'></i></Link></button>
                                         <button><Link to={`/buyurtma/editBuyurtma/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
-                                        <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
+                                        {role == "admin" ? (
+                                            <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
+                                        ) : <></>}
                                     </div>
                                 </li>
                             })

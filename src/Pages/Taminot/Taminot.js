@@ -15,6 +15,7 @@ import '../../assets/pagination.css'
 function Taminot() {
 
     const [loading, setLoading] = useState(true)
+    const role = window.localStorage.getItem('role')
 
     function Warn() {
         Swal.fire({
@@ -218,7 +219,9 @@ function Taminot() {
                                         <div className='userButtons_shartnoma'>
                                             <button onClick={()=>{SinglePage(item?.type, item?.id)}}><i className='bx bx-user'></i></button>
                                             <button onClick={()=>{EditPage(item?.type, item?.id)}}><i className='bx bx-edit-alt'></i></button>
-                                            <button onClick={()=>{DeleteProduct(item?.id)}}><i className='bx bx-trash'></i></button>
+                                            {role == "admin" ? (
+                                                <button onClick={()=>{DeleteProduct(item?.id)}}><i className='bx bx-trash'></i></button>
+                                            ) : <></>}
                                         </div>
                                     </li>
                                 })

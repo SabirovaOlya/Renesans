@@ -28,6 +28,7 @@ import Addshartnama from '../Shartnoma/Addshartnama';
 import SingleShartnama from '../Shartnoma/SingleShartnama';
 import Buyurtma from '../Buyurtma/Buyurtma';
 import CLientForm from '../Client/CLientForm';
+import Group from '../Group/Group';
 import GroupForm from '../Client/GroupForm';
 import SingleGroup from '../Client/SingleGroup';
 import EditGroup from '../Client/EditGroup';
@@ -107,13 +108,14 @@ function Main() {
     let sidebars = [
         { to: '/', icon: <HomeOutlinedIcon />, span: 'Statistika', keys: 1, visible:"visible"},
         { to: '/client', icon: <PersonOutlineOutlinedIcon />, span: 'Klientlar', keys: 2, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
-        { to: '/buyurtma', icon: <AiFillFileText />, span: 'Buyurtma', keys: 3, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
-        { to: '/taminot', icon: <AiFillFolderOpen />, span: "Ta'minot", keys: 4, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
-        { to: '/shartnama', icon: <AiFillFile />, span: 'Shartnoma', keys: 5, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
-        { to: '/kl1', icon: <AiOutlineBook />, span: 'KL1', keys: 6, visible: role == 'admin' || role == "director" || role == "monitoring" ? "visible" : "hidden" },
-        { to: '/filials', icon: <BsBuilding />, span: 'Filiallar', keys: 7, visible: role == 'admin' ? "visible" : "hidden" },
-        { to: '/xodim', icon: <AiOutlineUsergroupAdd />, span: 'Xodimlar', keys: 8, visible: role == 'admin' ? "visible" : "hidden" },
-        { to: '/mahsulot', icon: <AiOutlineFileAdd />, span: 'Mahsulotlar', keys: 9, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/group', icon: <AiOutlineUsergroupAdd />, span: 'Guruhlar', keys: 3, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
+        { to: '/buyurtma', icon: <AiFillFileText />, span: 'Buyurtma', keys: 4, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
+        { to: '/taminot', icon: <AiFillFolderOpen />, span: "Ta'minot", keys: 5, visible: role == 'admin' || role == "director" || role == "monitoring" || role == "user" ? "visible" : "hidden" },
+        { to: '/shartnama', icon: <AiFillFile />, span: 'Shartnoma', keys: 6, visible: role == 'admin' || role == "director" || role == "user" ? "visible" : "hidden" },
+        { to: '/kl1', icon: <AiOutlineBook />, span: 'KL1', keys: 7, visible: role == 'admin' || role == "director" || role == "monitoring" ? "visible" : "hidden" },
+        { to: '/filials', icon: <BsBuilding />, span: 'Filiallar', keys: 8, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/xodim', icon: <AiOutlineUsergroupAdd />, span: 'Xodimlar', keys: 9, visible: role == 'admin' ? "visible" : "hidden" },
+        { to: '/mahsulot', icon: <AiOutlineFileAdd />, span: 'Mahsulotlar', keys: 10, visible: role == 'admin' ? "visible" : "hidden" },
         { to: '/section', icon: <AiFillDatabase />, span: "Bo'limlar", keys: 11, visible: role == 'admin' ? "visible" : "hidden" },
         { to: '/foydalanuvchi', icon: <AiOutlineUsergroupAdd />, span: 'Foydalanuvchilar', keys: 12, visible: role == 'admin' ? "visible" : "hidden" },
         { to: '/calendar', icon: <AiOutlineCalendar />, span: 'Calendar', keys: 13, visible: role == 'admin' ? "visible" : "hidden" }
@@ -214,11 +216,12 @@ function Main() {
                                 <Route path='/client' element={<Client />} />
                                 {/* <Route path='/login' element={<Login />} /> */}
                                 <Route path='/client/single_form' element={<CLientForm />} />
-                                <Route path='/client/group_form' element={<GroupForm />} />
-                                <Route path='/client/single_group/:id' element={<SingleGroup />} />
-                                <Route path='/client/edit_group/:id' element={<EditGroup />} />
                                 <Route path='/client/singleClient/:id' element={<SingleClient />} />
                                 <Route path='/client/editCLient/:id' element={<EditClient />} />
+                                <Route path='/group' element={<Group />} />
+                                <Route path='/group/group_form' element={<GroupForm />} />
+                                <Route path='/group/single_group/:id' element={<SingleGroup />} />
+                                <Route path='/group/edit_group/:id' element={<EditGroup />} />
                                 <Route path='/shartnama' element={<Shartnama />} />
                                 <Route path='/shartnama/addshartnama' element={<Addshartnama />} />
                                 <Route path='/shartnama/singleshartnama/:id' element={<SingleShartnama />} />

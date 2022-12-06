@@ -13,6 +13,7 @@ function Filial({ data }) {
 
     const [filiallar, setFiliallar] = useState([])
     const [loading, setLoading] = useState(true);
+    const role = window.localStorage.getItem('role')
 
 
     // PAGINATION
@@ -75,7 +76,9 @@ function Filial({ data }) {
                                     <div className='filial_table_product'>
                                         <button><Link to={`/filials/singlefilial/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
                                         <button><Link to={`/filials/editfilial/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
-                                        <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
+                                        {role == "admin" ? (
+                                            <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
+                                        ) : <></>}
                                     </div>
                                 </li>
                             })

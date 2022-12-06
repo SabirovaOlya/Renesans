@@ -260,7 +260,21 @@
 .kl1_accept:nth-child(2){
     border: 2px solid rgb(252, 31, 68);
 }
-
+/* location table */
+.location_field{
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+}
+.location_button{
+    padding: 8px 15px;
+    background: none;
+    border: 2px solid #7828c8;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
 .flex-row{
     display: flex;
     flex-direction: row;
