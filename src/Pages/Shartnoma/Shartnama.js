@@ -168,9 +168,11 @@ function Shartnama() {
                                             <p className='li_shartnoma'>{item?.contract_issue_date}</p>
                                             <div className='userButtons_shartnoma'>
                                                 <button> <Link to={`/shartnama/singleshartnama/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                                <button><Link to={`/shartnama/editshartnama/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                                 {role == "admin" ? (
-                                                    <button onClick={() => deleteShartnama(item?.id)}><i className='bx bx-trash'></i></button>
+                                                    <>
+                                                        <button><Link to={`/shartnama/editshartnama/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
+                                                        <button onClick={() => deleteShartnama(item?.id)}><i className='bx bx-trash'></i></button>
+                                                    </>
                                                 ) : <></>}
                                             </div>
                                         </li>

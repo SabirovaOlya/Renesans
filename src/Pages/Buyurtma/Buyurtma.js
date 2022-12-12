@@ -206,9 +206,11 @@ function Buyurtma() {
                                     <p className='li_buyurtma' id={idSort(item?.status)}>{dataSort(item?.status)}</p>
                                     <div className='userButtons_buyurtma'>
                                         <button><Link to={`/buyurtma/singleBuyurtma/${item?.id}`}><i className='bx bx-user'></i></Link></button>
-                                        <button><Link to={`/buyurtma/editBuyurtma/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                         {role == "admin" ? (
-                                            <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
+                                            <>
+                                                <button><Link to={`/buyurtma/editBuyurtma/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
+                                                <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
+                                            </>
                                         ) : <></>}
                                     </div>
                                 </li>

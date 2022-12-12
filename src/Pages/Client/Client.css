@@ -84,6 +84,23 @@
 .clientForm_selector{
     display: flex;
     flex-direction: column;
+    transition-duration: 0.3s;
+}
+form .region_select{
+    z-index: 100 ;
+}
+form .ditrict_select{
+    z-index: 50 ;
+}
+form .country_select{
+    z-index: 25 ;
+}
+form .radio_group{
+    margin-bottom: 15px;
+    margin-left: 5px;
+}
+.radio_group .radio_second{
+    margin-left: 10px;
 }
 .clientForm_selector p{
     font-size: 15px;

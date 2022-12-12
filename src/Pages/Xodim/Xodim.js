@@ -89,9 +89,11 @@ function Xodim() {
                                     <div className=''>{item.code}</div>
                                     <div className=''>
                                         <button><Link to={`/xodim/singlexodim/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                        <button><Link to={`/xodim/editxodim/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                         {role == "admin" ? (
-                                            <button onClick={() => deleteXodim(item.id)}><i className='bx bx-trash'></i></button>
+                                            <>
+                                                <button><Link to={`/xodim/editxodim/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                                <button onClick={() => deleteXodim(item.id)}><i className='bx bx-trash'></i></button>
+                                            </>
                                         ) : <></>}
                                     </div>
                                 </li>

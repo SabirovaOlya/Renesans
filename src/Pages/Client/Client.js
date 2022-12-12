@@ -101,9 +101,11 @@ function Client() {
                                     <p className='li'>{item.city}</p>
                                     <div className='clientuserButtons'>
                                         <button><Link to={`/client/singleClient/${item?.id}`}><i className='bx bx-user'></i></Link></button>
-                                        <button><Link to={`/client/editClient/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                         { role == 'admin' ? (
-                                            <button onClick={() => deleteClient(item.id)}><i className='bx bx-trash'></i></button>
+                                            <>
+                                                <button><Link to={`/client/editClient/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
+                                                <button onClick={() => deleteClient(item.id)}><i className='bx bx-trash'></i></button>
+                                            </>
                                         ) : <></>}   
                                     </div>
                                 </li>

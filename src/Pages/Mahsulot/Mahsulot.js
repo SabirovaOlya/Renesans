@@ -189,9 +189,11 @@ function Mahsulot() {
                                         <p>{item.name}</p>
                                         <p>{item.code}</p>
                                         <div className='mahsulot_product_buttons'>
-                                            <button><Link to={`/mahsulot/editmahsulot/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                             {role == "admin" ? (
-                                                <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
+                                                <>
+                                                    <button><Link to={`/mahsulot/editmahsulot/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                                    <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
+                                                </>
                                             ) : <></>}
                                         </div>
                                     </div>

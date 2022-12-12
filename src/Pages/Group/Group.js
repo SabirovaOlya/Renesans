@@ -96,9 +96,11 @@ function Group() {
                                 <p >{item?.code}</p>
                                 <div className='clientuserButtons group_buttons'>
                                     <button><Link to={`/group/single_group/${item?.id}`}><i className='bx bx-user'></i></Link></button>
-                                    <button><Link to={`/group/edit_group/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                     { role == 'admin' ? (
-                                        <button onClick={() => deleteGroup(item?.id)}><i className='bx bx-trash'></i></button>
+                                        <>
+                                            <button><Link to={`/group/edit_group/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
+                                            <button onClick={() => deleteGroup(item?.id)}><i className='bx bx-trash'></i></button>
+                                        </>
                                     ) : <></>}   
                                 </div>
                             </div>

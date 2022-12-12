@@ -167,9 +167,11 @@ function KL1Form() {
                                   <p className='li_shartnoma'>{item?.mark_date}</p>
                                   <div className='userButtons_shartnoma'>
                                       <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                      <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                       {role == "admin" ? (
-                                        <button onClick={() => Delete(item?.id)}><i className='bx bx-trash'></i></button>
+                                        <>
+                                          <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                          <button onClick={() => Delete(item?.id)}><i className='bx bx-trash'></i></button>
+                                        </>
                                       ) : <></>}
                                   </div>
                               </li>

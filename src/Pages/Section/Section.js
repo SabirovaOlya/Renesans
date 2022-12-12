@@ -182,9 +182,11 @@ function Section() {
                                         <p>{item?.name}</p>
                                         <p>{5435239}</p>
                                         <div className='mahsulot_product_buttons'>
-                                            <button><Link to={`/section/editsection/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                             {role == "admin" ? (
-                                                <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
+                                                <>
+                                                    <button><Link to={`/section/editsection/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                                    <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>
+                                                </>
                                             ) : <></>}
                                         </div>
                                     </div>

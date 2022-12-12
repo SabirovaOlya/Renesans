@@ -88,9 +88,11 @@ function Foydalan() {
                                     <p className='foydalan_table_product_title'>{item?.status}</p>
                                     <div className='foydalan_product_buttons'>
                                         <button><Link to={`/foydalanuvchi/singlefoydalanuvchi/${item.id}`}><i className='bx bx-user'></i></Link></button>
-                                        <button><Link to={`/foydalanuvchi/editfoydalanuvchi/${item.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                         {role == "admin" ? (
-                                            <button onClick={() => deleteUser(item.id)}><i className='bx bx-trash'></i></button>
+                                            <>
+                                                <button><Link to={`/foydalanuvchi/editfoydalanuvchi/${item.id}`}><i className='bx bx-edit-alt'></i></Link></button>
+                                                <button onClick={() => deleteUser(item.id)}><i className='bx bx-trash'></i></button>
+                                            </>
                                         ) : <></>}
                                     </div>
                                 </div>

@@ -75,9 +75,11 @@ function Filial({ data }) {
                                     <p className='filial_table_product'>{item?.city}</p>
                                     <div className='filial_table_product'>
                                         <button><Link to={`/filials/singlefilial/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                        <button><Link to={`/filials/editfilial/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                         {role == "admin" ? (
-                                            <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
+                                            <>
+                                                <button><Link to={`/filials/editfilial/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                                <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
+                                            </>
                                         ) : <></>}
                                     </div>
                                 </li>
