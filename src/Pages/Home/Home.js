@@ -19,6 +19,7 @@ function Home() {
     .get('/statistics')
     .then(res =>{
       setStatisticInfo(res?.data)
+      console.log(res?.data);
     })
     .catch(err =>{
       console.log(err)

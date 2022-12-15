@@ -90,7 +90,7 @@
     flex-direction: row;
 }
 .filial_table_header p{
-    padding: 20px 0;
+    padding: 20px 10px;
     text-align: center;
     font-size: 16px;
     font-weight: 700;
@@ -120,6 +120,7 @@
     justify-content: center;
     border-right: 2px solid rgb(215, 215, 215);
     font-weight: 500;
+    padding: 12px;
 }
 .filial_table li .filial_table_product:nth-child(1){
     flex-basis: 27%;

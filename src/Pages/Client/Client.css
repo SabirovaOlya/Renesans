@@ -86,16 +86,16 @@
     flex-direction: column;
     transition-duration: 0.3s;
 }
-form .region_select{
+.clientform_form .region_select{
     z-index: 100 ;
 }
-form .ditrict_select{
+.clientform_form .ditrict_select{
     z-index: 50 ;
 }
-form .country_select{
+.clientform_form .country_select{
     z-index: 25 ;
 }
-form .radio_group{
+.clientform_form .radio_group{
     margin-bottom: 15px;
     margin-left: 5px;
 }

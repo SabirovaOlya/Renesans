@@ -46,13 +46,19 @@ function Login() {
                 https
                     .post('/login', data)
                     .then(res => {
-                        Success()
+                        let roles = []
+                        res?.data?.user?.role?.map(item =>{
+                            roles.push(item?.name)
+                        })
                         window.localStorage.setItem('token', res?.data?.token)
                         window.localStorage.setItem('name', res?.data?.user?.name)
-                        window.localStorage.setItem('role', res?.data?.user?.role?.name)
+                        window.localStorage.setItem('role', JSON.stringify(roles))
                         window.localStorage.setItem('user_id', res?.data?.user?.id)
-
                         setToken(res.data.token)
+                        Success()
+
+                        // Update
+                        window.location.reload(false);
                     })
                     .catch(err => {
                         if (err.response.status == 401){

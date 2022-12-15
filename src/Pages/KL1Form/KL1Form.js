@@ -14,7 +14,7 @@ function KL1Form() {
   const [modalka, setModalka] = useState('shartnoma_modal close')
   const [modalCode, setModalCode] = useState('')
   let navigate = useNavigate()
-  const role = window.localStorage.getItem('role')
+  let role = JSON.parse(window.localStorage.getItem('role'))
 
   // Alert
   function DeleteAlert() {
@@ -167,7 +167,7 @@ function KL1Form() {
                                   <p className='li_shartnoma'>{item?.mark_date}</p>
                                   <div className='userButtons_shartnoma'>
                                       <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                      {role == "admin" ? (
+                                      { role.includes('admin') ? (
                                         <>
                                           <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                           <button onClick={() => Delete(item?.id)}><i className='bx bx-trash'></i></button>

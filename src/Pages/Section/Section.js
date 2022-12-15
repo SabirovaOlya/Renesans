@@ -13,8 +13,8 @@ import https from '../../assets/https'
 import Swal from 'sweetalert2'
 
 function Section() {
-    const role = window.localStorage.getItem('role')
 
+    let role = JSON.parse(window.localStorage.getItem('role'))
 
     // Alert
     function Success() {
@@ -182,7 +182,7 @@ function Section() {
                                         <p>{item?.name}</p>
                                         <p>{5435239}</p>
                                         <div className='mahsulot_product_buttons'>
-                                            {role == "admin" ? (
+                                            { role.includes('admin') ? (
                                                 <>
                                                     <button><Link to={`/section/editsection/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                                     <button onClick={() => { Delete(item?.id) }}><i className='bx bx-trash'></i></button>

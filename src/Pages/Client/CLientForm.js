@@ -27,6 +27,7 @@ function CLientForm() {
     const result = event.target.value.toUpperCase();
     setDocument(result)
   };
+  const [pinfl, setPinfl] = useState()
   // Gender
   const [gender, setGender] = useState('erkak')
   // Phone number array
@@ -58,9 +59,6 @@ function CLientForm() {
     formState: { errors, isValid }
   } = useForm();
 
-  // Fosuc Selectors
-  
-  const regionSelector = useRef()
   const [classFocusRegion, setClassFocusRegion] = useState(false)
 
   // Section
@@ -182,14 +180,14 @@ function CLientForm() {
         icon: 'error',
         confirmButtonText: 'Ok'
       })
-    }
+  }
   function DocumentError() {
     Swal.fire({
         title: "Hujjat muddati tugagan",
         icon: 'error',
         confirmButtonText: 'Ok'
       })
-    }
+  }
 
   // Select Style
   const customStyles = {
@@ -317,7 +315,6 @@ function CLientForm() {
               defaultValue={selectedRegion}
               value={selectedRegion}
               options={regions}
-              ref={regionSelector}
               className={"buyurtma_select_new region_select"}
               styles={customStyles}
               theme={(theme) => ({
@@ -335,7 +332,7 @@ function CLientForm() {
             />
           </div>
           <div className='clientForm_selector'>
-            <p>Tumon</p>
+            <p>Tuman</p>
             <Select
               defaultValue={selectedDistrict}
               value={selectedDistrict}
@@ -364,14 +361,14 @@ function CLientForm() {
             className='vall'
             placeholder='2nd Boulevar'
             color="secondary"
-            required
-            {...register("temp_address", { required: false })}
+            {...register("temp_address", { required: null })}
           />
+
           <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="erkak" className='radio_group' 
-           onChange={(e)=>{
-            setGender(e)
-           }}
-          >
+            onChange={(e)=>{
+              setGender(e)
+            }}
+            >
             <Radio value="erkak" color="secondary" size="sm">
               Erkak
             </Radio>
@@ -379,6 +376,7 @@ function CLientForm() {
               Ayol
             </Radio>
           </Radio.Group>
+
           <div className='clientForm_selector'>
             <p>Fuqarolik</p>
             <Select
@@ -418,11 +416,16 @@ function CLientForm() {
             label="PINFL"
             bordered
             className='vall'
-            placeholder='12345678901234'
+            value={pinfl}
             color="secondary"
             required
             type='number'
             {...register("pinfl", { required: true,  minLength: 14, maxLength: 14 })}
+            onChange={(e)=>{
+              if(e.target.value.trim().length < 15){
+                setPinfl(e.target.value)
+              }
+            }}
           />
           {
             phoneArray?.map((item, index)=>{

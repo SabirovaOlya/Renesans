@@ -26,7 +26,7 @@ function Xodim() {
 
     const [paginations, setPaginations] = useState([])
     const [currentUrl, setCurrentUrl] = useState('employees')
-    const role = window.localStorage.getItem('role')
+    let role = JSON.parse(window.localStorage.getItem('role'))
 
     function getUrl(newUrl) {
         https
@@ -89,7 +89,7 @@ function Xodim() {
                                     <div className=''>{item.code}</div>
                                     <div className=''>
                                         <button><Link to={`/xodim/singlexodim/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                        {role == "admin" ? (
+                                        { role.includes('admin') ? (
                                             <>
                                                 <button><Link to={`/xodim/editxodim/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
                                                 <button onClick={() => deleteXodim(item.id)}><i className='bx bx-trash'></i></button>

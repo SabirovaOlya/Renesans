@@ -13,7 +13,7 @@ function Filial({ data }) {
 
     const [filiallar, setFiliallar] = useState([])
     const [loading, setLoading] = useState(true);
-    const role = window.localStorage.getItem('role')
+    let role = JSON.parse(window.localStorage.getItem('role'))
 
 
     // PAGINATION
@@ -55,41 +55,7 @@ function Filial({ data }) {
             })
             .catch(err => console.log(err))
     }
-    function returnData() {
-        if (loading) {
-            return (<PulseLoader size={50} color={'#7828c8'} />)
-        } else {
-            return (
-                <>
-                    <ul className='filial_table'>
-                        <li className='filial_table_header'>
-                            <p>Qisqa nomi</p>
-                            <p>Mansil</p>
-                            <p>Shahar</p>
-                        </li>
-                        {
-                            filiallar?.map((item, index) => {
-                                return <li key={index} className='filial_table_products client_row'>
-                                    <p className='filial_table_product'>{item?.short_name}</p>
-                                    <p className='filial_table_product'>{item?.address}</p>
-                                    <p className='filial_table_product'>{item?.city}</p>
-                                    <div className='filial_table_product'>
-                                        <button><Link to={`/filials/singlefilial/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
-                                        {role == "admin" ? (
-                                            <>
-                                                <button><Link to={`/filials/editfilial/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
-                                                <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
-                                            </>
-                                        ) : <></>}
-                                    </div>
-                                </li>
-                            })
-                        }
-                    </ul>
-                </>
-            )
-        }
-    }
+
     return (
         <section className='filial'>
             <h1 className='filial_title'>Filiallar</h1>
@@ -111,7 +77,39 @@ function Filial({ data }) {
                     }
                 />
             </div>
-            <div className='filial_table_block'>{returnData()}</div>
+            <div className='filial_table_block'>{
+                loading ? (<PulseLoader size={50} color={'#7828c8'} />) :
+                    (
+                        <>
+                            <ul className='filial_table'>
+                                <li className='filial_table_header'>
+                                    <p>Qisqa nomi</p>
+                                    <p>Mansil</p>
+                                    <p>Shahar</p>
+                                </li>
+                                {
+                                    filiallar?.map((item, index) => {
+                                        return <li key={index} className='filial_table_products client_row'>
+                                            <p className='filial_table_product'>{item?.short_name}</p>
+                                            <p className='filial_table_product'>{item?.address}</p>
+                                            <p className='filial_table_product'>{item?.city}</p>
+                                            <div className='filial_table_product'>
+                                                <button><Link to={`/filials/singlefilial/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
+                                                { role.includes('admin') ? (
+                                                    <>
+                                                        <button><Link to={`/filials/editfilial/${item?.id}`}><i className='bx bx-edit-alt white'></i></Link></button>
+                                                        <button onClick={() => deleteBranch(item?.id)}><i className='bx bx-trash'></i></button>
+                                                    </>
+                                                ) : <></>}
+                                            </div>
+                                        </li>
+                                    })
+                                }
+                            </ul>
+                        </>
+                    )
+                }
+            </div>
             <div className='pagination_block_wrapper'>
                 <div className='pagination_block'>
                     {

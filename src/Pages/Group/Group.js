@@ -10,7 +10,7 @@ import '../Client/Client.css'
 function Group() {
 
     const [groups, setGroups] = useState([]);
-    const role = window.localStorage.getItem('role')
+    const role = JSON.parse(window.localStorage.getItem('role')) 
     // PAGINATION
     const [paginations, setPaginations] = useState([])
     const [currentUrl, setCurrentUrl] = useState('groups')
@@ -96,7 +96,7 @@ function Group() {
                                 <p >{item?.code}</p>
                                 <div className='clientuserButtons group_buttons'>
                                     <button><Link to={`/group/single_group/${item?.id}`}><i className='bx bx-user'></i></Link></button>
-                                    { role == 'admin' ? (
+                                    { role.includes('admin') ? (
                                         <>
                                             <button><Link to={`/group/edit_group/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
                                             <button onClick={() => deleteGroup(item?.id)}><i className='bx bx-trash'></i></button>

@@ -7,11 +7,12 @@ import { AiOutlineUsergroupAdd, AiOutlineClear, AiOutlineRollback, AiOutlineUser
 import Select from 'react-select';
 import { render } from 'react-dom';
 import { v4 as uuidv4 } from 'uuid';
+import https from '../../assets/https';
 // Components
 import Swal from 'sweetalert2';
-
+import '../KL1/KL1.css'
 import './Client.css'
-import https from '../../assets/https';
+import { log } from '@antv/g2plot/lib/utils';
 
   function GroupForm(props) {
 
@@ -45,8 +46,22 @@ import https from '../../assets/https';
           confirmButtonText: 'Ok'
       })
     }
+    function BirthdayError() {
+      Swal.fire({
+          title: "Tug'ilgan sana noto'g'ri",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        })
+    }
+    function DocumentError() {
+      Swal.fire({
+          title: "Hujjat muddati tugagan",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        })
+    }
 
-     // Section
+  // Section
   const [sectionOptions, setSectionOptions] = useState([
     { value: '1', label: "O'zR fuqarosining ID kartasi" },
     { value: '2', label: "O'zR Fuqarosining pasporti" },
@@ -61,8 +76,67 @@ import https from '../../assets/https';
   ])
   const [section, setSection] = useState(sectionOptions[0])
   const [sectionRole, setSectionRole] = useState(sectionOptions[0].label)
+  // Countries select
+  const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState({})
+  const GetCountries = async() =>{
+    await https
+    .get('/countries')
+    .then(res =>{
+      let array =[]
+      res?.data?.map( item =>{
+        array.push({
+          value:item?.num_code,
+          label:item?.nationality
+        })
+      })
+      setCountries(array)
+      setSelectedCountry(array[238])
+    })
+  }
+  // Shahar Select
+  const [ regions, setRegions] = useState([])
+  const [ selectedRegion, setSelectedRegion] = useState({})
+  const GetRegions = async() =>{
+    await https
+    .get('/regions')
+    .then(res =>{
+      let array  = []
+      res?.data?.map((item,index) =>{
+        array.push({
+          value:index,
+          label:item?.name_uz
+        })
+      })
+      setRegions(array)
+      setSelectedRegion(array[0])
+    })
+  }
+  // Tumon Select
+  const [ districts, setDistricts] = useState([])
+  const [ selectedDistrict, setSelectedDistrict] = useState({})
+  const GetDistracts = async() =>{
+    await https
+    .get('/districts')
+    .then(res =>{
+      let array  = []
+      res?.data?.map((item,index) =>{
+        array.push({
+          value:index,
+          label:item?.name_uz
+        })
+      })
+      setDistricts(array)
+      setSelectedDistrict(array[0])
+    })
+  }
+
 
     useEffect(() => {
+      GetCountries()
+      GetRegions()
+      GetDistracts()
+
       setGroups([
         {
           id:1,
@@ -71,16 +145,19 @@ import https from '../../assets/https';
           birth_date: '',
           address: '',
           temp_address:'',
-          city: '',
-          citizenship: '',
+          city: regions[0]?.label,
+          citizenship: countries[0]?.label,
           nationality: '',
           pinfl: '',
-          phone: '',
-          doc_type: sectionOptions[0],
+          phone: [''],
+          doc_type: sectionOptions[0]?.label,
           serial_num: '',
           issued_by: '',
           issued_date: '',
-          job:''
+          job:'',
+          gender:'erkak',
+          doc_end:'',
+          district:districts[0]?.label
         },
         {
           id:2,
@@ -89,16 +166,19 @@ import https from '../../assets/https';
           birth_date: '',
           address: '',
           temp_address:'',
-          city: '',
-          citizenship: '',
+          city: regions[0]?.label,
+          citizenship: countries[0]?.label,
           nationality: '',
           pinfl: '',
-          phone: '',
-          doc_type: sectionOptions[0],
+          phone: [''],
+          doc_type: sectionOptions[0]?.label,
           serial_num: '',
           issued_by: '',
           issued_date: '',
-          job:''
+          job:'',
+          gender:'erkak',
+          doc_end:'',
+          district:districts[0]?.label
         },
         {
           id:3,
@@ -107,18 +187,22 @@ import https from '../../assets/https';
           birth_date: '',
           address: '',
           temp_address:'',
-          city: '',
-          citizenship: '',
+          city: regions[0]?.label,
+          citizenship: countries[0]?.label,
           nationality: '',
           pinfl: '',
-          phone: '',
-          doc_type: sectionOptions[0],
+          phone: [''],
+          doc_type: sectionOptions[0]?.label,
           serial_num: '',
           issued_by:'',
           issued_date: '',
-          job:''
+          job:'',
+          gender:'erkak',
+          doc_end:'',
+          district:districts[0]?.label
         }
       ])
+
     }, []);
   
 
@@ -132,16 +216,19 @@ import https from '../../assets/https';
         birth_date: '',
         address: '',
         temp_address:'',
-        city: '',
-        citizenship: '',
+        city: regions[0]?.label,
+        citizenship: countries[0]?.label,
         nationality: '',
         pinfl: '',
-        phone: '',
-        doc_type: sectionOptions[0],
+        phone: [''],
+        doc_type: sectionOptions[0]?.label,
         serial_num: '',
-        issued_by: '',
+        issued_by:'',
         issued_date: '',
-        job:''
+        job:'',
+        gender:'erkak',
+        doc_end:'',
+        district:districts[0]?.label
       }]
       setGroups(groups.concat(newClient))
     }
@@ -201,6 +288,8 @@ import https from '../../assets/https';
 
       if(!mainObj.some(even)){
 
+
+
         let data = {
           group_name: nameGroup,
           code:Math.floor(Math.random() * (10000 - 1 + 1)) + 10000,
@@ -251,21 +340,6 @@ import https from '../../assets/https';
         <div className={`client_form`}>
           <div className='clientform_title'>{index + 1}. Foydalanuvchi tafsilotlari</div>
             <div className='clientform_form margin_top_20'>
-              {/* <label className='clientform_gender '>
-                <p>Jinsi:</p>
-                <Radio.Group
-                  aria-label='Пол'
-                  orientation="horizontal"
-                  color='secondary'
-                  defaultValue={true}
-                  size='sm'
-                  className='clientform_gender_radio'
-                >
-                  <Radio value={true}>Erkak</Radio>
-                  <Radio value={false}>Ayol</Radio>
-                </Radio.Group>
-                <input hidden value={variant} />
-              </label> */}
               <Input
                 width='100%'
                 clearable
@@ -331,32 +405,62 @@ import https from '../../assets/https';
                   setGroups(newGroupInfo)
                 }}
               />
-              <Input
-                required
-                width='100%'
-                clearable
-                label="Shahar"
-                bordered
-                className='vall'
-                placeholder='Nukus'
-                color="secondary"
-                value={groups.find(x => x.id === item.id).city}
-                onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].city = e.target.value
-                  setGroups(newGroupInfo)
-                }}
-              />
-              {/* <Input
-                required
-                width='100%'
-                clearable
-                label="Tuman"
-                bordered
-                className='vall'
-                placeholder='tuman'
-                color="secondary"
-              /> */}
+              {
+                regions[0]?.label ? (
+                  <div className='clientForm_selector'>
+                    <p>Shahar</p>
+                    <Select
+                      defaultValue={regions.find(x => x.label === item.city) ? regions.find(x => x.label === item.city) : regions[0]}
+                      value={regions.find(x => x.label === item.city) ? regions.find(x => x.label === item.city) : regions[0]}
+                      options={regions}
+                      className={"buyurtma_select_new region_select"}
+                      styles={customStyles}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 12,
+                        colors: {
+                          ...theme.colors,
+                          primary25: '#7828c8',
+                          primary: '#7828c8',
+                        },
+                      })}
+                      onChange={(e) => {
+                        let newGroupInfo = [...groups]
+                        newGroupInfo[index].city = e.label
+                        setGroups(newGroupInfo)
+                      }}
+                    />
+                  </div>
+                ) : <></>
+              }
+              {
+                districts[0]?.label ? (
+                  <div className='clientForm_selector'>
+                    <p>Tuman</p>
+                    <Select
+                      defaultValue={districts?.find(x => x.label === item.district) ? districts?.find(x => x.label === item.district) : districts[0]}
+                      value={districts?.find(x => x.label === item.district) ? districts?.find(x => x.label === item.district) : districts[0]}
+                      options={districts}
+                      className={"buyurtma_select_new ditrict_select"}
+                      styles={customStyles}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 12,
+                        colors: {
+                          ...theme.colors,
+                          primary25: '#7828c8',
+                          primary: '#7828c8',
+                        },
+                      })}
+                      onChange={(e) => {
+                        let newGroupInfo = [...groups]
+                        newGroupInfo[index].district = e.label
+                        setGroups(newGroupInfo)
+                      }}
+                    />
+                  </div>
+                ) : <></>
+              }
               <Input
                 required
                 width='100%'
@@ -373,22 +477,50 @@ import https from '../../assets/https';
                   setGroups(newGroupInfo)
                 }}
               />
-              <Input
-                required
-                width='100%'
-                clearable
-                label="Fuqarolik"
-                bordered
-                className='vall'
-                placeholder='Uzbekistan'
-                color="secondary"
-                value={groups.find(x => x.id === item.id).citizenship}
-                onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].citizenship = e.target.value
-                  setGroups(newGroupInfo)
-                }}
-              />
+
+              <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="erkak" className='radio_group' 
+                  onChange={(e)=>{
+                    let newGroupInfo = [...groups]
+                    newGroupInfo[index].gender = e
+                    setGroups(newGroupInfo)
+                  }}
+                >
+                <Radio value="erkak" color="secondary" size="sm">
+                  Erkak
+                </Radio>
+                <Radio value="ayol" color="secondary" size="sm" className='radio_second'>
+                  Ayol
+                </Radio>
+              </Radio.Group>
+
+              {
+                countries[0]?.label ? (
+                  <div className='clientForm_selector'>
+                    <p>Fuqarolik</p>
+                    <Select
+                      defaultValue={countries?.find(x => x.label === item.citizenship) ? countries?.find(x => x.label === item.citizenship) : countries[238]}
+                      value={countries?.find(x => x.label === item.citizenship) ? countries?.find(x => x.label === item.citizenship) : countries[238]}
+                      options={countries}
+                      className={"buyurtma_select_new country_select"}
+                      styles={customStyles}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 12,
+                        colors: {
+                          ...theme.colors,
+                          primary25: '#7828c8',
+                          primary: '#7828c8',
+                        },
+                      })}
+                      onChange={(e) => {
+                        let newGroupInfo = [...groups]
+                        newGroupInfo[index].citizenship = e.label
+                        setGroups(newGroupInfo)
+                      }}
+                    />
+                  </div>
+                ) : <></>
+              }
               <Input
                 required
                 width='100%'
@@ -412,39 +544,75 @@ import https from '../../assets/https';
                 label="PINFL"
                 bordered
                 className='vall'
-                placeholder='12345678901234'
                 type='number'
                 color="secondary"
                 value={groups.find(x => x.id === item.id).pinfl}
                 onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].pinfl = e.target.value
-                  setGroups(newGroupInfo)
+                  if(e.target.value.trim().length < 15){
+                    let newGroupInfo = [...groups]
+                    newGroupInfo[index].pinfl = e.target.value
+                    setGroups(newGroupInfo)
+                  }
                 }}
               />
-              <Input
-                required
-                width='100%'
-                clearable
-                label="Telefon raqami"
-                bordered
-                className='vall'
-                labelLeft='+998'
-                placeholder='991235678'
-                type="number"
-                color="secondary"
-                value={groups.find(x => x.id === item.id).phone}
-                onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].phone = e.target.value
-                  setGroups(newGroupInfo)
-                }}
-              />
+              {
+                item?.phone?.map((itemPhone, indexPhone)=>{
+                  return(
+                    <div className='kl1_product' key={indexPhone}>
+                      <Input
+                        width='93%'
+                        clearable
+                        label={`Telefon raqami (${indexPhone + 1})`}
+                        bordered
+                        className='vall'
+                        pattern='[0-9]'
+                        labelLeft='+998'
+                        type="number"
+                        color="secondary"
+                        required
+                        value={(groups.find(x => x.id === item.id).phone)[indexPhone]}
+                        onChange={(e)=>{
+                          let newGroupInfo = [...groups]
+                          newGroupInfo[index].phone[indexPhone] = e.target.value
+                          setGroups(newGroupInfo)
+                        }}
+                      />
+                      <button
+                          className='kl1_delete_button'
+                          type='button'
+                          onClick={() => {
+                            let newGroupInfo = [...groups]
+                            if(newGroupInfo[index].phone.length > 1){
+                              newGroupInfo[index].phone = newGroupInfo[index]?.phone?.filter(x => x !== (newGroupInfo.find(x => x.id === item.id).phone)[indexPhone])
+                            }
+                            setGroups(newGroupInfo)
+                        }}
+                      >
+                          <i className='bx bx-trash'></i>
+                      </button>
+                    </div>
+                  )
+                })
+              }
+              <div className='margin_bottom20'>
+                <button
+                    className='kl1_add_button'
+                    type='button'
+                    onClick={()=>{
+                      let newNumber = ['']
+                      let newGroupInfo = [...groups]
+                      newGroupInfo[index].phone = newGroupInfo[index].phone.concat(newNumber)
+                      setGroups(newGroupInfo)
+                    }}
+                >
+                    Telefon raqam qo'shish
+                </button>
+              </div>
               <div className='clientForm_selector'>
                 <p>Shaxsini tasdiqlovchi hujjat</p>
                 <Select
-                    defaultValue={sectionOptions.find(x => x === item.doc_type)}
-                    value={sectionOptions.find(x => x === item.doc_type)}
+                    defaultValue={sectionOptions.find(x => x.label === item.doc_type)}
+                    value={sectionOptions.find(x => x.label === item.doc_type)}
                     options={sectionOptions}
                     className='buyurtma_select_new'
                     styles={customStyles}
@@ -461,8 +629,6 @@ import https from '../../assets/https';
                       let newGroupInfo = [...groups]
                       newGroupInfo[index].doc_type = e.label
                       setGroups(newGroupInfo)
-                      setSectionRole(e.label)
-                      setSection(e)
                     }}
                 />
               </div>
@@ -510,6 +676,21 @@ import https from '../../assets/https';
                 onChange={e => {
                   let newGroupInfo = [...groups]
                   newGroupInfo[index].issued_date = e.target.value
+                  setGroups(newGroupInfo)
+                }}
+              />
+              <Input
+                required
+                width='100%'
+                label="Hujjat berilgan sana"
+                bordered
+                className='vall'
+                type='date'
+                color="secondary"
+                value={groups.find(x => x.id === item.id).doc_end}
+                onChange={e => {
+                  let newGroupInfo = [...groups]
+                  newGroupInfo[index].doc_end = e.target.value
                   setGroups(newGroupInfo)
                 }}
               />
