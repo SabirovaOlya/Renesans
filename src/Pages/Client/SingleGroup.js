@@ -56,7 +56,7 @@ function SingleGroup() {
         <div className='single_buyurtma'>
             <h1 className='text_center filial_edit_text'>{group?.name}</h1>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
-                <p>Parol:</p>
+                <p>Guruh kodi:</p>
                 <p>{group?.code}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>

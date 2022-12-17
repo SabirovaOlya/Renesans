@@ -207,7 +207,7 @@ function AddXodim() {
                         width='100%'
                         clearable
                         bordered
-                        label="Code"
+                        label="Kod"
                         type='number'
                         placeholder="1234567"
                         className='xodim_input'

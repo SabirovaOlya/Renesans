@@ -46,16 +46,30 @@ import { log } from '@antv/g2plot/lib/utils';
           confirmButtonText: 'Ok'
       })
     }
-    function BirthdayError() {
+    function Error() {
       Swal.fire({
-          title: "Tug'ilgan sana noto'g'ri",
+          title: "Xato",
+          icon: 'error',
+          confirmButtonText: 'Ok'
+      })
+    }
+    function BirthdayError(client) {
+      Swal.fire({
+          title: `Klient ${client}. Tug'ilgan sana noto'g'ri`,
           icon: 'error',
           confirmButtonText: 'Ok'
         })
     }
-    function DocumentError() {
+    function DocumentError(client) {
       Swal.fire({
-          title: "Hujjat muddati tugagan",
+          title: `Klient ${client}. Hujjat muddati tugagan`,
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        })
+    }
+    function DocumentBirthdayError(client) {
+      Swal.fire({
+          title: `Klient ${client}. Hujjat sanasi yoki Tug'ilgan sana noto'g'ri`,
           icon: 'error',
           confirmButtonText: 'Ok'
         })
@@ -146,7 +160,7 @@ import { log } from '@antv/g2plot/lib/utils';
           address: '',
           temp_address:'',
           city: regions[0]?.label,
-          citizenship: countries[0]?.label,
+          citizenship: countries[238]?.label,
           nationality: '',
           pinfl: '',
           phone: [''],
@@ -155,7 +169,7 @@ import { log } from '@antv/g2plot/lib/utils';
           issued_by: '',
           issued_date: '',
           job:'',
-          gender:'erkak',
+          gender:'male',
           doc_end:'',
           district:districts[0]?.label
         },
@@ -167,7 +181,7 @@ import { log } from '@antv/g2plot/lib/utils';
           address: '',
           temp_address:'',
           city: regions[0]?.label,
-          citizenship: countries[0]?.label,
+          citizenship: countries[238]?.label,
           nationality: '',
           pinfl: '',
           phone: [''],
@@ -176,7 +190,7 @@ import { log } from '@antv/g2plot/lib/utils';
           issued_by: '',
           issued_date: '',
           job:'',
-          gender:'erkak',
+          gender:'male',
           doc_end:'',
           district:districts[0]?.label
         },
@@ -188,7 +202,7 @@ import { log } from '@antv/g2plot/lib/utils';
           address: '',
           temp_address:'',
           city: regions[0]?.label,
-          citizenship: countries[0]?.label,
+          citizenship: countries[238]?.label,
           nationality: '',
           pinfl: '',
           phone: [''],
@@ -197,7 +211,7 @@ import { log } from '@antv/g2plot/lib/utils';
           issued_by:'',
           issued_date: '',
           job:'',
-          gender:'erkak',
+          gender:'male',
           doc_end:'',
           district:districts[0]?.label
         }
@@ -217,7 +231,7 @@ import { log } from '@antv/g2plot/lib/utils';
         address: '',
         temp_address:'',
         city: regions[0]?.label,
-        citizenship: countries[0]?.label,
+        citizenship: countries[238]?.label,
         nationality: '',
         pinfl: '',
         phone: [''],
@@ -226,7 +240,7 @@ import { log } from '@antv/g2plot/lib/utils';
         issued_by:'',
         issued_date: '',
         job:'',
-        gender:'erkak',
+        gender:'male',
         doc_end:'',
         district:districts[0]?.label
       }]
@@ -280,7 +294,9 @@ import { log } from '@antv/g2plot/lib/utils';
       groupMembers?.map(item =>{
         newvalue.push(Object.values(Object.values(item)))
         item.code = `99${item.code}`
-        console.log(item.code);
+        item.phone.map((number,index) =>{
+          item.phone[index] = `+998${number}`
+        })
         delete item.id
       })
       newvalue.push(nameGroup)
@@ -288,31 +304,53 @@ import { log } from '@antv/g2plot/lib/utils';
 
       if(!mainObj.some(even)){
 
-
-
         let data = {
           group_name: nameGroup,
           code:Math.floor(Math.random() * (10000 - 1 + 1)) + 10000,
           client: groupMembers
         }
-        data.client?.map(item =>{
-          if(item.doc_type.label){
-            item.doc_type = item.doc_type.label
+        data?.client?.map((item, index) =>{
+          if(!(item?.city)){
+            item.city = regions[0]?.label
+          }
+          if(!(item?.district)){
+            item.district = districts[0]?.label
+          }
+          if(!(item?.citizenship)){
+            item.citizenship = countries[238]?.label
           }
         })
+
+        for(let i= 0; i < data?.client?.length; i++){
+          var now = new Date()
+          if(new Date(data?.client?.[i]?.birth_date) > new Date(now.getFullYear(), now.getMonth(), now.getDate())){
+            console.log(i, "birth")
+            return(BirthdayError(i + 1))
+          }
+          if(new Date(data?.client?.[i]?.doc_end) < new Date(now.getFullYear(), now.getMonth(), now.getDate())){
+            console.log(i, "doc")
+            return(DocumentError(i + 1))
+          }
+          if(new Date(data?.client?.[i]?.issued_date) < new Date(data?.client?.[i]?.birth_date)){
+            console.log(i, "both")
+            return(DocumentBirthdayError(i + 1))
+          }
+        }
+
         https
-        .post('/clients', data)
-        .then(res=>{
-          console.log(data)
-          Success()
-        })
-        .catch(err =>{
-          console.log(err)
-          console.log(data)
-        })
-      }else{
-        Empty()
-      }
+          .post('/clients', data)
+          .then(res=>{
+            console.log(data)
+            Success()
+          })
+          .catch(err =>{
+            console.log(err)
+            console.log(data)
+            Error()
+          })
+        }else{
+          Empty()
+        }
   }
 
   
@@ -478,17 +516,17 @@ import { log } from '@antv/g2plot/lib/utils';
                 }}
               />
 
-              <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="erkak" className='radio_group' 
+              <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="male" className='radio_group' 
                   onChange={(e)=>{
                     let newGroupInfo = [...groups]
                     newGroupInfo[index].gender = e
                     setGroups(newGroupInfo)
                   }}
                 >
-                <Radio value="erkak" color="secondary" size="sm">
+                <Radio value="male" color="secondary" size="sm">
                   Erkak
                 </Radio>
-                <Radio value="ayol" color="secondary" size="sm" className='radio_second'>
+                <Radio value="female" color="secondary" size="sm" className='radio_second'>
                   Ayol
                 </Radio>
               </Radio.Group>
@@ -682,7 +720,7 @@ import { log } from '@antv/g2plot/lib/utils';
               <Input
                 required
                 width='100%'
-                label="Hujjat berilgan sana"
+                label="Hujjat tugash sana"
                 bordered
                 className='vall'
                 type='date'

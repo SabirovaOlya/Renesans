@@ -62,8 +62,16 @@ function SingleClient() {
                             <p>{client?.city}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
+                            <p>Tuman:</p>
+                            <p>{client?.district}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
                             <p>Vaqtinchalik yashash joyi:</p>
                             <p>{client?.temp_address}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Jinsi:</p>
+                            <p>{client?.gender == "male" ? "Erkar" : (client?.gender == "female" ? "ayol" : "-")}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
                             <p>Fuqarolik:</p>
@@ -77,10 +85,16 @@ function SingleClient() {
                             <p>PINFL:</p>
                             <p>{client?.pinfl}</p>
                         </div>
-                        <div className='single_buyurtma_inputs'>
-                            <p>Telefon raqami:</p>
-                            <p>+998 {client?.phone}</p>
-                        </div>
+                        {
+                            client?.phone?.map((item,index) =>{
+                                return(
+                                    <div className='single_buyurtma_inputs'>
+                                        <p>Telefon raqami {index + 1}:</p>
+                                        <p>{item}</p>
+                                    </div>
+                                )
+                            })
+                        }
                         <div className='single_buyurtma_inputs'>
                             <p>Hujjat turi:</p>
                             <p>{client?.doc_type}</p>
@@ -96,6 +110,10 @@ function SingleClient() {
                         <div className='single_buyurtma_inputs'>
                             <p>Hujjat berilgan sana:</p>
                             <p>{client?.issued_date}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Hujjat tugash sana:</p>
+                            <p>{client?.doc_end}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
                             <p>Ish lavozmi:</p>

@@ -82,7 +82,7 @@ function SingleSugurta() {
                             <p>{sugurtaInfo?.order?.order_date}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Buyurtma paroli:</p>
+                            <p>Buyurtma kodi:</p>
                             <p>{sugurtaInfo?.order?.code}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>

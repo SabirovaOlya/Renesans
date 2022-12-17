@@ -141,10 +141,10 @@ function Mahsulot() {
                 <Input
                     rounded
                     bordered
-                    placeholder="Paroli..."
+                    placeholder="Kodi..."
                     color="secondary"
                     width='100%'
-                    label="Mahsulot paroli"
+                    label="Mahsulot kodi"
                     {...register("code", { required: true })}
                 />
                 <div className='add_mahsulot_buttons'>
@@ -177,7 +177,7 @@ function Mahsulot() {
                 <div className='mahsulot_table'>
                     <div className='mahsulot_table_headers'>
                         <p>Mahsulot nomi</p>
-                        <p>Mahsulot paroli</p>
+                        <p>Mahsulot kodi</p>
                     </div>
 
                     <div className='mahsulot_table_products'>

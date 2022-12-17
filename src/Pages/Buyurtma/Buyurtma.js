@@ -15,7 +15,7 @@ function Buyurtma() {
     // Alert
     function Warn() {
         Swal.fire({
-            title: "Parolni kiriting",
+            title: "Kodni kiriting",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -190,7 +190,7 @@ function Buyurtma() {
                     <div className='shartTable'>
                         <div className='tableHeader'>
                             <p className='headerTable-title_buyurtma'>Raqam</p>
-                            <p className='headerTable-title_buyurtma'>Parol</p>
+                            <p className='headerTable-title_buyurtma'>Kodi</p>
                             <p className='headerTable-title_buyurtma'>Mahsulot nomi</p>
                             <p className='headerTable-title_buyurtma'>Status</p>
                         </div>

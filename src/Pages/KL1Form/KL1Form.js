@@ -26,7 +26,7 @@ function KL1Form() {
   }
   function Warn() {
       Swal.fire({
-          title: "Parolni kiriting",
+          title: "Kodni kiriting",
           icon: 'error',
           confirmButtonText: 'Ok'
       })

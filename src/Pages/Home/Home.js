@@ -25,11 +25,9 @@ function Home() {
       console.log(err)
     })
   },[])
- 
 
   return (
     <section >
-
     <div className='little-statistics'>
       {/* first */}
       <div className='circle-total'>
@@ -48,7 +46,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i>{statisticInfo?.first?.changedTR}%</span>o'tgan oyga ko'ra
+            <span><i className='bx bx-up-arrow-alt'></i>{statisticInfo?.first?.changedTR}%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>
@@ -58,19 +56,19 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              {statisticInfo?.second?.new_orders} dona
+              {statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek} dona
             </p>
             <p className='total-text'>
               Buyurtma
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress procent={(statisticInfo?.second?.new_orders/statisticInfo?.second?.all_orders).toFixed(2)} size={pieSize}/>
+            <DemoRingProgress procent={(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
           <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i> {(statisticInfo?.second?.new_orders/statisticInfo?.second?.all_orders).toFixed(2)}%</span>o'tgan oyga ko'ra
+            <span><i className='bx bx-down-arrow-alt'></i> {(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2)}%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>
@@ -80,19 +78,19 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              {statisticInfo?.third?.new_clients} {statisticInfo?.third?.new_clients == 1 ? 'klient' : 'klientlar'}
+              {statisticInfo?.clients?.lastWeek} {statisticInfo?.clients?.lastWeek == 1 ? 'klient' : 'klientlar'}
             </p>
             <p className='total-text'>
               Klient
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress2 procent={(statisticInfo?.third?.new_clients/statisticInfo?.third?.all_clients).toFixed(2)} size={pieSize}/>
+            <DemoRingProgress2 procent={(statisticInfo?.clients?.lastWeek/statisticInfo?.clients?.all).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
           <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i>{(statisticInfo?.third?.new_clients/statisticInfo?.third?.all_clients).toFixed(2)}%</span>o'tgan oyga ko'ra
+            <span><i className='bx bx-down-arrow-alt'></i>{(statisticInfo?.clients?.lastWeek/statisticInfo?.clients?.all).toFixed(2)}%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>
@@ -114,7 +112,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span>o'tgan oyga ko'ra
+            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>

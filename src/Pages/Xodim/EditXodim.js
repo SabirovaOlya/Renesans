@@ -163,7 +163,7 @@ function EditXodim() {
                 <Input
                     width='100%'
                     bordered
-                    label="Parol"
+                    label="Kod"
                     value={xodim?.code}
                     placeholder='12345'
                     className='filial_input'

@@ -171,7 +171,7 @@ function Section() {
                 <div className='mahsulot_table'>
                     <div className='mahsulot_table_headers'>
                         <p>Bo'lim nomi</p>
-                        <p>Bo'lim paroli</p>
+                        <p>Bo'lim kodi</p>
                     </div>
 
                     <div className='mahsulot_table_products'>

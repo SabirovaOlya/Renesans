@@ -29,7 +29,7 @@ function CLientForm() {
   };
   const [pinfl, setPinfl] = useState()
   // Gender
-  const [gender, setGender] = useState('erkak')
+  const [gender, setGender] = useState('male')
   // Phone number array
   const [phoneArray, setPhoneArray] = useState([
     {
@@ -218,7 +218,7 @@ function CLientForm() {
     let newData = JSON.parse(JSON.stringify(data))
     let numberArray = []
     phoneArray.map(item =>{
-      numberArray.push(item?.phone)
+      numberArray.push(`+998${item?.phone}`)
     })
     let info = {...newData, doc_type: sectionRole, 
       city:selectedRegion.label, 
@@ -363,16 +363,15 @@ function CLientForm() {
             color="secondary"
             {...register("temp_address", { required: null })}
           />
-
-          <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="erkak" className='radio_group' 
+          <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="male" className='radio_group' 
             onChange={(e)=>{
               setGender(e)
             }}
             >
-            <Radio value="erkak" color="secondary" size="sm">
+            <Radio value="male" color="secondary" size="sm">
               Erkak
             </Radio>
-            <Radio value="ayol" color="secondary" size="sm" className='radio_second'>
+            <Radio value="female" color="secondary" size="sm" className='radio_second'>
               Ayol
             </Radio>
           </Radio.Group>

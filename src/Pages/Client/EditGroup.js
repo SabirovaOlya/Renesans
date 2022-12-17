@@ -97,7 +97,7 @@ function EditGroup() {
             <Input
                 width='100%'
                 bordered
-                label="Nomi"
+                label="Guruh nomi"
                 value={group?.name}
                 placeholder='name'
                 className='filial_input'
@@ -111,7 +111,7 @@ function EditGroup() {
             <Input
                 width='100%'
                 bordered
-                label="Parol"
+                label="Guruh kodi"
                 value={group?.code}
                 placeholder='code'
                 className='filial_input'

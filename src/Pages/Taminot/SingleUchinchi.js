@@ -98,7 +98,7 @@ function SingleUchinchi() {
                             <p>{thirdTaminot?.order?.order_date}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Buyurtma paroli:</p>
+                            <p>Buyurtma kodi:</p>
                             <p>{thirdTaminot?.order?.code}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
