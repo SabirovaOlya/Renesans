@@ -81,7 +81,7 @@ function Buyurtma() {
         https
         .post('/check/client/code', dataId)
         .then(res =>{
-            navigate("/buyurtma/form", {state:{id:res?.data?.client_id}})
+            navigate("/buyurtma/form", {state:{id:res?.data?.data?.id}})
         })
         .catch(err =>{
             if(err?.request?.status === 404){
@@ -116,7 +116,10 @@ function Buyurtma() {
             return "green"
         } else if (data === "denied") {
             return "red"
+        }else if (data === "pending") {
+            return "yellow"
         }
+
     }
     // Delete Order Func
     function deleteOrder(index) {

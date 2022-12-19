@@ -43,14 +43,7 @@ function Transport({orderId}) {
     }
     function ProcentError() {
         Swal.fire({
-            title: "Qabul qilish qiymati 100% dan ortiq",
-            icon: 'error',
-            confirmButtonText: 'Ok'
-        })
-    }
-    function CarError() {
-        Swal.fire({
-            title: "Qabul qilish qiymati 100% dan ortiq",
+            title: "Qabul qilish qiymati ortiq",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -93,7 +86,7 @@ function Transport({orderId}) {
         }
     }
 
-    // Photo functions
+    // ********** Photo functions ************* //
     function PhotoOpen(){
         imageInput.current.click()
     }
@@ -109,7 +102,7 @@ function Transport({orderId}) {
             "Content-Type": "multipart/form-data" },
         })
         .then( res =>{
-            setPath(path.concat(res.data.data))
+            setPath(path.concat(res?.data?.data))
         })
         .catch(err =>{
             console.log(err);
@@ -181,6 +174,21 @@ function Transport({orderId}) {
         return totalSum
     }
 
+    function LimitSum(array){
+        let ArrSum = []
+        let date = new Date()
+        array?.map(item =>{
+            if( date.getFullYear() - Number(item?.year) < 10){
+                ArrSum.push((item?.sum)*0.8)
+            }else{
+                ArrSum.push((item?.sum)*0.5)
+            }
+        })
+
+        let totalSum = ArrSum.reduce((prev, current) => Number(prev) + Number(current), 0)
+        return totalSum
+    }
+
     // Selector Options
     const options = [
         { value: '1', label: "O'zR fuqarosining ID kartasi" },
@@ -234,13 +242,13 @@ function Transport({orderId}) {
             possessor: possessor,
             valued_by: valuedNumber,
             auto: transports,
-            paths: image
+            paths: path
         }
         Object.assign(info.owner, {doc_type: ownerSelector})
         Object.assign(info.trust_owner, {doc_type: trustOwnerSelector})
         Object.assign(info, {percent: (giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)})
 
-        if((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1) <= 80){
+        if((giveSum == 0 || GetTotalSum() == 0) ? 0 : (giveSum <= LimitSum(transports))){
             
             let postInfo = JSON.parse(JSON.stringify(info))
             if(possessor === "client"){
@@ -375,7 +383,7 @@ function Transport({orderId}) {
                         <p className='transport_table_title'>Baholash natijalari</p>
                     </div>
                     {
-                        transportProducts.map((item,index)=>{
+                        transportProducts?.map((item,index)=>{
                             return(
                                     <div className='transport_table_product' key={item?.id}>
                                         <div className='transport_table_product_title'>
@@ -517,7 +525,7 @@ function Transport({orderId}) {
                                                 onChange={(e)=>{
                                                     const newArray = [...transportProducts]
                                                     newArray[index].sum = e.target.value
-                                                    setTransportProducts(newArray)
+                                                    setTransportProducts(newArray)                                                   
                                                 }}
                                             >
                                             </Input>
@@ -541,7 +549,7 @@ function Transport({orderId}) {
                         bordered 
                         value={(giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)}
                         status={
-                            ((giveSum == 0 || GetTotalSum() == 0) ? 0 : ((giveSum / GetTotalSum())*100).toFixed(1)) > 80 ? 'error' : ''
+                            (giveSum == 0 || GetTotalSum() == 0) ? 0 : (giveSum) > LimitSum(transportProducts) ? 'error' : ''
                         }
                         readOnly
                     >
@@ -562,7 +570,7 @@ function Transport({orderId}) {
                     >
                     </Input> 
 
-                    {/* <p className='photo_text'>Rasimlar</p>
+                    <p className='photo_text'>Rasimlar</p>
                     <div className='taminot_photo_add'>
                         <div className='photo_add_buttons'>
                             <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
@@ -573,14 +581,14 @@ function Transport({orderId}) {
                             path?.map((item,index)=>{
                                 return(
                                     <div className='image_container' key={index}>
-                                        <img className='photo_show' src={`https://ioi-tech.uz${item}`}></img>
+                                        <img className='photo_show' src={`https://ioi-tech.uz/${item}`}></img>
                                         <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
                                     </div>
                                 )
                             })
                         }
                         </div>
-                    </div>  */}
+                    </div> 
 
                 </div>
                 

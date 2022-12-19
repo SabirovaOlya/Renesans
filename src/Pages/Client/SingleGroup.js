@@ -73,7 +73,7 @@ function SingleGroup() {
                         return(
                             <div className='group_single_table_header' key={item?.id}>
                                 <p>{index + 1}. {item?.name}</p>
-                                <p>{item?.phone}</p>
+                                <p>{item?.phone?.[0]}</p>
                                 <p>{item?.address}</p>
                                 <div className='group_single_table_buttons'>
                                     <button><Link to={`/client/singleClient/${item?.id}`}><span className='white'>Batafsil</span></Link></button>
@@ -87,7 +87,7 @@ function SingleGroup() {
             </div>  
             <div className='pdf_margin_top_40'>
                 <div className='submit-buttons'>
-                    <Link to={`/client/edit_group/${id}`}>
+                    <Link to={`/group/edit_group/${id}`}>
                         <button className='client_submit reset' type='reset'>
                                 Guruhni tahrirlash
                                 <AiOutlineEdit/>

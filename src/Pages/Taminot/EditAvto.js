@@ -46,7 +46,7 @@ function EditAvto() {
     }
     function ProcentError() {
         Swal.fire({
-            title: "Qabul qilish qiymati 100% dan ortiq",
+            title: "Qabul qilish qiymati ortiq",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -237,6 +237,21 @@ function EditAvto() {
 
         return total
     }
+    // Limit Summ
+    function LimitSum(array){
+        let ArrSum = []
+        let date = new Date()
+        array?.map(item =>{
+            if( date.getFullYear() - Number(item?.year) < 10){
+                ArrSum.push((item?.sum)*0.8)
+            }else{
+                ArrSum.push((item?.sum)*0.5)
+            }
+        })
+
+        let totalSum = ArrSum.reduce((prev, current) => Number(prev) + Number(current), 0)
+        return totalSum
+    }
 
     function BackFun(){
         setAvtoInfo(avtoBack)
@@ -315,7 +330,7 @@ function EditAvto() {
             delete postInfo.trust_owner
         }
 
-        if(avtoInfo?.percent <= 100){
+        if(avtoInfo?.sum <= LimitSum(cars)){
             https
             .patch(`/supply-info/${id}`, postInfo)
             .then(res =>{
@@ -630,7 +645,7 @@ function EditAvto() {
                             readOnly
                             className='transport_endMainInputs_input' 
                             {...register(`percent`, { required: true} )}
-                            status={avtoInfo?.percent > 100 ? 'error' : ''}
+                            status={avtoInfo?.sum > LimitSum(cars) ? 'error' : ''}
                         >
                         </Input>  
                         <Input 

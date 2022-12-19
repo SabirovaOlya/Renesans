@@ -73,7 +73,8 @@ function AddFoydalan() {
         { value: '1', label: "user" },
         { value: '2', label: "admin" },
         { value: '3', label: "director" },
-        { value: '4', label: "monitoring" }
+        { value: '4', label: "monitoring" },
+        { value: '5', label: "qo'mita" }
     ];
     const customStyles = {
         option: (provided, state) => ({
@@ -87,7 +88,7 @@ function AddFoydalan() {
             return { ...provided, opacity, transition };
         }
     }
-    const [role, setRole] = useState(roles[0].label)
+    const [role, setRole] = useState([roles[0].label])
     // WARNING MODALKA
     const [resetWarning, setResetWarning] = useState('warning_reset_main close')
 
@@ -101,21 +102,19 @@ function AddFoydalan() {
     }
 
     const onSubmit = (data) => {
-        if ({ ...data, role: role }.password !== { ...data, role: role }.password_confirmation) {
+        let info = { ...data, role: role, employee_id:worker?.value }
+        if (info?.password !== info?.password_confirmation) {
             Warn()
         } else {
             https
-                .post('/register', { ...data, role: role, employee_id:worker?.value })
+                .post('/register', info)
                 .then(res => {
                     Success()
-                    
+                    console.log(info);
                 })
                 .catch(err => {
-                    // if(err.response.status === 422){
-                    //     return(AlredyTaken())
-                    // }
-                    console.log({ ...data, role: role });
                     Error()
+                    console.log(info);
                 })
         }
     }
@@ -207,7 +206,7 @@ function AddFoydalan() {
                         <Select
                             width='10%'
                             defaultValue={[roles[0]]}
-                            // isMulti
+                            isMulti
                             options={roles}
                             className='xodim_select basic-multi-select'
                             classNamePrefix="select"
@@ -221,7 +220,13 @@ function AddFoydalan() {
                                     primary: '#7828c8',
                                 },
                             })}
-                            onChange={(event) => { setRole(event.label) }}
+                            onChange={(event) => { 
+                                let arr =[]
+                                event?.map(item =>{
+                                    arr.push(item.label)
+                                })
+                                setRole(arr)
+                            }}
                         />
                     </div>
                     <div className='filial_buttons'>

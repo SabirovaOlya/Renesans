@@ -17,6 +17,7 @@ function EditSugurta() {
     const [sugurtaBack, setSugurtaBack] = useState({})
     const [name, setName] = useState('')
     const [orderId, setOrderId] = useState()
+    const [orderSum, setOrderSum] = useState()
 
     let { id } = useParams()
 
@@ -34,6 +35,13 @@ function EditSugurta() {
             confirmButtonText: 'Ok'
         })
     }
+    function ErrorSum() {
+        Swal.fire({
+            title: "Sug'urta summasi kamroq",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+      }
     function Warn() {
         Swal.fire({
             title: "Xato",
@@ -50,6 +58,14 @@ function EditSugurta() {
             setSugurtaBack(res?.data?.insurance)
             setName(res?.data?.order?.client?.name)
             setOrderId(res?.data?.order?.id)
+            https
+                .get(`/orders/${res?.data?.order?.id}`)
+                .then(res =>{
+                setOrderSum(res?.data?.sum)
+                })
+                .catch(err =>{
+                console.log(err)
+                })
             setTimeout(()=>{
                 setLoading(false)
             },300)
@@ -70,6 +86,10 @@ function EditSugurta() {
             type:'insurance',
             insurance:{...data, id:sugurtaEdit?.id},
             paths:[]
+        }
+
+        if( data?.sum < (orderSum)*1.2 ){
+            return ErrorSum()
         }
 
         https
@@ -109,6 +129,17 @@ function EditSugurta() {
                     <p>Sugurta kompaniyasi sugurta polisi</p>
                 </div>
                 <Input 
+                    label="So'ralayotgan qarz miqdor"
+                    placeholder='Vosiq Mirzo'
+                    width='100%'
+                    color="secondary"
+                    bordered 
+                    value={orderSum}
+                    readOnly
+                    className='vall'
+                >  
+                </Input>
+                <Input 
                     label="Sug'urta kompaniyasining nomi"
                     width='100%'
                     color="secondary"
@@ -147,6 +178,7 @@ function EditSugurta() {
                     bordered 
                     className='vall'
                     clearable
+                    status={ sugurtaEdit?.sum > (orderSum)*1.2 ? '' : 'error'}
                     value={sugurtaEdit?.sum}
                     {...register("sum", { required: true })}
                     onChange={(e)=>{

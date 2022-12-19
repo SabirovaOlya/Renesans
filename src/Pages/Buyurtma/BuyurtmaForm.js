@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 
 
 function BuyurtmaForm() {
+
+    const filial_limit = window.localStorage.getItem('branch_limit')
     // Permission State
     const [permission, setPermission] = useState(false)
     const [status, setStatus] = useState("accepted")
@@ -136,7 +138,12 @@ function BuyurtmaForm() {
     }
 
     const onSubmit = (data) => {
-        let newData = { ...data, product_id: sectionRole, sign_committee: permission, end_date:'', client_id:clientInfo?.id}
+        let newData = { ...data, 
+            product_id: sectionRole, 
+            sign_committee: data?.sum > 50000000 || data?.sum > filial_limit ? true : false, 
+            end_date:'', 
+            client_id:clientInfo?.id
+        }
         https
         .post('orders', newData)
         .then(res => {
@@ -210,7 +217,7 @@ function BuyurtmaForm() {
                             color="secondary"
                             {...register("sum", { required: true })}
                         />
-                        <div className='shart-check'>
+                        {/* <div className='shart-check'>
                             <Checkbox
                                 value="Kredit Qo'mitasi qorariga asosan"
                                 size='sm'
@@ -219,7 +226,7 @@ function BuyurtmaForm() {
                             >
                                 Kredit Qo'mitasi qorariga asosan
                             </Checkbox>
-                        </div>
+                        </div> */}
                         <Input
                             className='buyurtma_form_inputs'
                             width='100%'

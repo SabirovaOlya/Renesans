@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineUserAdd, AiOutlineClear, AiOutlineRollback } from 'react-icons/ai'
 import { useForm } from "react-hook-form";
@@ -12,6 +12,18 @@ function Addshartnama() {
     const [ newData, setNewData ] = useState({})
     const location = useLocation()
     const orderId = location?.state?.id
+    const [orderCode, setOrderCode] = useState(0)
+
+    useEffect(()=>{
+        https
+        .get(`/orders/${orderId}`)
+        .then(res =>{
+            setOrderCode(res?.data?.code)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    },[])
 
     // Alert
     function Success() {
@@ -44,19 +56,7 @@ function Addshartnama() {
             return ({...info, type_repayment: type, type_credit: cash, order_id: orderId})
         }
     }
-    const onSubmit = (data) => {
-        https
-        .post('/contracts', checkingData(data))
-        .then(res => {
-            Success()
-            console.log(checkingData(data))
-        })
-        .catch(err =>{
-            Warn()
-            console.log(checkingData(data))
-            console.log(err);
-        })
-    }
+
     function cashInputAppearence() {
         if (cash === "card") {
             return (
@@ -120,6 +120,21 @@ function Addshartnama() {
         setResetWarning('warning_reset_main close')
     }
 
+    const onSubmit = (data) => {
+        
+        https
+        .post('/contracts', checkingData(data))
+        .then(res => {
+            Success()
+            console.log(checkingData(data))
+        })
+        .catch(err =>{
+            Warn()
+            console.log(checkingData(data))
+            console.log(err);
+        })
+    }
+
     return (
         <>
             {/* Reset Warning */}
@@ -155,11 +170,10 @@ function Addshartnama() {
                         className='vall'
                         width='100%'
                         readOnly
-                        value={orderId}
+                        value={orderCode}
                         label="Buyurtma Code"
                         bordered
                         color="secondary"
-                        {...register("order_id", { required: true })}
                     />
                     <Input
                         className='vall'

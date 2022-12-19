@@ -19,7 +19,6 @@ function Home() {
     .get('/statistics')
     .then(res =>{
       setStatisticInfo(res?.data)
-      console.log(res?.data);
     })
     .catch(err =>{
       console.log(err)
@@ -121,7 +120,7 @@ function Home() {
     
     <div className='big-statistics'>
       <div className='barChart'>
-        <DemoDualAxes></DemoDualAxes>
+        {statisticInfo?.orders ? (<DemoDualAxes array={statisticInfo?.orders}></DemoDualAxes>) : <></>}
       </div>
       
       <div className='horizChart'>

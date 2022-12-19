@@ -1,0 +1,25 @@
+.addGroup_client_title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.addGroup_client_title .title{
+    font-weight: 600;
+}
+.addGroup_client_title .addGroup_client{
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #7828c8;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: white;
+    transition-duration: 0.2s;
+    
+}
+.addGroup_client_title .addGroup_client:nth-child(2){
+    margin-left: 15px;
+}
+.addGroup_client_title .addGroup_client:hover{
+    transform: scale(1.1);
+}

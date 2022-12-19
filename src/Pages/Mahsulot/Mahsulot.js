@@ -23,7 +23,7 @@ function Mahsulot() {
     // Alert
     function Success() {
         Swal.fire({
-            title: "Mahsulot qoshildi",
+            title: "Mahsulot qo'shildi",
             icon: 'success',
             confirmButtonText: 'Ok'
         })

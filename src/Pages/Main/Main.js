@@ -32,6 +32,7 @@ import Group from '../Group/Group';
 import GroupForm from '../Client/GroupForm';
 import SingleGroup from '../Client/SingleGroup';
 import EditGroup from '../Client/EditGroup';
+import AddGroupClient from '../Group/AddGroupClient';
 import BuyurtmaForm from '../Buyurtma/BuyurtmaForm';
 import Taminot from '../Taminot/Taminot';
 import TaminotForm from '../Taminot/TaminotForm';
@@ -219,6 +220,7 @@ function Main() {
                                 <Route path='/client/editCLient/:id' element={<EditClient />} />
                                 <Route path='/group' element={<Group />} />
                                 <Route path='/group/group_form' element={<GroupForm />} />
+                                <Route path='/group/add_client_group' element={<AddGroupClient />} />
                                 <Route path='/group/single_group/:id' element={<SingleGroup />} />
                                 <Route path='/group/edit_group/:id' element={<EditGroup />} />
                                 <Route path='/shartnama' element={<Shartnama />} />

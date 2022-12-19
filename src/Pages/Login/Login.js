@@ -54,6 +54,8 @@ function Login() {
                         window.localStorage.setItem('name', res?.data?.user?.name)
                         window.localStorage.setItem('role', JSON.stringify(roles))
                         window.localStorage.setItem('user_id', res?.data?.user?.id)
+                        window.localStorage.setItem('branch_id', res?.data?.user?.branch?.id)
+                        window.localStorage.setItem('branch_limit', res?.data?.user?.branch?.limit_credit)
                         setToken(res.data.token)
                         Success()
 

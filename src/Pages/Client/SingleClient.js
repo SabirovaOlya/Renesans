@@ -88,7 +88,7 @@ function SingleClient() {
                         {
                             client?.phone?.map((item,index) =>{
                                 return(
-                                    <div className='single_buyurtma_inputs'>
+                                    <div className='single_buyurtma_inputs' key={index}>
                                         <p>Telefon raqami {index + 1}:</p>
                                         <p>{item}</p>
                                     </div>

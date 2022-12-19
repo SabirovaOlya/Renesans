@@ -95,7 +95,23 @@
 .clientform_form .country_select{
     z-index: 25 ;
 }
+.single_buyurtma .region_select{
+    z-index: 100 ;
+}
+.single_buyurtma .ditrict_select{
+    z-index: 50 ;
+}
+.single_buyurtma .country_select{
+    z-index: 25 ;
+}
 .clientform_form .radio_group{
+    margin-bottom: 15px;
+    margin-left: 5px;
+}
+.radio_group .radio_second{
+    margin-left: 10px;
+}
+.single_buyurtma .radio_group{
     margin-bottom: 15px;
     margin-left: 5px;
 }

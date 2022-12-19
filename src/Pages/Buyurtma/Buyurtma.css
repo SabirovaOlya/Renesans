@@ -462,6 +462,9 @@
     z-index: 102;
     border: 1px solid rgb(216, 215, 215);
 }
+h4{
+    margin-bottom: 6px;
+}
 
 /* Modal */
 .shartnoma_modal{
@@ -519,18 +522,18 @@
 
 
 
-#green{
+.client_row #green{
     color: rgb(9, 172, 9);
     font-size: 15px;
     font-weight: 600;
 }
-#red{
+.client_row #red{
     color: red;
     font-size: 15px;
     font-weight: 600;
 }
-#yellow{
-    color: rgb(238, 238, 10);
+.client_row #yellow{
+    color: rgb(255, 174, 0);
     font-size: 15px;
     font-weight: 600;
 }

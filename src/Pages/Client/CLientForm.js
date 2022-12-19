@@ -363,6 +363,7 @@ function CLientForm() {
             color="secondary"
             {...register("temp_address", { required: null })}
           />
+
           <Radio.Group orientation="horizontal" label="Jinsi:" defaultValue="male" className='radio_group' 
             onChange={(e)=>{
               setGender(e)
@@ -375,7 +376,7 @@ function CLientForm() {
               Ayol
             </Radio>
           </Radio.Group>
-
+          
           <div className='clientForm_selector'>
             <p>Fuqarolik</p>
             <Select

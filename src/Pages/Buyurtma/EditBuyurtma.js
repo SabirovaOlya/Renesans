@@ -97,25 +97,20 @@ function EditBuyurtma() {
             return(
                 <Radio.Group
                     label=' '
-                    defaultValue={status == 'pending' ? true : false}
+                    defaultValue={status}
                     onChange={(e) => {
-                        if(e){
                             let newOrder = {...order}
-                            newOrder.status = 'pending'
+                            newOrder.status = e
                             setOrder(newOrder)
-                            setStatus('pending')
-                        }else{
-                            let newOrder = {...order}
-                            newOrder.status = 'denied'
-                            setOrder(newOrder)
-                            setStatus('denied')
+                            setStatus(e)
                         }
-                    }}
+                    }
                     size='sm'
                     className='kl1_accepting_radio buyurtma_radio'
                 >
-                    <div className='kl1_accept'><Radio color='success' className='radio_end' value={true}>Tasdiqlash</Radio></div>
-                    <div className='kl1_accept'><Radio color='error' className='radio_end' value={false}>Rad etish</Radio></div>
+                    <div className='kl1_accept'><Radio color='success' className='radio_end' value={'accepted'}>Tasdiqlash</Radio></div>
+                    <div className='kl1_accept'><Radio color='error' className='radio_end' value={'denied'}>Rad etish</Radio></div>
+                    <div className='kl1_accept'><Radio color='warning' className='radio_end' value={'pending'}>Kutilmoqda</Radio></div>
                 </Radio.Group>
             )
         }else{
@@ -226,9 +221,8 @@ function EditBuyurtma() {
         https
             .put(`/orders/${id}`, info)
             .then(res => {
-                if (res.request.status === 200) {
-                    Success()
-                };
+                Success()
+                console.log(info);
             })
             .catch(err => {
                 console.log(err);
@@ -257,7 +251,6 @@ function EditBuyurtma() {
                     bordered
                     label="Buyurtma kodi"
                     value={order?.code}
-                    placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -271,7 +264,6 @@ function EditBuyurtma() {
                     bordered
                     label="Buyurtma sanasi"
                     value={order?.order_date}
-                    placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -285,7 +277,6 @@ function EditBuyurtma() {
                     bordered
                     label="So'ralayotgan qarz miqdor"
                     value={order?.sum}
-                    placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -303,7 +294,6 @@ function EditBuyurtma() {
                     className='filial_input'
                     width='100%'
                     label="So'ralayotgan muddat (oy)"
-                    placeholder="4 oy"
                     value={order?.time}
                     bordered
                     color="secondary"
@@ -319,7 +309,6 @@ function EditBuyurtma() {
                     bordered
                     label="Maqsadi"
                     value={order?.aim}
-                    placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -333,7 +322,7 @@ function EditBuyurtma() {
                     bordered
                     label="Oylik o'rtacha daromad"
                     value={order?.salary}
-                    placeholder='filial'
+        
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
@@ -370,12 +359,13 @@ function EditBuyurtma() {
                         setOrder(newOrder)
                     }}
                 />
-                {/* {
+                <h4 className='status_title'>Status:</h4>
+                {
                     RadioButton()
                 }
                 {
                     putTextArea()
-                } */}
+                }
                 <div className='xodim_buttons'>
                     <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>
                         O'zgarishni bekor qilish
