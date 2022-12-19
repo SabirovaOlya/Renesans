@@ -8,6 +8,14 @@ function SingleUser() {
     const [user, setUser] = useState({});
     let { id } = useParams()
 
+    function RoleList(array){
+        let arrRole = []
+        array?.map(item =>{
+            arrRole.push(item?.name)
+        })
+        return arrRole.join(',')
+    }
+
     // Get user Data
     useEffect(() => {
         https
@@ -46,6 +54,10 @@ function SingleUser() {
                         <div className='single_buyurtma_inputs'>
                             <p>Parol:</p>
                             <p>{user?.password}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs'>
+                            <p>Role:</p>
+                            <p>{RoleList(user?.role)}</p>
                         </div>
                     </div>
                 </div>

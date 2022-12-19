@@ -363,6 +363,19 @@
     background-color: white;
     border-radius: 12px;
 }
+.single_buyurtma .voice_button{
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #7828c8;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 10px 0;
+    background-color: white;
+    transition-duration: 0.2s;
+}
+.single_buyurtma .voice_button:hover{
+    transform: scale(1.1);
+}
 .single_buyurtma_info .single_buyurtma_title{
     margin-bottom: 20px;
     font-size: 25px;

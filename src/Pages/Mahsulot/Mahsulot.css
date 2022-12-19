@@ -117,6 +117,20 @@
     text-align: center;
     margin-bottom: 20px;
 }
+.add_mahsulot_main .close_icon{
+    width: 30px;
+    height: 30px;
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 800;
+    background-color: white;
+    border-radius: 5px;
+    color: red;
+    margin-bottom: -15px;
+}
 .add_mahsulot_buttons{
     display: flex;
     flex-direction: row;

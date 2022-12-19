@@ -20,6 +20,9 @@ function EditBuyurtma() {
     const [checked, setChecked] = useState(Boolean)
     const [client, setClient] = useState({})
     const [sectionOptions, setSectionOptions] = useState([])
+    const [voiceCommit, setVoiceCommit] = useState('')
+    const [have, setHave] = useState(false)
+    let userName = window.localStorage.getItem('name')
 
     // Select Style
     const customStyles = {
@@ -63,7 +66,7 @@ function EditBuyurtma() {
     async function fetchSection() {
         const ress = await https.get('/products')
         let selectSection = []
-        ress?.data?.data?.map((item)=>{
+        ress?.data?.data?.map((item) => {
             selectSection.push(
                 { value: item?.id, label: item?.name }
             )
@@ -74,7 +77,7 @@ function EditBuyurtma() {
     useEffect(() => {
         fetchSection()
     }, [])
-    
+
 
     useEffect(() => {
         https
@@ -85,42 +88,38 @@ function EditBuyurtma() {
                 setBackOrder(res?.data)
                 setStatus(res?.data?.status)
                 setChecked(res?.data?.sign_committee)
-                console.log(res?.data);
             })
             .catch(err => {
                 console.log(err);
             })
     }, []);
 
-    function RadioButton(){
-        if(status){
-            return(
+    function RadioButton() {
+        if (status) {
+            return (
                 <Radio.Group
                     label=' '
                     defaultValue={status}
                     onChange={(e) => {
-                            let newOrder = {...order}
-                            newOrder.status = e
-                            setOrder(newOrder)
-                            setStatus(e)
-                        }
+                        setStatus(e)
+                    }
                     }
                     size='sm'
                     className='kl1_accepting_radio buyurtma_radio'
                 >
                     <div className='kl1_accept'><Radio color='success' className='radio_end' value={'accepted'}>Tasdiqlash</Radio></div>
                     <div className='kl1_accept'><Radio color='error' className='radio_end' value={'denied'}>Rad etish</Radio></div>
-                    <div className='kl1_accept'><Radio color='warning' className='radio_end' value={'pending'}>Kutilmoqda</Radio></div>
+                    {/* <div className='kl1_accept'><Radio color='warning' className='radio_end' value={'pending'}>Kutilmoqda</Radio></div> */}
                 </Radio.Group>
             )
-        }else{
-            return(<></>)
+        } else {
+            return (<></>)
         }
     }
 
-    function CheckboxFun(){
-        if(status){
-            return(
+    function CheckboxFun() {
+        if (status) {
+            return (
                 <Checkbox
                     value="Kredit Qo'mitasi qorariga asosan"
                     size='sm'
@@ -128,45 +127,14 @@ function EditBuyurtma() {
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
-                            let newOrder = { ...order }
-                            newOrder.sign_committee = e
-                            setOrder(newOrder)
-                            setChecked(e)
-                        }}
-                    >
-                        Kredit Qo'mitasi qorariga asosan
-                    </Checkbox>
-            )
-        }
-    }
-
-    function SelectElement(){
-        if(sectionOptions){
-            return(
-                <>
-                    <p>Mahsulot</p>
-                    <Select
-                        defaultValue={sectionOptions.find(x => x.value == order?.product?.id)}
-                        value={sectionOptions.find(x => x.value == order?.product?.id)}
-                        options={sectionOptions}
-                        className='buyurtma_select_new'
-                        styles={customStyles}
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 12,
-                            colors: {
-                                ...theme.colors,
-                                primary25: '#7828c8',
-                                primary: '#7828c8',
-                            },
-                        })}
-                        onChange={(e) => {
-                            let newOrder = { ...order }
-                            newOrder.product.id = e.value
-                            setOrder(newOrder)
-                        }}
-                    />
-                </>
+                        let newOrder = { ...order }
+                        newOrder.sign_committee = e
+                        setOrder(newOrder)
+                        setChecked(e)
+                    }}
+                >
+                    Kredit Qo'mitasi qorariga asosan
+                </Checkbox>
             )
         }
     }
@@ -188,7 +156,7 @@ function EditBuyurtma() {
                         className='kl1_input'
                         placeholder='Rad Etilgan Sabab'
                         value={(order?.reason)}
-                        label='Sabab'       
+                        label='Sabab'
                         onChange={(e) => {
                             let newOrder = { ...order }
                             newOrder.reason = e.target.value
@@ -200,23 +168,55 @@ function EditBuyurtma() {
         }
     }
 
-    const onSubmit = (data) =>{
+    // Opening Form
+    const [addForm, setAddForm] = useState('add_mahsulot_main close')
+
+    function openForm() {
+        setAddForm('add_mahsulot_main open')
+    }
+    function closeForm() {
+        setAddForm('add_mahsulot_main close')
+    }
+
+    const onSubmitVoice = (stat) =>{
         let info = {
-            client_id : order?.client?.id,
-            order_date : order?.order_date,
-            sign_committee : order?.sign_committee,
-            sum : order?.sum,
-            time : order?.time,
-            aim : order?.aim,
-            salary : order?.salary,
-            code : order?.code,
-            product_id : order?.product?.id,
-            status : order?.status,
-            order_number:order?.order_number,
-            protocol_number:order?.protocol_number
+            comment:voiceCommit, 
+            order_id: order?.id, 
+            is_accepted:stat
+        } 
+        if(info?.comment){
+            https
+            .post(`/order-results`, info)
+            .then(res =>{
+                console.log(info)
+                closeForm()
+            })
+            .catch(err =>{
+                console.log(err)
+                console.log(info)
+            })
+        }else{
+
         }
-        if(order?.status == 'denied'){
-            info = {...info, reason: order?.reason}
+    }
+
+    const onSubmit = (data) => {
+        let info = {
+            client_id: order?.client?.id,
+            order_date: order?.order_date,
+            sign_committee: order?.sign_committee,
+            sum: order?.sum,
+            time: order?.time,
+            aim: order?.aim,
+            salary: order?.salary,
+            code: order?.code,
+            product_id: order?.product?.id,
+            status: order?.status,
+            order_number: order?.order_number,
+            protocol_number: order?.protocol_number
+        }
+        if (order?.status == 'denied') {
+            info = { ...info, reason: order?.reason }
         }
         https
             .put(`/orders/${id}`, info)
@@ -232,152 +232,233 @@ function EditBuyurtma() {
     }
 
     return (
-        <section>
-            <div className='filialform_header'>
-                <Link to='/buyurtma' className='clientform_back'>
-                    <AiOutlineRollback />
-                    Orqaga
-                </Link>
+        <>
+            {/* Modal */}
+            <div className={addForm}>
+                <div className='endRow'>
+                    <button onClick={()=>{closeForm()}} className='close_icon'><i className='bx bx-x'></i></button>
+                </div>
+                <p>Ovoz berish</p>
+                <Textarea
+                    rounded
+                    bordered
+                    placeholder="..."
+                    color="secondary"
+                    width='100%'
+                    label="Izoh"
+                    value={voiceCommit}
+                    onChange={(e)=>{
+                        setVoiceCommit(e.target.value)
+                    }}
+                />
+                <div className='add_mahsulot_buttons'>
+                    <button onClick={()=>{onSubmitVoice(false)}} type='button'>Rad etish</button>
+                    <button onClick={()=>{onSubmitVoice(true)}} type='button'>Tasdiqlash</button>
+                </div>
             </div>
-            <form className='FilialEditTable single_buyurtma' onSubmit={handleSubmit(onSubmit)}>
-                <h1 className='text_center filial_edit_text'>{client?.name}</h1>
-                <div className='shart-check margin_top_20'>
+
+            <section>
+                <div className='filialform_header'>
+                    <Link to='/buyurtma' className='clientform_back'>
+                        <AiOutlineRollback />
+                        Orqaga
+                    </Link>
+                </div>
+                <form className='FilialEditTable single_buyurtma' onSubmit={handleSubmit(onSubmit)}>
+                    <h1 className='text_center filial_edit_text'>{client?.name}</h1>
+                    <div className='shart-check margin_top_20'>
+                        {
+                            CheckboxFun()
+                        }
+                    </div>
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Status"
+                        readOnly
+                        value={order?.status}
+                        className='filial_input'
+                        color="secondary"
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Buyurtma kodi"
+                        value={order?.code}
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.code = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Buyurtma sanasi"
+                        value={order?.order_date}
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.order_date = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="So'ralayotgan qarz miqdor"
+                        value={order?.sum}
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.sum = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <div className='shart-select'>
+                        {
+                            sectionOptions ?
+                            <>
+                                <p>Mahsulot</p>
+                                <Select
+                                    defaultValue={sectionOptions.find(x => x.value == order?.product?.id)}
+                                    value={sectionOptions.find(x => x.value == order?.product?.id)}
+                                    options={sectionOptions}
+                                    className='buyurtma_select_new'
+                                    styles={customStyles}
+                                    theme={(theme) => ({
+                                        ...theme,
+                                        borderRadius: 12,
+                                        colors: {
+                                            ...theme.colors,
+                                            primary25: '#7828c8',
+                                            primary: '#7828c8',
+                                        },
+                                    })}
+                                    onChange={(e) => {
+                                        let newOrder = { ...order }
+                                        newOrder.product.id = e.value
+                                        setOrder(newOrder)
+                                    }}
+                                />
+                            </> : <></>
+                        }
+                    </div>
+                    <Input
+                        className='filial_input'
+                        width='100%'
+                        label="So'ralayotgan muddat (oy)"
+                        value={order?.time}
+                        bordered
+                        color="secondary"
+                        type='number'
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.time = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Maqsadi"
+                        value={order?.aim}
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.aim = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Oylik o'rtacha daromad"
+                        value={order?.salary}
+
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.salary = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Buyurtma raqami"
+                        value={order?.order_number}
+                        {...register("order_number", { required: true })}
+                        className='filial_input'
+                        color="secondary"
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.order_number = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
+                    <Input
+                        width='100%'
+                        bordered
+                        label="Buyurtma protokol raqami"
+                        className='filial_input'
+                        value={order?.protocol_number}
+                        color="secondary"
+                        {...register("protocol_number", { required: true })}
+                        onChange={(e) => {
+                            let newOrder = { ...order }
+                            newOrder.protocol_number = e.target.value
+                            setOrder(newOrder)
+                        }}
+                    />
                     {
-                        CheckboxFun()
+                        order?.order_results?.map((item, index) =>{
+                            return(
+                                <Input
+                                    key={index}
+                                    width='100%'
+                                    bordered
+                                    label={`${item?.user} ${item?.is_accepted == 1 ? 'tasdiqladi' : 'rad etdi'} sababi:`}
+                                    className='filial_input'
+                                    value={item?.comment}
+                                    color="secondary"
+                                />
+                            )
+                        })
                     }
-                </div>
-                <Input
-                    width='100%'
-                    bordered
-                    label="Buyurtma kodi"
-                    value={order?.code}
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.code = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Buyurtma sanasi"
-                    value={order?.order_date}
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.order_date = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="So'ralayotgan qarz miqdor"
-                    value={order?.sum}
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.sum = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <div className='shart-select'>
                     {
-                        SelectElement()
+                        order?.order_results?.map(item =>{
+                            if(item?.name == userName){
+                                setHave(true)
+                            }
+                        })
+                    
                     }
-                </div>
-                <Input
-                    className='filial_input'
-                    width='100%'
-                    label="So'ralayotgan muddat (oy)"
-                    value={order?.time}
-                    bordered
-                    color="secondary"
-                    type='number'
-                    onChange={(e) => {
-                        let newOrder = { ...order}
-                        newOrder.time = e.target.value
-                        setOrder(newOrder)
-                    }}
-                        />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Maqsadi"
-                    value={order?.aim}
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.aim = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Oylik o'rtacha daromad"
-                    value={order?.salary}
-        
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.salary = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Buyurtma raqami"
-                    value={order?.order_number}
-                    {...register("order_number", { required: true })}
-                    className='filial_input'
-                    color="secondary"
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.order_number = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <Input
-                    width='100%'
-                    bordered
-                    label="Buyurtma protokol raqami"
-                    className='filial_input'
-                    value={order?.protocol_number}
-                    color="secondary"
-                    {...register("protocol_number", { required: true })}
-                    onChange={(e) => {
-                        let newOrder = { ...order }
-                        newOrder.protocol_number = e.target.value
-                        setOrder(newOrder)
-                    }}
-                />
-                <h4 className='status_title'>Status:</h4>
-                {
-                    RadioButton()
-                }
-                {
-                    putTextArea()
-                }
-                <div className='xodim_buttons'>
-                    <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>
-                        O'zgarishni bekor qilish
-                        <AiOutlineClear />
-                    </button>
-                    <button type='submit' className='client_submit submit back_green'>
-                        O'zgarishni kiritish
-                        <AiOutlineUserAdd />
-                    </button>
-                </div>
-            </form>
-        </section>
+                    {
+                        have ? (<></>) : 
+                        (<div className='endRow'>
+                            <button onClick={()=>{openForm()}} className='voice_button'>Ovoz berish</button>
+                        </div>)
+                    }
+                    <div className='xodim_buttons'>
+                        <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>
+                            O'zgarishni bekor qilish
+                            <AiOutlineClear />
+                        </button>
+                        <button type='submit' className='client_submit submit back_green'>
+                            O'zgarishni kiritish
+                            <AiOutlineUserAdd />
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </>
     )
 }
 

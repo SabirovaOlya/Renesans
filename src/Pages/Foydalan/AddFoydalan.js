@@ -64,18 +64,24 @@ function AddFoydalan() {
         setWorker(selectWorkers[0])
     }
 
+    const [roles, setRoles] = useState([])
+
+    async function fetchRoles() {
+        const res = await https.get('/roles')
+        let selectRoles = []
+        res?.data?.map((item)=>{
+            selectRoles.push(
+                { value: item?.id, label: item?.name }
+            )
+        })
+        setRoles(selectRoles)
+    }
+
     useEffect(()=>{
         fetchWorkers()
+        fetchRoles()
     },[])
 
-    // Selector
-    const roles = [
-        { value: '1', label: "user" },
-        { value: '2', label: "admin" },
-        { value: '3', label: "director" },
-        { value: '4', label: "monitoring" },
-        { value: '5', label: "qo'mita" }
-    ];
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
@@ -88,7 +94,7 @@ function AddFoydalan() {
             return { ...provided, opacity, transition };
         }
     }
-    const [role, setRole] = useState([roles[0].label])
+    const [role, setRole] = useState([roles[0]])
     // WARNING MODALKA
     const [resetWarning, setResetWarning] = useState('warning_reset_main close')
 
@@ -105,7 +111,7 @@ function AddFoydalan() {
         let info = { ...data, role: role, employee_id:worker?.value }
         if (info?.password !== info?.password_confirmation) {
             Warn()
-        } else {
+        }else {
             https
                 .post('/register', info)
                 .then(res => {
@@ -223,7 +229,7 @@ function AddFoydalan() {
                             onChange={(event) => { 
                                 let arr =[]
                                 event?.map(item =>{
-                                    arr.push(item.label)
+                                    arr.push(item.value)
                                 })
                                 setRole(arr)
                             }}

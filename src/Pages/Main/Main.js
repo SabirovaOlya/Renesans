@@ -156,6 +156,7 @@ function Main() {
         window.localStorage.removeItem('name');
         window.localStorage.removeItem('role');
         window.localStorage.removeItem('user_id');
+        window.location.reload(false);
     }
 
     if (token) {

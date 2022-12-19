@@ -29,6 +29,12 @@ function SingleClient() {
             window.location.reload(false);
         },50)
     }
+    function ToSingleBuyurtma(url){
+        navigate(`${url}`, {replace:true})
+        setTimeout(()=>{
+            window.location.reload(false);
+        },50)
+    }
 
     return (
         <section>
@@ -118,6 +124,13 @@ function SingleClient() {
                         <div className='single_buyurtma_inputs'>
                             <p>Ish lavozmi:</p>
                             <p>{client?.job}</p>
+                        </div>
+                        <div className='order_list'>
+                            {client?.orders?.map((item,index)=>{
+                                return(
+                                    <button className='order_list_link' onClick={()=>{ToSingleBuyurtma(`/buyurtma/singleBuyurtma/${item}`)}} key={index}>Buyurtma {index + 1}</button>
+                                )
+                            })}
                         </div>
                         {/* <div className='single_group margin_top_30'>
                             <p className='text_single_group'>Guruh: <span className='first_elem'><Link to={`${client?.group?.id ? `/client/single_group/${client?.group?.id}` : `/client/singleClient/${id}`}`}>{client?.group?.name ? client?.group?.name : 'yoq' }</Link></span></p>
