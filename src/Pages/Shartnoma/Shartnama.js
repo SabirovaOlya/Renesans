@@ -34,6 +34,13 @@ function Shartnama() {
             confirmButtonText: 'Ok'
         })
     }
+    function BuyurtmaStatus() {
+        Swal.fire({
+            title: "Buyurtma tasdiqlanmagan",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
     // Modalka
     const [modalka, setModalka] = useState('shartnoma_modal close');
     const [modalCode, setModalCode] = useState('');
@@ -50,7 +57,16 @@ function Shartnama() {
         https
         .post('/check/order/code', dataId)
         .then(res =>{
-            navigate("/shartnama/addshartnama", {state:{id:res?.data?.order_id}})
+            console.log('get id');
+            https
+            .get(`/orders/${res?.data?.order_id}`)
+            .then(responsive =>{
+                if(responsive?.data?.status == 'accepted'){
+                    navigate("/shartnama/addshartnama", {state:{id:res?.data?.order_id}})
+                }else{
+                    BuyurtmaStatus()
+                }
+            })
         })
         .catch(err =>{
             if(err?.request?.status === 404){

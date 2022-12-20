@@ -23,6 +23,7 @@ function EditBuyurtma() {
     const [voiceCommit, setVoiceCommit] = useState('')
     const [have, setHave] = useState(false)
     let userName = window.localStorage.getItem('name')
+    let role = JSON.parse(window.localStorage.getItem('role'))
 
     // Select Style
     const customStyles = {
@@ -418,33 +419,38 @@ function EditBuyurtma() {
                         }}
                     />
                     {
-                        order?.order_results?.map((item, index) =>{
-                            return(
-                                <Input
-                                    key={index}
-                                    width='100%'
-                                    bordered
-                                    label={`${item?.user} ${item?.is_accepted == 1 ? 'tasdiqladi' : 'rad etdi'} sababi:`}
-                                    className='filial_input'
-                                    value={item?.comment}
-                                    color="secondary"
-                                />
-                            )
-                        })
-                    }
-                    {
-                        order?.order_results?.map(item =>{
-                            if(item?.name == userName){
-                                setHave(true)
+                        role?.includes('director') ? 
+                        <>
+                            {
+                                order?.order_results?.map((item, index) =>{
+                                    return(
+                                        <Input
+                                            key={index}
+                                            width='100%'
+                                            bordered
+                                            label={`${item?.user} ${item?.is_accepted == 1 ? 'tasdiqladi' : 'rad etdi'}, izoh:`}
+                                            className='filial_input'
+                                            value={item?.comment}
+                                            color="secondary"
+                                        />
+                                    )
+                                })
                             }
-                        })
-                    
-                    }
-                    {
-                        have ? (<></>) : 
-                        (<div className='endRow'>
-                            <button onClick={()=>{openForm()}} className='voice_button'>Ovoz berish</button>
-                        </div>)
+                            {
+                                order?.order_results?.map(item =>{
+                                    if(item?.name == userName){
+                                        setHave(true)
+                                    }
+                                })
+                            
+                            }
+                            {
+                                have ? ((<div className='endRow'>
+                                            <button onClick={()=>{openForm()}} className='voice_button'>Ovoz berish</button>
+                                        </div>)) : 
+                                <></>
+                            }
+                        </> : <></>
                     }
                     <div className='xodim_buttons'>
                         <button type='reset' className='client_submit reset back_red' onClick={() => { BackFun() }}>

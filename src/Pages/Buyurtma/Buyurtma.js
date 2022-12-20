@@ -200,7 +200,7 @@ function Buyurtma() {
                     </div>
                     <ul className='tableInfo'>
                         {
-                            orders.map((item, index) => {
+                            orders?.map((item, index) => {
                                 return <li className='client_row' key={item?.id}>
                                     {/* <p className='liName li'><span>{index + 1 + (currentList-1)*10}.</span>{item.name}</p> */}
                                     <p className='li_buyurtma'>{index + 1}</p>
@@ -209,13 +209,15 @@ function Buyurtma() {
                                     <p className='li_buyurtma' id={idSort(item?.status)}>{dataSort(item?.status)}</p>
                                     <div className='userButtons_buyurtma'>
                                         <button><Link to={`/buyurtma/singleBuyurtma/${item?.id}`}><i className='bx bx-user'></i></Link></button>
-                                        { role.includes('admin') ? (
+                                        { role?.includes('admin') || role.includes('director') ? (
                                             <>
                                                 <button><Link to={`/buyurtma/editBuyurtma/${item?.id}`}><i className='bx bx-edit-alt'></i></Link></button>
-                                                <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
                                             </>
                                         ) : <></>}
-                                    </div>
+                                        { role?.includes('admin') ? (
+                                        <button onClick={() => deleteOrder(item?.id)}><i className='bx bx-trash'></i></button>
+                                        ) : <></>}
+                                        </div>
                                 </li>
                             })
                         }

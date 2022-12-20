@@ -17,7 +17,7 @@ function DemoRingProgress2({size, procent}){
     height: circle,
     width: circle,
     autoFit: false,
-    percent: procent/100,
+    percent: procent/1,
     color: ['#5B8FF9', '#E8EDF3'],
   };
   return <RingProgress {...config} />;

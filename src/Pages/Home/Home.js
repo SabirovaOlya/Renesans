@@ -33,7 +33,7 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              {((statisticInfo?.first?.total_revenue)/1000000).toFixed(2)} mln so'm
+              {((statisticInfo?.clients?.total_revenue)/1000000).toFixed(2)} mln so'm
             </p>
             <p className='total-text'>
               Portfel
@@ -55,19 +55,28 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              {statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek} dona
+              {statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth} dona
             </p>
             <p className='total-text'>
               Buyurtma
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress procent={(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2)} size={pieSize}/>
+            <DemoRingProgress procent={(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
-          <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i> {(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastWeek/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2)}%</span>o'tgan haftaga ko'ra
+          <p className={(statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.pointer == 'up') ? 'total-end-text-green' : 'total-end-text-red'}>
+            <span>{
+              statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.pointer == 'up' ?
+              <i className='bx bx-up-arrow-alt'></i> :
+              <i className='bx bx-down-arrow-alt'></i>
+            }
+              {
+              statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.pointer == 'up' ?
+              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100 :
+              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100
+              }%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>
@@ -77,19 +86,28 @@ function Home() {
         <div className='circle_total_parts'>
           <div className='total-part'>
             <p className='price-total'>
-              {statisticInfo?.clients?.lastWeek} {statisticInfo?.clients?.lastWeek == 1 ? 'klient' : 'klientlar'}
+              {statisticInfo?.clients?.currentMonth} klient
             </p>
             <p className='total-text'>
               Klient
             </p>
           </div>
           <div className='total-part-circle-pie'>
-            <DemoRingProgress2 procent={(statisticInfo?.clients?.lastWeek/statisticInfo?.clients?.all).toFixed(2)} size={pieSize}/>
+            <DemoRingProgress2 procent={(statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2)} size={pieSize}/>
           </div>
         </div>
         <div className='total-end'>
-          <p className='total-end-text-red'>
-            <span><i className='bx bx-down-arrow-alt'></i>{(statisticInfo?.clients?.lastWeek/statisticInfo?.clients?.all).toFixed(2)}%</span>o'tgan haftaga ko'ra
+          <p className={(statisticInfo?.clients?.pointer == "up") ? 'total-end-text-green' : 'total-end-text-red'}>
+            <span>
+              {
+                (statisticInfo?.clients?.pointer == "up") ?
+                <i className='bx bx-up-arrow-alt'></i> :
+                <i className='bx bx-down-arrow-alt'></i>
+              }{
+              statisticInfo?.clients?.pointer == "up" ?
+            ((statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2))*100 :
+            ((statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2))*100
+            }%</span>o'tgan haftaga ko'ra
           </p>
         </div>
       </div>

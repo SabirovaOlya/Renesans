@@ -45,6 +45,7 @@ function KL1Form() {
     .get(`/${url}`)
     .then(res =>{
       setForms(res?.data?.data)
+      console.log(res?.data?.data)
       setPaginations(res?.data?.meta?.links)
     })
     .catch(err =>{
@@ -162,8 +163,8 @@ function KL1Form() {
                       {
                           forms?.map((item, index) => {
                               return <li className='client_row' key={item?.id}>
-                                  <p className='liName li_shartnoma'>{item?.clients?.name ? item?.clients?.name : 'without name'}</p>
-                                  <p className='li_shartnoma'>{item?.doc_date}</p>
+                                  <p className='liName li_shartnoma'>{item?.client?.name}</p>
+                                  <p className='li_shartnoma'>{item?.order?.code}</p>
                                   <p className='li_shartnoma'>{item?.mark_date}</p>
                                   <div className='userButtons_shartnoma'>
                                       <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-user white'></i></Link></button>
