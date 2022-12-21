@@ -45,7 +45,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i>{statisticInfo?.first?.changedTR}%</span>o'tgan haftaga ko'ra
+            <span><i className='bx bx-up-arrow-alt'></i>{statisticInfo?.first?.changedTR}%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -76,7 +76,7 @@ function Home() {
               statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.pointer == 'up' ?
               ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100 :
               ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100
-              }%</span>o'tgan haftaga ko'ra
+              }%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -107,7 +107,7 @@ function Home() {
               statisticInfo?.clients?.pointer == "up" ?
             ((statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2))*100 :
             ((statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2))*100
-            }%</span>o'tgan haftaga ko'ra
+            }%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>
@@ -129,7 +129,7 @@ function Home() {
         </div>
         <div className='total-end'>
           <p className='total-end-text-green'>
-            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span>o'tgan haftaga ko'ra
+            <span><i className='bx bx-up-arrow-alt'></i> 10.51%</span>o'tgan oyga ko'ra
           </p>
         </div>
       </div>

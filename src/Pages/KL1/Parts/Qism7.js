@@ -30,6 +30,12 @@ function BuyurtmaOylik() {
 
 
     useEffect(() => {
+        let Data = new Date();
+        let Year = Data.getFullYear();
+        let Month = Data.getMonth();
+        let Day = Data.getDate();
+        let today = `${Year}-${Month}-${Day}`
+
         setActiveTab(7)
 
         console.log("effect")
@@ -38,12 +44,12 @@ function BuyurtmaOylik() {
         .get(`/orders/${orderIdGet}`)
         .then(res =>{
             let data ={
-                type : res?.data?.contract == 1 ? 'annuitet' : 'differensial',
+                type : 'annuitet',
                 sum : res?.data?.sum,
                 time : res?.data?.time,
-                percent : res?.data?.contract?.percent_year,
-                given_date : res?.data?.contract?.credit_issue_date,
-                first_repayment_date : res?.data?.contract?.first_repayment_date
+                percent : 58,
+                given_date : today,
+                first_repayment_date : today
             }
             console.log(data,"data")
             https

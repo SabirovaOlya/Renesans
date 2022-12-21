@@ -11,9 +11,8 @@ function CalendarSet() {
 
     const format = "MM/DD/YYYY";
     // Uzbek Weekdays and Months
-    const weekDays = ["DU", "SE", "CH", "PA", "JU", "SH", "YA"]
+    const weekDays = ["YA", "DU", "SE", "CH", "PA", "JU", "SH"]
     const months = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentyabr", "Octyabr", "Noyabr", "Dekabr"]
-    const data = ['06/22/2022', '06/23/2022', '06/24/2022', '06/25/2022']
 
     const [values, setValues] = useState([])
 

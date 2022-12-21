@@ -21,7 +21,7 @@ function EditBuyurtma() {
     const [client, setClient] = useState({})
     const [sectionOptions, setSectionOptions] = useState([])
     const [voiceCommit, setVoiceCommit] = useState('')
-    const [have, setHave] = useState(false)
+    const [have, setHave] = useState(true)
     let userName = window.localStorage.getItem('name')
     let role = JSON.parse(window.localStorage.getItem('role'))
 
@@ -451,14 +451,14 @@ function EditBuyurtma() {
                             {
                                 order?.order_results?.map(item =>{
                                     if(item?.name == userName){
-                                        setHave(true)
+                                        setHave(false)
                                     }
                                 })
                             
                             }
                             {
                                 have ? ((<div className='endRow'>
-                                            <button onClick={()=>{openForm()}} className='voice_button'>Ovoz berish</button>
+                                            <button onClick={()=>{openForm()}} className='voice_button' type='button'>Ovoz berish</button>
                                         </div>)) : 
                                 <></>
                             }
