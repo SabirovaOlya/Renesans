@@ -109,7 +109,6 @@ function Buyurtma() {
         }else{
             return 'unknown'
         }
-        
     }
     function idSort(data) {
         if (data === "accepted") {

@@ -25,6 +25,19 @@ function SingleBuyurtnama() {
                 console.log(err);
             })
     }, [])
+
+    function dataSort(data) {
+        if (data === "accepted") {
+            return "tasdiqlangan"
+        } else if (data === "denied") {
+            return "rad etilgan"
+        }else if(data === 'pending'){
+            return "kutilmoqda"
+        }else{
+            return 'unknown'
+        }
+    }
+
     function returnStatus(status){
         if(status){
             return(
@@ -43,6 +56,7 @@ function SingleBuyurtnama() {
             return(<></>)
         }
     }
+    
     function returnReason(data){
         if (data?.status === "denied") {
             return (
@@ -111,10 +125,15 @@ function SingleBuyurtnama() {
 
             <section className='single_buyurtma'>
                 <div className='single_buyurtma_info'>
+                    
                     <p className='single_buyurtma_title'>{order?.client?.name}</p>
                     {
                         CheckboxFun()
                     }
+                    <div className='single_buyurtma_inputs'>
+                        <p>Status:</p>
+                        <p>{dataSort(order?.status)}</p>
+                    </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Code:</p>
                         <p>{order?.code}</p>

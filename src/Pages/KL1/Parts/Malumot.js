@@ -93,7 +93,7 @@ function Shaxshiy() {
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Buyurtmachining telefon raqami:</p>
-                        <p>{infoClient?.phone}</p>
+                        <p>{infoClient?.phone?.[0]}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Kredit maqsadi:</p>

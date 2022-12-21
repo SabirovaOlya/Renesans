@@ -63,6 +63,18 @@ function EditBuyurtma() {
         })
     }
 
+    function dataSort(data) {
+        if (data === "accepted") {
+            return "tasdiqlangan"
+        } else if (data === "denied") {
+            return "rad etilgan"
+        }else if(data === 'pending'){
+            return "kutilmoqda"
+        }else{
+            return 'unknown'
+        }
+    }
+
     // Select Function
     async function fetchSection() {
         const ress = await https.get('/products')
@@ -277,7 +289,7 @@ function EditBuyurtma() {
                         bordered
                         label="Status"
                         readOnly
-                        value={order?.status}
+                        value={dataSort(order?.status)}
                         className='filial_input'
                         color="secondary"
                     />

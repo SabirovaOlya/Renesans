@@ -25,6 +25,7 @@ import './Stepper.css'
 function StepperForm() {
 
     const location = useLocation()
+    const [ statusData, setStatusData ] = useState(true)
     const orderId = location?.state?.id
     const [infoClient, setInfoClient] = useState({})
     const [infoOrder, setInfoOrder] = useState({})
@@ -50,6 +51,11 @@ function StepperForm() {
     }
 
     useEffect(()=>{
+        if(statusData){
+            window.localStorage.setItem('order_id', orderId)
+        }
+        setStatusData(false)
+
         BuyurtmaInfo()
     },[])
 

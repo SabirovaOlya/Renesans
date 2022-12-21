@@ -57,7 +57,6 @@ function Shartnama() {
         https
         .post('/check/order/code', dataId)
         .then(res =>{
-            console.log('get id');
             https
             .get(`/orders/${res?.data?.order_id}`)
             .then(responsive =>{

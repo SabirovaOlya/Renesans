@@ -6,6 +6,7 @@ import { Context } from '../../../Context';
 import { Input, Textarea } from '@nextui-org/react'
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
+import https from '../../../assets/https';
 
 
 function BuyurtmaOylik() {
@@ -15,6 +16,10 @@ function BuyurtmaOylik() {
     const { familyMavjud, setFamilyMavjud} = useContext(Context)
     const { dataSeventhQism, setDataSeventhQism } = useContext(Context)
     const { historyKredit, setHistoryKredit } = useContext(Context)
+    const {orderData, setOrderData} = useState({})
+    const {kreditData, setKreditData} = useState({})
+    const orderIdGet = window.localStorage.getItem('order_id')
+
 
     // UseForm
     const { register,
@@ -26,6 +31,32 @@ function BuyurtmaOylik() {
 
     useEffect(() => {
         setActiveTab(7)
+
+        console.log("effect")
+        console.log(orderIdGet);
+        https
+        .get(`/orders/${orderIdGet}`)
+        .then(res =>{
+            let data ={
+                type : res?.data?.contract == 1 ? 'annuitet' : 'differensial',
+                sum : res?.data?.sum,
+                time : res?.data?.time,
+                percent : res?.data?.contract?.percent_year,
+                given_date : res?.data?.contract?.credit_issue_date,
+                first_repayment_date : res?.data?.contract?.first_repayment_date
+            }
+            console.log(data,"data")
+            https
+            .get('/namuna', data)
+            .then(responsive =>{
+                setKreditData(responsive?.data?.[0])
+                console.log(responsive?.data?.[0])
+            })
+            .catch(error =>{
+                console.log(error)
+                console.log(data);
+            })
+        })
     }, [])
 
     let navigate = useNavigate()

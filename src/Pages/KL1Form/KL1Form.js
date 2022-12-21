@@ -45,7 +45,6 @@ function KL1Form() {
     .get(`/${url}`)
     .then(res =>{
       setForms(res?.data?.data)
-      console.log(res?.data?.data)
       setPaginations(res?.data?.meta?.links)
     })
     .catch(err =>{

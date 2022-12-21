@@ -157,6 +157,7 @@ function Addshartnama() {
                         <div className='margin_top_10'>
                             <Radio.Group
                                 orientation="horizontal"
+                                label=' '
                                 size='sm'
                                 defaultValue={"card"}
                                 onChange={(event)=> setCash(event)}
@@ -212,6 +213,7 @@ function Addshartnama() {
                         <p>So'ndirish tartibi</p>
                         <div className='margin_top_10'>
                             <Radio.Group
+                                label=' '
                                 size='sm'
                                 defaultValue={1}
                                 className='shart-selector-group'
