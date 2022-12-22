@@ -39,6 +39,15 @@ function SingleXodim() {
                         <p>Lavozim:</p>
                         <p>{xodim?.job}</p>
                     </div>
+                    {
+                        xodim?.position ? 
+                            <div className='single_buyurtma_inputs'>
+                                <p>Pozitsiya:</p>
+                                <p>{xodim?.position}</p>
+                            </div> :
+                        <></>
+
+                    }
                     <div className='single_buyurtma_inputs'>
                         <p>Filial:</p>
                         <p>{xodim?.branch?.name}</p>
@@ -50,6 +59,19 @@ function SingleXodim() {
                     <div className='single_buyurtma_inputs'>
                         <p>Code:</p>
                         <p>{xodim?.code}</p>
+                    </div>
+                    <h4>Rasim</h4>
+                    <div className='photo_images'>
+                        {
+                            xodim?.photo?.map((item,index)=>{
+                                return(
+                                    <div className='image_container photo_size' key={index}>
+                                        <img className='photo_show' src={`https://ioi-tech.uz/${item?.photo}`}></img>
+                                        {/* <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button> */}
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>

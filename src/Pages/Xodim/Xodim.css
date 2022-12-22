@@ -101,6 +101,7 @@
 }
 .xodim_table li p:nth-child(3){
     flex-basis: 20%;
+    text-align: center;
 }
 .xodim_table li p:nth-child(4){
     flex-basis: 18%;
@@ -117,6 +118,7 @@
     flex-basis: 20%;
 }
 .xodim_table li div:nth-child(3){
+    text-align: center;
     flex-basis: 20%;
 }
 .xodim_table li div:nth-child(4){
@@ -156,6 +158,10 @@
 }
 .xodim_table_block .pagination{
     margin-top: 20px;
+}
+.photo_size img{
+    height: 200px;
+    object-fit: contain;
 }
 
 

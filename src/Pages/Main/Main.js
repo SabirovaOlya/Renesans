@@ -107,7 +107,7 @@ function Main() {
     const [tabDefaultKey, setTabDefaultKey] = useState()
     let sidebars = [
         { to: '/', icon: <HomeOutlinedIcon />, span: 'Statistika', keys: 1, visible:"visible"},
-        { to: '/client', icon: <PersonOutlineOutlinedIcon />, span: 'Klientlar', keys: 2, visible: role.includes('admin') || role.includes("director") || role.includes("user") ? "visible" : "hidden" },
+        { to: '/client', icon: <PersonOutlineOutlinedIcon />, span: 'Klientlar', keys: 2, visible: role.includes('admin') || role.includes("monitoring") ? "visible" : "hidden" },
         { to: '/group', icon: <AiOutlineUsergroupAdd />, span: 'Guruhlar', keys: 3, visible: role.includes('admin') || role.includes("director") || role.includes("user") ? "visible" : "hidden" },
         { to: '/buyurtma', icon: <AiFillFileText />, span: 'Buyurtma', keys: 4, visible: role.includes('admin') || role.includes("director") || role.includes("monitoring") || role.includes("user") ? "visible" : "hidden" },
         { to: '/taminot', icon: <AiFillFolderOpen />, span: "Ta'minot", keys: 5, visible: role.includes('admin') || role.includes("director") || role.includes("monitoring") || role.includes("user") ? "visible" : "hidden" },
@@ -117,7 +117,7 @@ function Main() {
         { to: '/xodim', icon: <AiOutlineUsergroupAdd />, span: 'Xodimlar', keys: 9, visible: role.includes('admin') ? "visible" : "hidden" },
         { to: '/mahsulot', icon: <AiOutlineFileAdd />, span: 'Mahsulotlar', keys: 10, visible: role.includes('admin') ? "visible" : "hidden" },
         { to: '/section', icon: <AiFillDatabase />, span: "Bo'limlar", keys: 11, visible: role.includes('admin') ? "visible" : "hidden" },
-        { to: '/foydalanuvchi', icon: <AiOutlineUsergroupAdd />, span: 'Foydalanuvchilar', keys: 12, visible: role.includes('admin') ? "visible" : "hidden" },
+        { to: '/foydalanuvchi', icon: <AiOutlineUsergroupAdd />, span: 'Foydalanuvchilar', keys: 12, visible: role.includes('admin') || role.includes("director") ? "visible" : "hidden" },
         { to: '/calendar', icon: <AiOutlineCalendar />, span: 'Calendar', keys: 13, visible: role.includes('admin') ? "visible" : "hidden" }
     ]
     const [sideBar, setSideBar] = useState(sidebars);

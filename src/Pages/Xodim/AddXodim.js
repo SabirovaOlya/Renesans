@@ -1,9 +1,10 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useRef} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
 // Styles
 import './Xodim.css'
 // Icons
-import { AiOutlineRollback, AiOutlineClear, AiOutlineUserAdd } from 'react-icons/ai'
+import { AiOutlineRollback, AiOutlineClear, AiOutlineUserAdd, AiOutlineDownload,AiFillCloseSquare } from 'react-icons/ai'
 // Components
 import { Input } from '@nextui-org/react';
 import Select from 'react-select';
@@ -47,6 +48,31 @@ function AddXodim() {
     const [filialRole, setFilialRole] = useState()
     const [sectionRole, setSectionRole] = useState()
 
+    let positions = [
+        {
+            value:'chief_treasurer',
+            label:"Bosh g'aznachi"
+        },
+        {
+            value:'head_of_credit',
+            label:"Bosh kreditor"
+        },
+        {
+            value:'chief_accountant',
+            label:"Bosh buxgalter"
+        },
+        {
+            value:'head_of_branch',
+            label:"Boshqaruvchi"
+        },
+        {
+            value:null,
+            label:"Hechkim"
+        }
+    ]
+
+    const [selectedPosition, setSelectedPosition] = useState(positions[0]?.value)
+
     async function fetchBranches() {
         const res = await https.get('/all/branches')
         let selectFilial = []
@@ -77,6 +103,36 @@ function AddXodim() {
         fetchBranches()
         fetchSection()
     }, [])
+
+    // ********** Photo functions ************* //
+    const [path, setPath] = useState([])
+    const  imageInput = useRef()
+
+    function PhotoOpen(){
+        imageInput.current.click()
+    }
+    function AddImage(photo){
+        let form = new FormData()
+        form.append('image[]',photo)
+
+        axios({
+            method: "post",
+            url: "https://ioi-tech.uz/api/upload-photo",
+            data: form,
+            headers: { Authorization: "Bearer " + window.localStorage.getItem('token'),
+            "Content-Type": "multipart/form-data" },
+        })
+        .then( res =>{
+            setPath(path.concat(res?.data?.data))
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+    }
+    function ImageDelete(id){
+        let imageItems = path.filter(x => x !== path[id])
+        setPath(imageItems)
+    }
     
     // UseForm
     const { register,
@@ -86,7 +142,7 @@ function AddXodim() {
     } = useForm();
 
     const onSubmit = (data) => {
-        let newData = { ...data, branch_id: filialRole, section_id:sectionRole }
+        let newData = { ...data, branch_id: filialRole, section_id:sectionRole, position:selectedPosition, paths:path }
         https
         .post('/employees',newData)
         .then(res =>{
@@ -188,7 +244,7 @@ function AddXodim() {
                         clearable
                         bordered
                         label="F.I.Sh"
-                        placeholder='Name'
+                        placeholder='...'
                         className='xodim_input'
                         color="secondary"
                         {...register("name", { required: true })}
@@ -198,7 +254,7 @@ function AddXodim() {
                         clearable
                         bordered
                         label="Lavozim"
-                        placeholder='Bank'
+                        placeholder='...'
                         className='xodim_input'
                         color="secondary"
                         {...register("job", { required: true })}
@@ -214,6 +270,48 @@ function AddXodim() {
                         color="secondary"
                         {...register("code", { required: true })}
                     />
+                    <div className='xodim_selectform'>
+                        <p>Pozitsiya</p>
+                        <Select
+                        width='100%'
+                        defaultValue={positions?.find(x => x.value == selectedPosition)}
+                        value={positions?.find(x => x.value == selectedPosition)}
+                        options={positions}
+                        className='xodim_select'
+                        styles={customStyles}
+                        theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 12,
+                            colors: {
+                            ...theme.colors,
+                            primary25: 'rgb(216,215,215)',
+                            primary: '#7828c8',
+                            },
+                        })}
+                        onChange={(event)=> {
+                            setSelectedPosition(event.value)
+                        }}
+                        />
+                    </div>
+                    <p className='photo_text'>Rasim</p>
+                    <div className='taminot_photo_add'>
+                        <div className='photo_add_buttons'>
+                            <button type='button' onClick={()=>{PhotoOpen()}}>Qo'shish <AiOutlineDownload className='icon_load'/></button>
+                        </div>
+                        <input ref={imageInput} type="file" onChange={(e)=>{AddImage((e.target.files[0]))}}/>
+                        <div className='photo_images'>
+                        {
+                            path?.map((item,index)=>{
+                                return(
+                                    <div className='image_container' key={index}>
+                                        <img className='photo_show' src={`https://ioi-tech.uz/${item}`}></img>
+                                        <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
+                                    </div>
+                                )
+                            })
+                        }
+                        </div>
+                    </div> 
                     <div className='xodim_buttons'>
                         <button type='reset' className='client_submit reset' onClick={()=>{console.log(filial, section)}}>
                             Formani tiklash
