@@ -228,6 +228,17 @@
     padding: 10px;
 }
 
+.qism_7 .procent_inputs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+.qism_7 .procent_inputs div{
+    width: 23%;
+}
+
 
 .kl1_accepting{
     margin-top: 20px;
@@ -292,9 +303,11 @@
 }
 .red_text{
     color: red;
+    font-weight: 600;
 }
 .green_text{
     color: green;
+    font-weight: 600;
 }
 
 

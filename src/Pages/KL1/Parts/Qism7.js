@@ -7,6 +7,8 @@ import { Input, Textarea } from '@nextui-org/react'
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom';
 import https from '../../../assets/https';
+import Swal from 'sweetalert2'
+import '../KL1.css'
 
 
 function BuyurtmaOylik() {
@@ -16,9 +18,74 @@ function BuyurtmaOylik() {
     const { familyMavjud, setFamilyMavjud} = useContext(Context)
     const { dataSeventhQism, setDataSeventhQism } = useContext(Context)
     const { historyKredit, setHistoryKredit } = useContext(Context)
-    const {orderData, setOrderData} = useState({})
-    const {kreditData, setKreditData} = useState({})
+    const [kreditData, setKreditData] = useState({})
+    const [sof, setSof] = useState(1)
     const orderIdGet = window.localStorage.getItem('order_id')
+
+    // Components
+    const { 
+        // Boshqa
+        myDaromads,
+        // Mavsumiy
+        mavsumiyDaromads, mavsumiyXarajats, 
+        // Biznes
+        biznesDaromads, biznesXarajats,
+    } = useContext(Context)
+
+    function WarnProcent() {
+        Swal.fire({
+            title: "Soralayotgan kredit hisobi 50% dan ortik",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+
+    function GetSumDaromadBiznes(){
+        let newBiznesDaromad = []
+        biznesDaromads.map((item,index)=>{
+            newBiznesDaromad.push(item.plus)
+        })
+        let totalDaromad = newBiznesDaromad.reduce((prev,current)=> Number(prev) + Number(current), 0)
+        return totalDaromad
+    }
+
+    function GetSumXarajatBiznes(){
+        let newBiznesXarajat = []
+        biznesXarajats.map((item,index)=>{
+            newBiznesXarajat.push(item.minus)
+        })
+        let totalXarajat = newBiznesXarajat.reduce((prev,current)=> Number(prev) + Number(current), 0)
+        return totalXarajat
+    }
+
+    // get total price of Daromad
+    const getTotalSumBoshqa = () => {
+        const newSumArray = []
+        myDaromads.map((item, index) => {
+            newSumArray.push(item.oylik)
+        })
+        let totalPrices = newSumArray.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }
+
+    const GetDaromadSumMavsumiy = () =>{
+        const SumArr1 = []
+        mavsumiyDaromads.map((item,index)=>{
+            SumArr1.push(Number(item.value))
+        })
+        let totalSum1 = SumArr1.reduce((prev, current)=> prev + current, 0)
+        return totalSum1
+    }
+
+    const GetXarajatSumMavsumiy = () =>{
+        const SumArr2 = []
+        mavsumiyXarajats.map((item,index)=>{
+            SumArr2.push(Number(item.value))
+        })
+        let totalSum2 = SumArr2.reduce((prev, current)=> prev + current, 0)
+        return totalSum2
+    }
+
 
 
     // UseForm
@@ -30,6 +97,9 @@ function BuyurtmaOylik() {
 
 
     useEffect(() => {
+
+        setSof(GetSumDaromadBiznes() + getTotalSumBoshqa() + (GetDaromadSumMavsumiy())/12 - GetSumXarajatBiznes() - (GetXarajatSumMavsumiy())/12)
+
         let Data = new Date();
         let Year = Data.getFullYear();
         let Month = Data.getMonth();
@@ -38,8 +108,6 @@ function BuyurtmaOylik() {
 
         setActiveTab(7)
 
-        console.log("effect")
-        console.log(orderIdGet);
         https
         .get(`/orders/${orderIdGet}`)
         .then(res =>{
@@ -51,17 +119,22 @@ function BuyurtmaOylik() {
                 given_date : today,
                 first_repayment_date : today
             }
-            console.log(data,"data")
-            https
-            .get('/namuna', data)
-            .then(responsive =>{
-                setKreditData(responsive?.data?.[0])
-                console.log(responsive?.data?.[0])
-            })
-            .catch(error =>{
-                console.log(error)
-                console.log(data);
-            })
+
+            if(data?.time && data?.sum && data?.type && data?.percent){
+                https
+                .post('/namuna', data)
+                .then(responsive =>{
+                    setKreditData(responsive?.data?.['0'])
+                })
+                .catch(error =>{
+                    console.log(error)
+                    console.log(data)
+                })
+            }
+        })
+        .catch(error =>{
+            console.log(error)
+            console.log(orderIdGet)
         })
     }, [])
 
@@ -85,6 +158,7 @@ function BuyurtmaOylik() {
             commit:''
         }]
         setFamilyMavjud(familyMavjud.concat(newfamilyMavjud))
+        
     }
     function deletefamMavjud (id) {
         if(familyMavjud.length>1){
@@ -107,20 +181,36 @@ function BuyurtmaOylik() {
             pay.push(item.pay)
         })
         let totalPay = pay.reduce((prev,current) => Number(prev) + Number(current), 0)
+
         return totalPay.toLocaleString()
     }
+    function ProcentNumber(){
+        let pay = []
+        familyMavjud?.map(item =>{
+            pay.push(item.pay)
+        })
+        let totalPay = pay.reduce((prev,current) => Number(prev) + Number(current), 0)
+
+        return((((kreditData?.interest + kreditData?.principal_debt + totalPay)/sof)*100).toFixed(2))
+    }
+
+
 
     const onSubmit = (data) =>{
+        if(ProcentNumber() > 50){
+            return WarnProcent()
+        }
+
         setTimeout(()=>{
             NextStep()
-        },500)   
+        },500)  
     }
 
     
     return (
         <section>
             <h2 className='kl1_subtitle'>Buyurtmachining mavjud kredit va qarz majburiyatlari</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className='qism_7'>
                 {
                     familyMavjud?.map((item,index)=>(
                         <div className='kl1_products' key={item.id}>
@@ -217,49 +307,28 @@ function BuyurtmaOylik() {
                 </div>
 
                 <h2 className='kl1_subtitle'>Oylik kredit tolovi ( eng katta tolov miqdori )</h2>
-                <div className='flex-row'>
-                    <Input
-                        rounded
-                        bordered
-                        readOnly
-                        label='Asosiy qarz'
-                        initialValue='5 000 000'
-                        color="secondary"
-                        width='23%'
-                        className='kl1_input'
-                    />
-                    <Input
-                        rounded
-                        bordered
-                        readOnly
-                        label='Foizlar'
-                        initialValue='985 205'
-                        color="secondary"
-                        width='23%'
-                        className='kl1_input'
-                    />
-                    <Input
-                        rounded
-                        bordered
-                        readOnly
-                        label='Jami oylik tolov'
-                        initialValue='5 985 205'
-                        color="secondary"
-                        width='23%'
-                        className='kl1_input'
-                    />
-                    <Input
-                        rounded
-                        bordered
-                        readOnly
-                        label='Soralayotgan kredit hisobi qarzi yoki korsatkichi (<50%)'
-                        initialValue='83,5%'
-                        status="error"
-                        shadow={false}
-                        width='23%'
-                        className='kl1_input'
-                    />
-                </div>
+                {
+                    kreditData ? 
+                    <div className='flex-row procent_inputs'>
+                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                            <p>Asosiy qarz:</p>
+                            <p>{(kreditData?.principal_debt)?.toFixed(2)}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                            <p>Foizlar:</p>
+                            <p>{(kreditData?.interest)?.toFixed(2)}</p>
+                        </div>
+                        <div className='single_buyurtma_inputs pdf_margin_top_15'>
+                            <p>Jami oylik tolov:</p>
+                            <p>{(kreditData?.interest + kreditData?.principal_debt)?.toFixed(2)}</p>
+                        </div>
+                        <div className={ProcentNumber() > 50 ? 'single_buyurtma_inputs pdf_margin_top_15 red_text' : 'single_buyurtma_inputs pdf_margin_top_15 green_text'}>
+                            <p>{`Soralayotgan kredit hisobi qarzi yoki korsatkichi (<50%)`}:</p>
+                            <p>{ProcentNumber()}</p>
+                        </div>
+                    </div> :
+                    <></>
+                }
                 <Textarea
                     width='100%'
                     bordered

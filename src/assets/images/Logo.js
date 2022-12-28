@@ -5,7 +5,7 @@ function Logo({width}) {
         width: `${width}px`
     }
     return (
-        <img src='https://renesans.uz/wp-content/uploads/2020/10/cropped-logo-new.png' alt='logo' style={logoStyle}/>
+        <img src='./logoo.png' alt='logo' style={logoStyle}/>
     )
 }
 

@@ -314,7 +314,7 @@ function EditShartnama() {
                             width='100%'
                             clearable
                             type='text'
-                            label="Shartnoma raqami"
+                            label="Shartnoma kodi"
                             value={shartnama?.contract_num}
                             bordered
                             color="secondary"

@@ -106,7 +106,7 @@ function SingleShartnama() {
                             <p>{shartnama?.contract_issue_date}</p>
                         </div>
                         <div className='single_buyurtma_inputs'>
-                            <p>Shartnoma raqami:</p>
+                            <p>Shartnoma kodi:</p>
                             <p>{shartnama?.contract_num}</p>
                         </div>
                         {

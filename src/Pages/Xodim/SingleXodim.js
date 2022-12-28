@@ -12,12 +12,35 @@ function SingleXodim() {
         https
         .get(`/employees/${id}`)
         .then(res =>{
-            setXodim(res.data)
+            setXodim(res?.data)
         })
         .catch(err =>{
             console.log(err);
         })
     },[id])
+
+    let positions = [
+        {
+            value:'chief_treasurer',
+            label:"Bosh g'aznachi"
+        },
+        {
+            value:'head_of_credit',
+            label:"Bosh kreditor"
+        },
+        {
+            value:'chief_accountant',
+            label:"Bosh buxgalter"
+        },
+        {
+            value:'head_of_branch',
+            label:"Boshqaruvchi"
+        },
+        {
+            value:null,
+            label:"Hechkim"
+        }
+    ]
 
   return (
     <section>
@@ -42,8 +65,8 @@ function SingleXodim() {
                     {
                         xodim?.position ? 
                             <div className='single_buyurtma_inputs'>
-                                <p>Pozitsiya:</p>
-                                <p>{xodim?.position}</p>
+                                <p>Kommisiya:</p>
+                                <p>{positions?.find(x => x.value == xodim?.position).label}</p>
                             </div> :
                         <></>
 
@@ -65,8 +88,8 @@ function SingleXodim() {
                         {
                             xodim?.photo?.map((item,index)=>{
                                 return(
-                                    <div className='image_container photo_size' key={index}>
-                                        <img className='photo_show' src={`https://ioi-tech.uz/${item?.photo}`}></img>
+                                    <div className='image_container_user photo_size' key={index}>
+                                        <img className='photo_show_user' src={`https://ioi-tech.uz/${item?.photo}`}></img>
                                         {/* <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button> */}
                                     </div>
                                 )

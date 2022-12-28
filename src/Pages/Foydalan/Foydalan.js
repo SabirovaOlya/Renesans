@@ -81,8 +81,8 @@ function Foydalan() {
             <div className='foydalan_table'>
                 <div className='foydalan_table_headers'>
                     <p>F.I.Sh</p>
-                    <p>Foydalanuvchi email</p>
-                    <p>Foydalanuvchi role</p>
+                    <p>Email</p>
+                    <p>Role</p>
                 </div>
 
                 <div className='foydalan_table_products'>

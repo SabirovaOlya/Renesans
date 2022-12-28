@@ -27,6 +27,7 @@ function CLientForm() {
     const result = event.target.value.toUpperCase();
     setDocument(result)
   };
+  const [clientCode, setClientCode] = useState('')
   const [pinfl, setPinfl] = useState()
   // Gender
   const [gender, setGender] = useState('male')
@@ -273,9 +274,14 @@ function CLientForm() {
             labelLeft='99'
             className='vall'
             bordered
+            value={clientCode}
             color="secondary"
-            type='number'
             {...register("code", { required: true, minLength:6, maxLength: 6})}
+            onChange={(e)=>{
+              if(e.target.value.trim().length < 7){
+                setClientCode(e.target.value)
+              }
+            }}
           />
           <Input
             width='100%'

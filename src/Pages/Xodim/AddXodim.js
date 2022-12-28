@@ -271,7 +271,7 @@ function AddXodim() {
                         {...register("code", { required: true })}
                     />
                     <div className='xodim_selectform'>
-                        <p>Pozitsiya</p>
+                        <p>Kommisiya</p>
                         <Select
                         width='100%'
                         defaultValue={positions?.find(x => x.value == selectedPosition)}
@@ -303,8 +303,8 @@ function AddXodim() {
                         {
                             path?.map((item,index)=>{
                                 return(
-                                    <div className='image_container' key={index}>
-                                        <img className='photo_show' src={`https://ioi-tech.uz/${item}`}></img>
+                                    <div className='image_container_user' key={index}>
+                                        <img className='photo_show_user' src={`https://ioi-tech.uz/${item}`}></img>
                                         <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button>
                                     </div>
                                 )

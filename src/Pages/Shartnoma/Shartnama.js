@@ -157,7 +157,7 @@ function Shartnama() {
                         <Input
                             rounded
                             bordered
-                            placeholder="shartnoma raqami..."
+                            placeholder="Shartnoma kodi..."
                             color="secondary"
                             width='300px'
                             className='search-input'
@@ -170,16 +170,16 @@ function Shartnama() {
                     <div className='shartnamaTablePart'>
                         <div className='shartTable'>
                             <div className='tableHeader'>
-                                <p className='headerTable-title_shartnoma'>Ism</p>
-                                <p className='headerTable-title_shartnoma'>Shartnoma raqami</p>
+                                <p className='headerTable-title_shartnoma'>F.I.Sh</p>
+                                <p className='headerTable-title_shartnoma'>Shartnoma kodi</p>
                                 <p className='headerTable-title_shartnoma'>Tuzilgan sana</p>
                             </div>
                             <ul className='tableInfo'>
                                 {
                                     shartnamalar?.map((item, index) => {
                                         return <li className='client_row' key={item?.id}>
-                                            <p className='liName li_shartnoma'>{item?.order?.aim}</p>
-                                            <p className='li_shartnoma'>{item?.order?.id}</p>
+                                            <p className='liName li_shartnoma'>{item?.order?.name}</p>
+                                            <p className='li_shartnoma'>{item?.contract_num}</p>
                                             <p className='li_shartnoma'>{item?.contract_issue_date}</p>
                                             <div className='userButtons_shartnoma'>
                                                 <button> <Link to={`/shartnama/singleshartnama/${item?.id}`}><i className='bx bx-user white'></i></Link></button>

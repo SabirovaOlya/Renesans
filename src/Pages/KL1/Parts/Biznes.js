@@ -277,6 +277,7 @@ function Biznes() {
                                         onChange={(e)=>{
                                         let newBiznesXarajatArr = [...biznesXarajats]
                                         newBiznesXarajatArr[index].volume = e.target.value
+                                        newBiznesXarajatArr[index].minus = (e.target.value)*(newBiznesXarajatArr[index].price)
                                         setBiznesXarajats(newBiznesXarajatArr)
                                     }}
                                     />
@@ -292,6 +293,7 @@ function Biznes() {
                                         onChange={(e)=>{
                                         let newBiznesXarajatArr = [...biznesXarajats]
                                         newBiznesXarajatArr[index].price = e.target.value
+                                        newBiznesXarajatArr[index].minus = (e.target.value)*(newBiznesXarajatArr[index].volume)
                                         setBiznesXarajats(newBiznesXarajatArr)
                                     }}
                                     />

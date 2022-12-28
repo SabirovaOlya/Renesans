@@ -154,8 +154,8 @@ function KL1Form() {
           <div className='shartnamaTablePart'>
               <div className='shartTable'>
                   <div className='tableHeader'>
-                      <p className='headerTable-title_shartnoma'>Ism</p>
-                      <p className='headerTable-title_shartnoma'>Shartnoma raqami</p>
+                      <p className='headerTable-title_shartnoma'>F.I.Sh</p>
+                      <p className='headerTable-title_shartnoma'>Klient kodi</p>
                       <p className='headerTable-title_shartnoma'>Tuzilgan sana</p>
                   </div>
                   <ul className='tableInfo'>
@@ -163,7 +163,7 @@ function KL1Form() {
                           forms?.map((item, index) => {
                               return <li className='client_row' key={item?.id}>
                                   <p className='liName li_shartnoma'>{item?.client?.name}</p>
-                                  <p className='li_shartnoma'>{item?.order?.code}</p>
+                                  <p className='li_shartnoma'>{item?.client?.code}</p>
                                   <p className='li_shartnoma'>{item?.mark_date}</p>
                                   <div className='userButtons_shartnoma'>
                                       <button><Link to={`/kl1/singlekl1/${item?.id}`}><i className='bx bx-user white'></i></Link></button>

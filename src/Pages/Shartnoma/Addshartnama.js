@@ -256,7 +256,7 @@ function Addshartnama() {
                         width='100%'
                         clearable
                         type='text'
-                        label="Shartnoma raqami"
+                        label="Shartnoma kodi"
                         placeholder="34"
                         bordered
                         color="secondary"

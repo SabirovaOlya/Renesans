@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 // API
 import https from '../../assets/https'
 import Swal from 'sweetalert2';
-import { Loading } from "@nextui-org/react"
+import { Loading } from "@nextui-org/react";
 // Styles
 import './Taminot.css'
 import '../../assets/pagination.css'
@@ -90,7 +90,7 @@ function Taminot() {
                 setTaminotlar(res?.data?.data)
                 setTimeout(()=>{
                     setLoading(false)
-                },300)
+                },150)
             })
             .catch(err =>{
                 console.log(err)
@@ -183,7 +183,7 @@ function Taminot() {
                     <Input
                         rounded
                         bordered
-                        placeholder="Ta'minot raqami..."
+                        placeholder="Ta'minot kodi..."
                         color="secondary"
                         width='300px'
                         className='search-input'
@@ -198,14 +198,14 @@ function Taminot() {
             <div className='shartnamaTablePart'>
                 <div className='shartTable'>
                     <div className='tableHeader'>
-                        <p className='headerTable-title_shartnoma'>Ism</p>
-                        <p className='headerTable-title_shartnoma'>Ta'minot raqami</p>
+                        <p className='headerTable-title_shartnoma'>F.I.Sh</p>
+                        <p className='headerTable-title_shartnoma'>Ta'minot kodi</p>
                         <p className='headerTable-title_shartnoma'>Mahsulot nomi</p>
                     </div>
                     {
                         loading ? (
                             <div className='loader_container'>
-                                <Loading size="lg" />
+                                <Loading size="lg" type="spinner"/>
                             </div>
                         ) : (
                             <>

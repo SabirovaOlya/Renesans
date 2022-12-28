@@ -386,13 +386,14 @@ import { log } from '@antv/g2plot/lib/utils';
                 className='vall'
                 bordered
                 labelLeft='99'
-                type='number'
                 color="secondary"
                 value={groups.find(x => x.id === item.id).code}
                 onChange={e => {
-                  let newGroupInfo = [...groups]
-                  newGroupInfo[index].code = e.target.value
-                  setGroups(newGroupInfo)
+                  if(e.target.value.trim().length < 7){
+                    let newGroupInfo = [...groups]
+                    newGroupInfo[index].code = e.target.value
+                    setGroups(newGroupInfo)
+                  }
                 }}
                 required= 'required'
               />

@@ -15,7 +15,7 @@ function Table() {
 
     const [errorStatus, setErrorStatus] = useState(false)
     const [show, setShow] = useState(false)
-
+    
     // Alerts
     function Success() {
         Swal.fire({
@@ -31,6 +31,7 @@ function Table() {
             confirmButtonText: 'Ok'
         })
     }
+
     // Tab active
     const { activeTab, setActiveTab } = useContext(Context)
     const { dataTable, setDataTable } = useContext(Context)
@@ -49,6 +50,7 @@ function Table() {
         // Mavsumiy
         monthDaromad,
         monthXarajat,
+        mavsumiyDaromads, mavsumiyXarajats, 
         // Biznes
         biznesDaromads, biznesXarajats,
         // 6 Qism
@@ -58,6 +60,105 @@ function Table() {
         // Table
         geoLocation, setGeoLocation
     } = useContext(Context)
+
+    const [sof, setSof] = useState(1)
+    const [kreditData, setKreditData] = useState({})
+    const orderIdGet = window.localStorage.getItem('order_id')
+    // Summ 
+    function GetSumDaromadBiznes(){
+        let newBiznesDaromad = []
+        biznesDaromads.map((item,index)=>{
+            newBiznesDaromad.push(item.plus)
+        })
+        let totalDaromad = newBiznesDaromad.reduce((prev,current)=> Number(prev) + Number(current), 0)
+        return totalDaromad
+    }
+
+    function GetSumXarajatBiznes(){
+        let newBiznesXarajat = []
+        biznesXarajats.map((item,index)=>{
+            newBiznesXarajat.push(item.minus)
+        })
+        let totalXarajat = newBiznesXarajat.reduce((prev,current)=> Number(prev) + Number(current), 0)
+        return totalXarajat
+    }
+
+    // get total price of Daromad
+    const getTotalSumBoshqa = () => {
+        const newSumArray = []
+        myDaromads.map((item, index) => {
+            newSumArray.push(item.oylik)
+        })
+        let totalPrices = newSumArray.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }
+
+    const GetDaromadSumMavsumiy = () =>{
+        const SumArr1 = []
+        mavsumiyDaromads?.map((item,index)=>{
+            SumArr1.push(Number(item.value))
+        })
+        let totalSum1 = SumArr1.reduce((prev, current)=> prev + current, 0)
+        return totalSum1
+    }
+
+    const GetXarajatSumMavsumiy = () =>{
+        const SumArr2 = []
+        mavsumiyXarajats?.map((item,index)=>{
+            SumArr2.push(Number(item.value))
+        })
+        let totalSum2 = SumArr2.reduce((prev, current)=> prev + current, 0)
+        return totalSum2
+    }
+
+    useEffect(()=>{
+        setSof(GetSumDaromadBiznes() + getTotalSumBoshqa() + (GetDaromadSumMavsumiy())/12 - GetSumXarajatBiznes() - (GetXarajatSumMavsumiy())/12)
+
+        let Data = new Date();
+        let Year = Data.getFullYear();
+        let Month = Data.getMonth();
+        let Day = Data.getDate();
+        let today = `${Year}-${Month}-${Day}`
+
+        https
+        .get(`/orders/${orderIdGet}`)
+        .then(res =>{
+            let data ={
+                type : 'annuitet',
+                sum : res?.data?.sum,
+                time : res?.data?.time,
+                percent : 58,
+                given_date : today,
+                first_repayment_date : today
+            }
+
+            if(data?.time && data?.sum && data?.type && data?.percent){
+                https
+                .post('/namuna', data)
+                .then(responsive =>{
+                    setKreditData(responsive?.data?.['0'])
+                })
+                .catch(error =>{
+                    console.log(error)
+                    console.log(data)
+                })
+            }
+        })
+        .catch(error =>{
+            console.log(error)
+            console.log(orderIdGet)
+        })
+    },[])
+
+    function ProcentNumber(){
+        let pay = []
+        familyMavjud?.map(item =>{
+            pay.push(item.pay)
+        })
+        let totalPay = pay.reduce((prev,current) => Number(prev) + Number(current), 0)
+
+        return((((kreditData?.interest + kreditData?.principal_debt + totalPay)/sof)*100).toFixed(2))
+    }
 
     let navigate = useNavigate()
     function FinishStep(){

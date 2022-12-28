@@ -174,21 +174,23 @@ function EditClient() {
                         let newClient = { ...client }
                         newClient.name = e.target.value
                         setClient(newClient)
+                        
                     }}
                 />
                 <Input
                     width='100%'
                     bordered
                     label="Klient kodi"
-                    type='number'
                     value={client?.code}
                     placeholder='filial'
                     className='filial_input'
                     color="secondary"
                     onChange={(e) => {
-                        let newClient = { ...client }
-                        newClient.code = e.target.value
-                        setClient(newClient)
+                        if(e.target.value.trim().length < 9){
+                            let newClient = { ...client }
+                            newClient.code = e.target.value
+                            setClient(newClient)
+                        }
                     }}
                 />
                 <Input

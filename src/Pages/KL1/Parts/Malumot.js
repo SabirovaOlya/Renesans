@@ -83,10 +83,14 @@ function Shaxshiy() {
                         <p>Doimiy yashash manzili:</p>
                         <p>{infoClient?.address}</p>
                     </div>
+                    {
+                        infoClient?.temp_address ? 
                     <div className='single_buyurtma_inputs'>
                         <p>Vaqtinchalik yashash manzili:</p>
                         <p>{infoClient?.temp_address}</p>
-                    </div>
+                    </div> :
+                    <></>
+                    }
                     <div className='single_buyurtma_inputs'>
                         <p>JSh ShIR:</p>
                         <p>{infoClient?.pinfl}</p>

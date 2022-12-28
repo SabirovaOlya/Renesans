@@ -7,7 +7,7 @@ import { Input, Modal, Button, Text, Row } from '@nextui-org/react'
 import Pagination from '../../Components/Pagination/Pagination'
 // API
 import https from '../../assets/https'
-import { PulseLoader } from 'react-spinners'
+import { Loading } from "@nextui-org/react";
 
 function Filial({ data }) {
 
@@ -27,7 +27,12 @@ function Filial({ data }) {
             .then(res => {
                 setPaginations(res.data.meta.links)
                 setFiliallar(res.data.data)
-                setLoading(false)
+                setTimeout(()=>{
+                    setLoading(false)
+                },150)
+            })
+            .catch(err =>{
+                console.log(err)
             })
     }
 
@@ -77,16 +82,21 @@ function Filial({ data }) {
                     }
                 />
             </div>
-            <div className='filial_table_block'>{
-                loading ? (<PulseLoader size={50} color={'#7828c8'} />) :
-                    (
-                        <>
-                            <ul className='filial_table'>
-                                <li className='filial_table_header'>
-                                    <p>Qisqa nomi</p>
-                                    <p>Mansil</p>
-                                    <p>Shahar</p>
-                                </li>
+            <div className='filial_table_block'>
+                <ul className='filial_table'>
+                    <li className='filial_table_header'>
+                        <p>Qisqa nomi</p>
+                        <p>Manzil</p>
+                        <p>Shahar</p>
+                    </li>
+                    {
+                        loading ? 
+                        <div className='loader_container'>
+                            <Loading size="sm" type="spinner"/>
+                        </div>
+                    :
+                        (
+                            <>
                                 {
                                     filiallar?.map((item, index) => {
                                         return <li key={index} className='filial_table_products client_row'>
@@ -105,10 +115,9 @@ function Filial({ data }) {
                                         </li>
                                     })
                                 }
-                            </ul>
-                        </>
-                    )
-                }
+                            </>)
+                    }
+                </ul>
             </div>
             <div className='pagination_block_wrapper'>
                 <div className='pagination_block'>

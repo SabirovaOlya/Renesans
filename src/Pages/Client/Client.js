@@ -73,7 +73,7 @@ function Client() {
                 <Input
                     rounded
                     bordered
-                    placeholder="Foydalanuvchi kodi..."
+                    placeholder="Klient kodi..."
                     color="secondary"
                     label=' '
                     width='300px'

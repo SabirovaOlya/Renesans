@@ -194,7 +194,6 @@ function BuyurtmaForm() {
                             placeholder='1234'
                             bordered
                             color="secondary"
-                            type='number'
                             {...register("code", { required: true })}
                         />
                         <Input
