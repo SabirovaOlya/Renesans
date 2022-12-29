@@ -308,19 +308,19 @@ function BuyurtmaOylik() {
 
                 <h2 className='kl1_subtitle'>Oylik kredit tolovi ( eng katta tolov miqdori )</h2>
                 {
-                    kreditData ? 
+                    kreditData?.principal_debt ? 
                     <div className='flex-row procent_inputs'>
                         <div className='single_buyurtma_inputs pdf_margin_top_15'>
                             <p>Asosiy qarz:</p>
-                            <p>{(kreditData?.principal_debt)?.toFixed(2)}</p>
+                            <p>{(kreditData?.principal_debt)?.toLocaleString()}</p>
                         </div>
                         <div className='single_buyurtma_inputs pdf_margin_top_15'>
                             <p>Foizlar:</p>
-                            <p>{(kreditData?.interest)?.toFixed(2)}</p>
+                            <p>{(kreditData?.interest)?.toLocaleString()}</p>
                         </div>
                         <div className='single_buyurtma_inputs pdf_margin_top_15'>
                             <p>Jami oylik tolov:</p>
-                            <p>{(kreditData?.interest + kreditData?.principal_debt)?.toFixed(2)}</p>
+                            <p>{(kreditData?.interest + kreditData?.principal_debt)?.toLocaleString()}</p>
                         </div>
                         <div className={ProcentNumber() > 50 ? 'single_buyurtma_inputs pdf_margin_top_15 red_text' : 'single_buyurtma_inputs pdf_margin_top_15 green_text'}>
                             <p>{`Soralayotgan kredit hisobi qarzi yoki korsatkichi (<50%)`}:</p>

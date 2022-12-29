@@ -566,7 +566,6 @@ function EditAvto() {
                                                 clearable
                                                 color="secondary"
                                                 bordered 
-                                                type='number'
                                                 className='transport_tableProduct_input' 
                                                 value={cars?.find(x => x.id === item.id).engine_number}
                                                 onChange={(e)=>{

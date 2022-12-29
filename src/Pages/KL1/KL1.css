@@ -210,6 +210,10 @@
     background-color: rgb(255, 185, 185);
     color: red;
 }
+.kl1_table_green-bg{
+    background-color: rgb(163, 245, 163);
+    color: green;
+}
 .kl1_table_dark-bg{
     background-color: rgb(215, 215, 215);
 }

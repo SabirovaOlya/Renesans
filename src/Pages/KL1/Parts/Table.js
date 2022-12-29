@@ -328,6 +328,7 @@ function Table() {
             family:familyMembersCopy,
             property:mulkCopy,
             paths:path,
+            geolocation:geoLocation,
             conversation_result:dataFirstQism.conversation_result,
             living_condition:dataFirstQism.living_condition,
             credit_impact:dataTable.credit_impact,
@@ -531,8 +532,8 @@ function Table() {
                     </div>
                     <div className='kl1_table_dark-bg'>Natija</div>
                     <div className='kl1_table_double kl1_table_dark-bg kl1_table_noPadding'>
-                        <p className='kl1_table_yellow-bg'>5 985 205,42</p>
-                        <p className='kl1_table_red-bg'>62,04%</p>
+                        <p className='kl1_table_yellow-bg'>{(kreditData?.interest + kreditData?.principal_debt)?.toLocaleString()}</p>
+                        <p className={ProcentNumber() > 50 ? 'kl1_table_red-bg' : 'kl1_table_green-bg'}>{ProcentNumber()}</p>
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
                         <p className='kl1_table_yellow-bg'>161,18%</p>

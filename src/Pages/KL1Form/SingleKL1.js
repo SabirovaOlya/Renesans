@@ -253,6 +253,21 @@ function SingleKL1() {
                 <p>Ushbu sohada foliyat yuritish davomiyligi:</p>
                 <p>{mainInfo?.activity?.duration}</p>
             </div>
+            <p className='photo_text'>Rasimlar</p>
+            <div className='taminot_photo_add'>
+                <div className='photo_images'>
+                {
+                    mainInfo?.images?.map((item,index)=>{
+                        return(
+                            <div className='image_container' key={index}>
+                                <img className='photo_show' src={`https://ioi-tech.uz/${item?.photo}`}></img>
+                                {/* <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button> */}
+                            </div>
+                        )
+                    })
+                }
+                </div>
+            </div> 
 
             {/* ********___Boshqa___********* */}
             <h2 className='kl1_subtitle margin_top_30'>Buyurtmachining daromadlari</h2>
@@ -296,40 +311,6 @@ function SingleKL1() {
 
             {/******___Mavsumiy___******/}
             <div>
-                {/* <p className='kl1_formtitle text_center'>Mavsumiy daromad turi, manbasi va faoliyat joyi</p> */}
-                {/* <div className='single_form_table_mavsumiy margin_top_15'>
-                    <div className='form_mavsumiy_header'>
-                        <p className='text_bold'>№</p>
-                        <p className='text_bold'>Daromad nomi</p>
-                        <p className='text_bold'>Yillik daromad hajmi</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>1</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>2</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>3</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>4</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>5</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so'm</p> */}
                 {
                     MonthlyDaromad() ? <>
                         <p className='kl1_formtitle text_center'>Mavsumiy daromadlarning oylar bo'yicha taqsimlanishi</p>
@@ -387,41 +368,6 @@ function SingleKL1() {
                         <p className='kl1_jami margin_top_15'>Jami: {MonthlyDaromad()} so'm</p>
                     </> : <></>
                 }
-
-                {/* <p className='kl1_formtitle text_center'>Mavsumiy xarajatlar</p>
-                <div className='single_form_table_mavsumiy margin_top_15'>
-                    <div className='form_mavsumiy_header'>
-                        <p className='text_bold'>№</p>
-                        <p className='text_bold'>Xarajat nomi</p>
-                        <p className='text_bold'>Yillik xarajat hajmi</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>1</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>2</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>3</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>4</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                    <div className='form_mavsumiy_header'>
-                        <p>5</p>
-                        <p>Name</p>
-                        <p>1 000 000 so'm</p>
-                    </div>
-                </div>
-                <p className='kl1_jami margin_top_15'>Jami: {1000000} so`m</p> */}
 
                 {
                     MonthlyXarajat() ? <>

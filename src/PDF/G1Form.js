@@ -5,7 +5,6 @@ import https from '../assets/https'
 
 function G1Form() {
 
-    const [products, setProducts] = useState([])
 
     const location = useLocation()
     const orderId = location?.state?.id
@@ -29,36 +28,6 @@ function G1Form() {
             setOrderInfo(res?.data)
         })
 
-
-        setProducts(
-            [
-                {
-                    date:'26.04.2022', 
-                    qoldi:20000000.00, 
-                    miqdor:5000000.00, 
-                    foiz:985205.42	
-                },
-                {
-                    date:'26.05.2022', 
-                    qoldi:15000000.00, 
-                    miqdor:5000000.00, 
-                    foiz:715068.60
-	
-                },
-                {
-                    date:'26.06.2022', 
-                    qoldi:10000000.00, 
-                    miqdor:5000000.00, 
-                    foiz:492602.71	
-                },
-                {
-                    date:'26.07.2022', 
-                    qoldi:5000000.00, 
-                    miqdor:5000000.00, 
-                    foiz:238356.30	
-                }
-            ]
-        )
     },[])
 
     function GetSummaText(arr, section){
@@ -137,9 +106,9 @@ function G1Form() {
                                 <p>{index +1}</p>
                                 <p>{item?.date_of_payment}</p>
                                 <p>{item?.principal_debt_left?.toLocaleString()} so'm</p>
-                                <p>{item?.monthly_payment?.toLocaleString()} so'm</p>
                                 <p>{item?.principal_debt?.toLocaleString()} so'm</p>
-                                <p>{(item?.monthly_payment + item?.principal_debt)?.toLocaleString()} so'm</p>
+                                <p>{item?.interest?.toLocaleString()} so'm</p>
+                                <p>{(item?.monthly_payment)?.toLocaleString()} so'm</p>
                             </div>
                         )
                     })

@@ -473,7 +473,6 @@ function Transport({orderId}) {
                                                 clearable
                                                 color="secondary"
                                                 bordered 
-                                                type='number'
                                                 className='transport_tableProduct_input' 
                                                 value={transportProducts?.find(x => x.id === item.id).engine_number}
                                                 onChange={(e)=>{
