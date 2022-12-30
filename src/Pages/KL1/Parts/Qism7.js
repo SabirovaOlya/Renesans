@@ -184,6 +184,15 @@ function BuyurtmaOylik() {
 
         return totalPay.toLocaleString()
     }
+    function ProcentNumberBefore(){
+        let pay = []
+        familyMavjud?.map(item =>{
+            pay.push(item.pay)
+        })
+        let totalPay = pay.reduce((prev,current) => Number(prev) + Number(current), 0)
+
+        return(((totalPay/sof)*100).toFixed(2))
+    }
     function ProcentNumber(){
         let pay = []
         familyMavjud?.map(item =>{
@@ -302,7 +311,7 @@ function BuyurtmaOylik() {
                     <div className='flex_column'>
                         <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {MavjudRest()} so`m</p>
                         <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {MavjudPay()} so`m</p>
-                        <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {'22%'}</p>
+                        <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {ProcentNumberBefore()}%</p>
                     </div>
                 </div>
 

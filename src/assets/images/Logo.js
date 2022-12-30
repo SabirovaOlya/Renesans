@@ -1,11 +1,12 @@
 import React from 'react'
+import logo from './logo.png'
 
 function Logo({width}) {
     const logoStyle = {
         width: `${width}px`
     }
     return (
-        <img src='./logoo.png' alt='logo' style={logoStyle}/>
+        <img src={logo} alt='logo' style={logoStyle}/>
     )
 }
 

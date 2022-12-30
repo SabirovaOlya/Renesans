@@ -84,7 +84,7 @@ function Oilaviy() {
 
     function GetSumXarajat(){
         let xarajat = []
-        familyXarajat.map(item =>{
+        familyXarajat?.map(item =>{
             xarajat.push(item.minus)
         })
         let totalXarajatSum = xarajat.reduce((prev,current) => Number(prev) + Number(current), 0)
@@ -112,7 +112,7 @@ function Oilaviy() {
 
     function GetMalumotPay(){
         let malumotPay = []
-        familyMalumot.map(item =>{
+        familyMalumot?.map(item =>{
             malumotPay.push(item.pay)
         })
         let totalMalumotSumPay = malumotPay.reduce((prev,current) => Number(prev) + Number(current), 0)

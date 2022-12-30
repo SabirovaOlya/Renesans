@@ -79,6 +79,13 @@
     padding: 20px 0;
     text-align: center;
     font-weight: 500;
+
+}
+.scroll_able_horiz{
+    /* scroll */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+    overflow-x: scroll; 
 }
 .foydalan_table_product .foydalan_product_buttons{
     flex-basis: 18%;

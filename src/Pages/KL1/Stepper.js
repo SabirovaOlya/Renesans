@@ -37,7 +37,7 @@ function StepperForm() {
             setInfoOrder(res?.data)
 
             https
-            .get(`/clients/${res?.data?.client?.id}`)
+            .get(`/clients/${res?.data?.client_id}`)
             .then(res =>{
                 setInfoClient(res?.data)
             })
@@ -47,6 +47,7 @@ function StepperForm() {
         })
         .catch(err =>{
             console.log(err)
+            console.log(orderId);
         })
     }
 

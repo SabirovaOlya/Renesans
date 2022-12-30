@@ -92,7 +92,7 @@ function Foydalan() {
                                 <div key={index} className='foydalan_table_product client_row'>
                                     <p className='foydalan_table_product_title'>{item?.name}</p>
                                     <p className='foydalan_table_product_title'>{item?.email}</p>
-                                    <p className='foydalan_table_product_title'>{RoleList(item?.role)}</p>
+                                    <p className='foydalan_table_product_title'>{ item?.role?.length > 2 ? `${item?.role?.[0]?.name}, ${item?.role?.[1]?.name} ...` : RoleList(item?.role)}</p>
                                     <p className='foydalan_table_product_title'>{item?.status}</p>
                                     <div className='foydalan_product_buttons'>
                                         <button><Link to={`/foydalanuvchi/singlefoydalanuvchi/${item.id}`}><i className='bx bx-user'></i></Link></button>

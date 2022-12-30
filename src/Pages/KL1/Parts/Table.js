@@ -15,6 +15,9 @@ function Table() {
 
     const [errorStatus, setErrorStatus] = useState(false)
     const [show, setShow] = useState(false)
+
+    const [ orderInfo, setOrderInfo ] = useState({})
+
     
     // Alerts
     function Success() {
@@ -111,6 +114,49 @@ function Table() {
         return totalSum2
     }
 
+    function GetSumXarajatQism6(){
+        let xarajat = []
+        familyXarajat?.map(item =>{
+            xarajat.push(item.minus)
+        })
+        let totalXarajatSum = xarajat.reduce((prev,current) => Number(prev) + Number(current), 0)
+        return totalXarajatSum
+    }
+    function GetMalumotPayQism6(){
+        let malumotPay = []
+        familyMalumot?.map(item =>{
+            malumotPay.push(item.pay)
+        })
+        let totalMalumotSumPay = malumotPay.reduce((prev,current) => Number(prev) + Number(current), 0)
+        return totalMalumotSumPay
+    }
+
+    function SupplyTypes(supply){
+        let types = []
+        supply?.map(item =>{
+            if(item?.type == 'gold'){
+                types.push('Tilla Buyumlar Kafilligi')
+            }else if(item?.type == 'auto'){
+                types.push('Transport Vositasi Garovi')
+            }else if(item?.type == 'guarrantor'){
+                types.push('3 shaxs kafilligi')
+            }else if(item?.type == 'insurance'){
+                types.push('Sugurta kompaniyasi sugurta polisi')
+            }
+        })
+        // let typesSorted = types?.filter((number, index, numbers) => {numbers.indexOf(number) == index})
+        return types?.join(',')
+    }
+
+    function SupplySum(supply){
+        let summ = []
+        supply?.map(item =>{
+            summ.push(item?.sum)
+        })
+        let totalSum = summ.reduce((prev,current) => prev + current, 0)
+        return totalSum?.toLocaleString()
+    }
+
     useEffect(()=>{
         setSof(GetSumDaromadBiznes() + getTotalSumBoshqa() + (GetDaromadSumMavsumiy())/12 - GetSumXarajatBiznes() - (GetXarajatSumMavsumiy())/12)
 
@@ -123,6 +169,8 @@ function Table() {
         https
         .get(`/orders/${orderIdGet}`)
         .then(res =>{
+            setOrderInfo(res?.data)
+
             let data ={
                 type : 'annuitet',
                 sum : res?.data?.sum,
@@ -536,8 +584,8 @@ function Table() {
                         <p className={ProcentNumber() > 50 ? 'kl1_table_red-bg' : 'kl1_table_green-bg'}>{ProcentNumber()}</p>
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
-                        <p className='kl1_table_yellow-bg'>161,18%</p>
-                        <p className='kl1_table_yellow-bg'>7 153 000,00</p>
+                        <p className={ ((sof/(kreditData?.interest + kreditData?.principal_debt))*100).toFixed(2) > 120 ? 'kl1_table_green-bg' : 'kl1_table_red-bg'}>{((sof/(kreditData?.interest + kreditData?.principal_debt))*100).toFixed(2)}%</p>
+                        <p className='kl1_table_yellow-bg'>{(GetSumXarajatQism6() + GetMalumotPayQism6()) ? (GetSumXarajatQism6() + GetMalumotPayQism6())?.toLocaleString() : 0}</p>
                     </div>
                     <div className='kl1_table_yellow-bg'> {`<= 50% и >= 120%`}</div>
                     <div className='kl1_table_dark-bg'>Shaxsiy kapital miqdori</div>
@@ -603,8 +651,8 @@ function Table() {
                     <div className='kl1_table_dark-bg'>Taminot turi</div>
                     <div className='kl1_table_dark-bg'>Taminot qiymati</div>
                     <div className='kl1_table_dark-bg'>Kreditni qoplash koeffitsenti</div>
-                    <div>tilla buyumlar garovi</div>
-                    <div>20 000 000,00</div>
+                    <div>{SupplyTypes(orderInfo?.supply_infos)}</div>
+                    <div>{SupplySum(orderInfo?.supply_infos)}</div>
                     <div className='kl1_table_yellow-bg'>100%</div>
                 </div>
                 <Textarea
