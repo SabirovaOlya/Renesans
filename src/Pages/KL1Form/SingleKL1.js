@@ -13,7 +13,6 @@ function SingleKL1() {
     let { id } = useParams()
     const [ mainInfo, setMainInfo ] = useState({})
 
-    const [ sof, setSof ] = useState(1)
     const [ kreditData, setKreditData ] = useState({})
     const [ orderInfo, setOrderInfo ] = useState({})
 
@@ -32,7 +31,6 @@ function SingleKL1() {
             https
             .get(`/orders/${res?.data?.order?.id}`)
             .then(respon =>{
-                setOrderInfo(respon?.data)
 
                 let data ={
                     type : 'annuitet',
@@ -42,7 +40,7 @@ function SingleKL1() {
                     given_date : today,
                     first_repayment_date : today
                 }
-
+                
                 if(data?.time && data?.sum && data?.type && data?.percent){
                     https
                     .post('/namuna', data)
@@ -66,6 +64,7 @@ function SingleKL1() {
 
     useEffect(()=>{
         GetMainInfo()
+        
     },[])
 
     // Location
@@ -87,31 +86,6 @@ function SingleKL1() {
         }else{
             return(<></>)
         }
-    }
-
-    function SupplyTypes(){
-        let types = []
-        orderInfo?.supply_infos?.map(item =>{
-            if(item?.type == 'gold'){
-                types.push('Tilla Buyumlar Kafilligi')
-            }else if(item?.type == 'auto'){
-                types.push('Transport Vositasi Garovi')
-            }else if(item?.type == 'guarrantor'){
-                types.push('3 shaxs kafilligi')
-            }else if(item?.type == 'insurance'){
-                types.push('Sugurta kompaniyasi sugurta polisi')
-            }
-        })
-        return types?.join(',')
-    }
-
-    function SupplySum(){
-        let summ = []
-        orderInfo?.supply_infos?.map(item =>{
-            summ.push(item?.sum)
-        })
-        let totalSum = summ.reduce((prev,current) => prev + current, 0)
-        return totalSum?.toLocaleString()
     }
 
     // Boshqa Daromad
@@ -295,11 +269,54 @@ function SingleKL1() {
         return totalPrices
     }
 
-    useEffect(()=>{
-        setSof(BoshqaSumNumber() + (MonthlyDaromadNumber()/12) + BiznesDaromadNumber() - (MonthlyXarajatNumber()/12) - BiznesXarajatNumber())
-        // console.log(BoshqaSumNumber() + (MonthlyDaromadNumber()/12) + BiznesDaromadNumber() - (MonthlyXarajatNumber()/12) - BiznesXarajatNumber())  
+    function SofFun(){
+        return(BoshqaSumNumber() + (MonthlyDaromadNumber()/12) + BiznesDaromadNumber() - (MonthlyXarajatNumber()/12) - BiznesXarajatNumber())
+    }
+
+    useEffect(()=>{ 
         
+        https
+        .get(`/client-marks/${id}`)
+        .then(res =>{
+            https
+            .get(`/orders/${res?.data?.order?.id}`)
+            .then(respon =>{
+                setOrderInfo(respon?.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+        })
+        .catch(err =>{
+            console.log(err)
+        })
     },[])
+
+    function supplyTypes(){
+        let types = []
+        orderInfo?.supply_infos?.map(item =>{
+            if(item?.type == 'gold'){
+                types.push('Tilla Buyumlar Kafilligi')
+            }else if(item?.type == 'auto'){
+                types.push('Transport Vositasi Garovi')
+            }else if(item?.type == 'guarrantor'){
+                types.push('3 shaxs kafilligi')
+            }else if(item?.type == 'insurance'){
+                types.push('Sugurta kompaniyasi sugurta polisi')
+            }
+        })
+        return types?.join(',')
+    }
+
+    function supplySum(){
+        let summ = []
+        orderInfo?.supply_infos?.map(item =>{
+            summ.push(item?.sum)
+        })
+        let totalSum = summ.reduce((prev,current) => prev + current, 0)
+        return totalSum?.toLocaleString()
+    }
+
 
 
   return (
@@ -803,7 +820,7 @@ function SingleKL1() {
                         <div className='flex_column margin_top_15'>
                             <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {ClientLoansMain()} so`m</p>
                             <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {ClientLoansMonth()} so`m</p>
-                            <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {((ClientLoansMonthNumber()/sof)*100)?.toFixed(2)}%</p>
+                            <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {((ClientLoansMonthNumber()/SofFun())*100)?.toFixed(2)}%</p>
                         </div>
                     </> : <></>
                 }
@@ -823,7 +840,7 @@ function SingleKL1() {
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Soralayotgan kredit hisobi qarzi yoki korsatkichi (${'< 50%'})</p>
-                        <p>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/sof)*100).toFixed(2)}</p>
+                        <p>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/SofFun())*100).toFixed(2)}</p>
                     </div>
                 </div>
                 <div className='single_buyurtma_inputs margin_top_10'>
@@ -858,10 +875,10 @@ function SingleKL1() {
                     <div className='kl1_table_dark-bg'>Natija</div>
                     <div className='kl1_table_double kl1_table_dark-bg kl1_table_noPadding'>
                         <p className='kl1_table_yellow-bg'>{(kreditData?.interest + kreditData?.principal_debt)?.toLocaleString()}</p>
-                        <p className='kl1_table_green-bg'>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/sof)*100).toFixed(2)}%</p>
+                        <p className='kl1_table_green-bg'>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/SofFun())*100).toFixed(2)}%</p>
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
-                        <p className='kl1_table_yellow-bg'>{((sof/(kreditData?.interest + kreditData?.principal_debt))*100).toFixed(2)}%</p>
+                        <p className='kl1_table_yellow-bg'>{((SofFun()/(kreditData?.interest + kreditData?.principal_debt))*100).toFixed(2)}%</p>
                         <p className='kl1_table_yellow-bg'>{(FamilyXarajat() + FamilyLoansMonth()) ? (FamilyXarajat() + FamilyLoansMonth())?.toLocaleString() : 0}</p>
                     </div>
                     <div className='kl1_table_yellow-bg'> {`<= 50% и >= 120%`}</div>
@@ -880,8 +897,11 @@ function SingleKL1() {
                     <div className='kl1_table_dark-bg'>Taminot turi</div>
                     <div className='kl1_table_dark-bg'>Taminot qiymati</div>
                     <div className='kl1_table_dark-bg'>Kreditni qoplash koeffitsenti</div>
-                    <div>{SupplyTypes()}</div>
-                    <div>{SupplySum()}</div>
+                    <div>{supplyTypes()}</div>
+                    <div>{supplySum()}</div>
+                    {
+                        console.log(SofFun())
+                    }
                     <div className='kl1_table_yellow-bg'>100%</div>
                 </div>
                 <div className='single_buyurtma_inputs'>
