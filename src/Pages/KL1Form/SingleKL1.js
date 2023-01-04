@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import https from '../../assets/https';
 import { AiOutlineRollback } from 'react-icons/ai'
 import { Textarea, Radio } from '@nextui-org/react'
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 
 import './KL1Form.css'
 
@@ -12,11 +13,51 @@ function SingleKL1() {
     let { id } = useParams()
     const [ mainInfo, setMainInfo ] = useState({})
 
+    const [ sof, setSof ] = useState(1)
+    const [ kreditData, setKreditData ] = useState({})
+    const [ orderInfo, setOrderInfo ] = useState({})
+
     async function GetMainInfo(){
         await https
         .get(`/client-marks/${id}`)
         .then(res =>{
             setMainInfo(res?.data)
+
+            let Data = new Date();
+            let Year = Data.getFullYear();
+            let Month = Data.getMonth() + 1;
+            let Day = Data.getDate();
+            let today = `${Year}-${Month}-${Day}`
+
+            https
+            .get(`/orders/${res?.data?.order?.id}`)
+            .then(respon =>{
+                setOrderInfo(respon?.data)
+
+                let data ={
+                    type : 'annuitet',
+                    sum : respon?.data?.sum,
+                    time : respon?.data?.time,
+                    percent : 58,
+                    given_date : today,
+                    first_repayment_date : today
+                }
+
+                if(data?.time && data?.sum && data?.type && data?.percent){
+                    https
+                    .post('/namuna', data)
+                    .then(responsive =>{
+                        setKreditData(responsive?.data?.['0'])
+                    })
+                    .catch(error =>{
+                        console.log(error)
+                        console.log(data)
+                    })
+                }
+            })
+            .catch(error =>{
+                console.log(error)
+            })
         })
         .catch(err =>{
             console.log(err)
@@ -27,6 +68,52 @@ function SingleKL1() {
         GetMainInfo()
     },[])
 
+    // Location
+    const defaultState = {
+        center: [Number(mainInfo?.geolocation?.latitude), Number(mainInfo?.geolocation?.longitude)],
+        zoom: 14,
+    };
+    function Location(){
+        if(mainInfo?.geolocation?.latitude && mainInfo?.geolocation?.longitude){
+            return(
+                <div className='location_field margin_top_15'>
+                    <YMaps>
+                        <Map defaultState={defaultState}>
+                            <Placemark geometry={[Number(mainInfo?.geolocation?.latitude), Number(mainInfo?.geolocation?.longitude)]} />
+                        </Map>
+                    </YMaps>
+                </div>
+            )
+        }else{
+            return(<></>)
+        }
+    }
+
+    function SupplyTypes(){
+        let types = []
+        orderInfo?.supply_infos?.map(item =>{
+            if(item?.type == 'gold'){
+                types.push('Tilla Buyumlar Kafilligi')
+            }else if(item?.type == 'auto'){
+                types.push('Transport Vositasi Garovi')
+            }else if(item?.type == 'guarrantor'){
+                types.push('3 shaxs kafilligi')
+            }else if(item?.type == 'insurance'){
+                types.push('Sugurta kompaniyasi sugurta polisi')
+            }
+        })
+        return types?.join(',')
+    }
+
+    function SupplySum(){
+        let summ = []
+        orderInfo?.supply_infos?.map(item =>{
+            summ.push(item?.sum)
+        })
+        let totalSum = summ.reduce((prev,current) => prev + current, 0)
+        return totalSum?.toLocaleString()
+    }
+
     // Boshqa Daromad
     function BoshqaSum(){
         let array = []
@@ -36,23 +123,49 @@ function SingleKL1() {
         let totalPrices = array.reduce((prev, current) => prev + current, 0)
         return totalPrices.toLocaleString()
     }
+    function BoshqaSumNumber(){
+        let array = []
+        mainInfo?.other_income?.map(item =>{
+            array.push(item?.volume * item?.unit_price)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }
 
-    // MonthDaromad
+    // MonthDaromad 
     function MonthlyDaromad(){
-        if(mainInfo?.monthly_income){
+        if(mainInfo?.monthly_income?.january){
             let MonthArrSum1 = Object.values(mainInfo?.monthly_income);
             let totalMonth1 = MonthArrSum1.reduce((prev,current)=> Number(prev) + Number(current), 0)
             return totalMonth1.toLocaleString()
         }
+        return 0
+    }
+    function MonthlyDaromadNumber(){
+        if(mainInfo?.monthly_income?.january){
+            let MonthArrSum1 = Object.values(mainInfo?.monthly_income);
+            let totalMonth1 = MonthArrSum1.reduce((prev,current)=> Number(prev) + Number(current), 0)
+            return totalMonth1
+        }
+        return 0
     }
 
     // MonthXarajat
     function MonthlyXarajat(){
-        if(mainInfo?.monthly_expense){
+        if(mainInfo?.monthly_expense?.january){
             let MonthArrSum2 = Object.values(mainInfo?.monthly_expense);
             let totalMonth2 = MonthArrSum2.reduce((prev,current)=> Number(prev) + Number(current), 0)
             return totalMonth2.toLocaleString()
         }
+        return 0
+    }
+    function MonthlyXarajatNumber(){
+        if(mainInfo?.monthly_expense?.january){
+            let MonthArrSum2 = Object.values(mainInfo?.monthly_expense);
+            let totalMonth2 = MonthArrSum2.reduce((prev,current)=> Number(prev) + Number(current), 0)
+            return totalMonth2
+        }
+        return 0
     }
 
     // Biznes Xarajat
@@ -64,6 +177,14 @@ function SingleKL1() {
         let totalPrices = array.reduce((prev, current) => prev + current, 0)
         return totalPrices.toLocaleString()
     }
+    function BiznesDaromadNumber(){
+        let array = []
+        mainInfo?.business_incomes?.map(item =>{
+            array.push(item?.monthly_income)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }
 
     // Biznes Xarajat
     function BiznesXarajat(){
@@ -73,6 +194,14 @@ function SingleKL1() {
         })
         let totalPrices = array.reduce((prev, current) => prev + current, 0)
         return totalPrices.toLocaleString()
+    }
+    function BiznesXarajatNumber(){
+        let array = []
+        mainInfo?.business_expenses?.map(item =>{
+            array.push(item?.average_monthly_expense)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
     }
 
     // Family Daromad
@@ -84,6 +213,7 @@ function SingleKL1() {
         let totalPrices = array.reduce((prev, current) => prev + current, 0)
         return totalPrices
     }   
+    
     
     // Family Xarajat
     function FamilyXarajat(){
@@ -156,6 +286,20 @@ function SingleKL1() {
         let totalPrices = array.reduce((prev, current) => prev + current, 0)
         return totalPrices.toLocaleString()
     }
+    function ClientLoansMonthNumber(){
+        let array = []
+        mainInfo?.loans?.map(item =>{
+            array.push(item?.monthly)
+        })
+        let totalPrices = array.reduce((prev, current) => prev + current, 0)
+        return totalPrices
+    }
+
+    useEffect(()=>{
+        setSof(BoshqaSumNumber() + (MonthlyDaromadNumber()/12) + BiznesDaromadNumber() - (MonthlyXarajatNumber()/12) - BiznesXarajatNumber())
+        // console.log(BoshqaSumNumber() + (MonthlyDaromadNumber()/12) + BiznesDaromadNumber() - (MonthlyXarajatNumber()/12) - BiznesXarajatNumber())  
+        
+    },[])
 
 
   return (
@@ -253,7 +397,7 @@ function SingleKL1() {
                 <p>Ushbu sohada foliyat yuritish davomiyligi:</p>
                 <p>{mainInfo?.activity?.duration}</p>
             </div>
-            <p className='photo_text'>Rasimlar</p>
+            <p className='photo_text pdf_margin_top_15'>Rasimlar</p>
             <div className='taminot_photo_add'>
                 <div className='photo_images'>
                 {
@@ -619,7 +763,7 @@ function SingleKL1() {
                 }
                 {
                     mainInfo?.family_expenses?.length != 0 ? <>
-                        <p className={(FamilyDaromad() - FamilyXarajat()) >0 ? 'text_black_18 green_text margin_top_10' : 'text_black_18 red_text margin_top_10'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: {(FamilyDaromad() - FamilyXarajat())} so`m</p>
+                        <p className={(FamilyDaromad() - FamilyXarajat() - FamilyLoansMonth()) >0 ? 'text_black_18 green_text margin_top_10' : 'text_black_18 red_text margin_top_10'}>Uy xojaligi byudjetining ortacha oylik ortiqcha mablagi yoki kamomadi miqdori: {(FamilyDaromad() - FamilyXarajat() - FamilyLoansMonth())} so`m</p>
                     </> : <></>
                 }
             </div>
@@ -659,7 +803,7 @@ function SingleKL1() {
                         <div className='flex_column margin_top_15'>
                             <p className='kl1_jami margin_bottom'>Jami asosiy qarz qoldigi: {ClientLoansMain()} so`m</p>
                             <p className='kl1_jami margin_bottom'>Jami oylik tolov miqdori: {ClientLoansMonth()} so`m</p>
-                            <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {'32%'}</p>
+                            <p className='kl1_jami '>Joiriy kreditlar boyicha qarz yuki korsatkichi: {((ClientLoansMonthNumber()/sof)*100)?.toFixed(2)}%</p>
                         </div>
                     </> : <></>
                 }
@@ -667,19 +811,19 @@ function SingleKL1() {
                 <div className='single_form_product_third'>
                     <div className='single_buyurtma_inputs'>
                         <p>Asosiy qarz:</p>
-                        <p>{`5 000 000`}</p>
+                        <p>{(kreditData?.principal_debt)?.toLocaleString()}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Foizlar:</p>
-                        <p>{`900 500`}</p>
+                        <p>{(kreditData?.interest)?.toLocaleString()}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Jami oylik tolov:</p>
-                        <p>{`3 480 000`}</p>
+                        <p>{(kreditData?.interest + kreditData?.principal_debt)?.toLocaleString()}</p>
                     </div>
                     <div className='single_buyurtma_inputs'>
                         <p>Soralayotgan kredit hisobi qarzi yoki korsatkichi (${'< 50%'})</p>
-                        <p>{`83,5%`}</p>
+                        <p>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/sof)*100).toFixed(2)}</p>
                     </div>
                 </div>
                 <div className='single_buyurtma_inputs margin_top_10'>
@@ -713,12 +857,12 @@ function SingleKL1() {
                     </div>
                     <div className='kl1_table_dark-bg'>Natija</div>
                     <div className='kl1_table_double kl1_table_dark-bg kl1_table_noPadding'>
-                        <p className='kl1_table_yellow-bg'>5 985 205,42</p>
-                        <p className='kl1_table_red-bg'>62,04%</p>
+                        <p className='kl1_table_yellow-bg'>{(kreditData?.interest + kreditData?.principal_debt)?.toLocaleString()}</p>
+                        <p className='kl1_table_green-bg'>{(((kreditData?.interest + kreditData?.principal_debt + ClientLoansMonthNumber())/sof)*100).toFixed(2)}%</p>
                     </div>
                     <div className='kl1_table_double kl1_table_noPadding'>
-                        <p className='kl1_table_yellow-bg'>161,18%</p>
-                        <p className='kl1_table_yellow-bg'>7 153 000,00</p>
+                        <p className='kl1_table_yellow-bg'>{((sof/(kreditData?.interest + kreditData?.principal_debt))*100).toFixed(2)}%</p>
+                        <p className='kl1_table_yellow-bg'>{(FamilyXarajat() + FamilyLoansMonth()) ? (FamilyXarajat() + FamilyLoansMonth())?.toLocaleString() : 0}</p>
                     </div>
                     <div className='kl1_table_yellow-bg'> {`<= 50% и >= 120%`}</div>
                     <div className='kl1_table_dark-bg'>Shaxsiy kapital miqdori</div>
@@ -736,8 +880,8 @@ function SingleKL1() {
                     <div className='kl1_table_dark-bg'>Taminot turi</div>
                     <div className='kl1_table_dark-bg'>Taminot qiymati</div>
                     <div className='kl1_table_dark-bg'>Kreditni qoplash koeffitsenti</div>
-                    <div>tilla buyumlar garovi</div>
-                    <div>20 000 000,00</div>
+                    <div>{SupplyTypes()}</div>
+                    <div>{SupplySum()}</div>
                     <div className='kl1_table_yellow-bg'>100%</div>
                 </div>
                 <div className='single_buyurtma_inputs'>
@@ -748,6 +892,18 @@ function SingleKL1() {
                     <p>Monitoring boyicha masul xodimning yakuniy xulosasi:</p>
                     <p>{mainInfo?.conclusion}</p>
                 </div>
+                <h3 className='margin_top_25'>Lokasiya</h3>
+                <div className='single_buyurtma_inputs margin_top_15'>
+                    <p>Kenglik:</p>
+                    <p>{mainInfo?.geolocation?.latitude}</p>
+                </div>
+                <div className='single_buyurtma_inputs margin_top_15'>
+                    <p>Uzunlik:</p>
+                    <p>{mainInfo?.geolocation?.longitude}</p>
+                </div>
+                {
+                    Location()
+                }
                 <div className='kl1_accepting'>
                     <p>Taqdim etilgan va toplangan malumotlar hamda kredit byurosidan olingan kredit tarixiga asoslanib men tomonimdan otkazilgan organish va tahlillar asosida ushbu buyurtma boyicha quiydagi yakuniy xulosamni kredit komissiyasida korib chiqish uchun taqdim etaman</p>
                     <Radio.Group label=' ' value={mainInfo?.status == 1 ? true : false} size='sm' className='kl1_accepting_radio'>

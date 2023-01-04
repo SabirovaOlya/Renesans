@@ -144,7 +144,6 @@ function Table() {
                 types.push('Sugurta kompaniyasi sugurta polisi')
             }
         })
-        // let typesSorted = types?.filter((number, index, numbers) => {numbers.indexOf(number) == index})
         return types?.join(',')
     }
 
@@ -162,7 +161,7 @@ function Table() {
 
         let Data = new Date();
         let Year = Data.getFullYear();
-        let Month = Data.getMonth();
+        let Month = Data.getMonth() + 1;
         let Day = Data.getDate();
         let today = `${Year}-${Month}-${Day}`
 
@@ -252,9 +251,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
     async function PostBoshqa(firstItem){
@@ -265,9 +264,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 
@@ -279,9 +278,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 
@@ -293,9 +292,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 
@@ -307,9 +306,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 
@@ -321,9 +320,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 
@@ -335,9 +334,9 @@ function Table() {
         })
         .catch(err =>{
             console.log(err)
-            return(
-                Error()
-            )
+            // return(
+            //     Error()
+            // )
         })
     }
 

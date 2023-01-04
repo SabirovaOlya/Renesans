@@ -102,7 +102,7 @@ function BuyurtmaOylik() {
 
         let Data = new Date();
         let Year = Data.getFullYear();
-        let Month = Data.getMonth();
+        let Month = Data.getMonth() + 1;
         let Day = Data.getDate();
         let today = `${Year}-${Month}-${Day}`
 

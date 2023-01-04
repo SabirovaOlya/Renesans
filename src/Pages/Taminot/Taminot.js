@@ -88,6 +88,8 @@ function Taminot() {
             .then(res => {
                 setPaginations(res?.data?.meta?.links)
                 setTaminotlar(res?.data?.data)
+                console.log(res?.data?.data)
+
                 setTimeout(()=>{
                     setLoading(false)
                 },150)
@@ -199,7 +201,7 @@ function Taminot() {
                 <div className='shartTable'>
                     <div className='tableHeader'>
                         <p className='headerTable-title_shartnoma'>F.I.Sh</p>
-                        <p className='headerTable-title_shartnoma'>Ta'minot kodi</p>
+                        <p className='headerTable-title_shartnoma'>Buyurtma kodi</p>
                         <p className='headerTable-title_shartnoma'>Mahsulot nomi</p>
                     </div>
                     {
@@ -213,8 +215,8 @@ function Taminot() {
                             {
                                 taminotlar?.map((item, index) => {
                                     return <li className='client_row' key={index}>
-                                        <p className='liName li_shartnoma'>{item?.owner?.fio ? item?.owner?.fio : "Buyurtmachining o'zi" }</p>
-                                        <p className='li_shartnoma'>{item?.id}</p>
+                                        <p className='liName li_shartnoma'>{item?.order?.client?.name}</p>
+                                        <p className='li_shartnoma'>{item?.order?.code}</p>
                                         <p className='li_shartnoma'>{item?.type}</p>
                                         <div className='userButtons_shartnoma'>
                                             <button onClick={()=>{SinglePage(item?.type, item?.id)}}><i className='bx bx-user'></i></button>
