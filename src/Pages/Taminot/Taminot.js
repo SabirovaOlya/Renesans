@@ -38,7 +38,7 @@ function Taminot() {
             confirmButtonText: 'Ok'
         })
     }
-    const [buyurtmaId, setBuyurtmaId] = useState(0)
+    const [buyurtmaId, setBuyurtmaId] = useState('')
     // Modalka
     const [modalka, setModalka] = useState('shartnoma_modal close');
     let navigate = useNavigate();
@@ -49,7 +49,7 @@ function Taminot() {
         }
         
         let dataId ={
-            code: Number(id)
+            code: id
         }
         
         https
@@ -88,8 +88,6 @@ function Taminot() {
             .then(res => {
                 setPaginations(res?.data?.meta?.links)
                 setTaminotlar(res?.data?.data)
-                console.log(res?.data?.data)
-
                 setTimeout(()=>{
                     setLoading(false)
                 },150)
@@ -162,9 +160,9 @@ function Taminot() {
                     bordered
                     width='300px'
                     color='secondary'
+                    type='text'
                     label='Buyurtma kodi'
-                    placeholder='12345'
-                    type='number'
+                    placeholder='123...'
                     clearable
                     onChange={(e) => setBuyurtmaId(e.target.value)}
                 ></Input>

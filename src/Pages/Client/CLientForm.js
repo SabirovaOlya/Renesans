@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Icons
 import { AiOutlineClear, AiOutlineUserAdd, AiOutlineRollback } from 'react-icons/ai'
 // Components
@@ -20,6 +20,8 @@ import '../../assets/datepicker.css'
 
 
 function CLientForm() {
+
+  let navigate = useNavigate()
 
   // Document
   const [document, setDocument] = useState('')
@@ -235,6 +237,8 @@ function CLientForm() {
     .then(res => {
       Success()
       console.log(info);
+
+      navigate(`/client/singleClient/${res?.data?.client_id}`, {replace :true });
     })
     .catch(err => {
       console.log(err)

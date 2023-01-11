@@ -96,6 +96,7 @@ const { TabPane } = Tabs;
 function Main() {
     let token = window.localStorage.getItem('token')
     let name = window.localStorage.getItem('name')
+    let photo = window.localStorage.getItem('photo')
     let role = JSON.parse(window.localStorage.getItem('role'))
 
     let path = (window.location.pathname).split('/')
@@ -197,7 +198,10 @@ function Main() {
                                     className='header_avatar'
                                     alt="John Doe"
                                     sx={{ width: 50, height: 50 }}
-                                    src='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/demo-1/static/media/avatar-s-11.1d46cc62.jpg' />
+                                    src={
+                                        photo ? `https://ioi-tech.uz/${photo}` :
+                                        'https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/demo-1/static/media/avatar-s-11.1d46cc62.jpg'
+                                    } />
                                 <ul className={headerDropDown ? 'header_dropdown header_dropdown_active' : 'header_dropdown'} ref={catalogRef}>
                                     <div className='header_dropdown_item' onClick={() => { RemoteData() }}>
                                         <Link to='/' onClick={() => { setHeaderDropDown(false) }} >

@@ -57,7 +57,14 @@ function EditBuyurtma() {
     }
     function Warn() {
         Swal.fire({
-            title: "Error",
+            title: "Xato",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
+    function WarnCommit() {
+        Swal.fire({
+            title: "Izoh yozing",
             icon: 'error',
             confirmButtonText: 'Ok'
         })
@@ -75,6 +82,21 @@ function EditBuyurtma() {
         }
     }
 
+    async function GetData(){
+        await https
+        .get(`/orders/${id}`)
+        .then(res => {
+            setOrder(res?.data)
+            setClient(res?.data?.client)
+            setBackOrder(res?.data)
+            setStatus(res?.data?.status)
+            setChecked(res?.data?.sign_committee)
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
     // Select Function
     async function fetchSection() {
         const ress = await https.get('/products')
@@ -89,23 +111,8 @@ function EditBuyurtma() {
 
     useEffect(() => {
         fetchSection()
+        GetData()
     }, [])
-
-
-    useEffect(() => {
-        https
-            .get(`/orders/${id}`)
-            .then(res => {
-                setOrder(res?.data)
-                setClient(res?.data?.client)
-                setBackOrder(res?.data)
-                setStatus(res?.data?.status)
-                setChecked(res?.data?.sign_committee)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }, []);
 
     function RadioButton() {
         if (status) {
@@ -203,13 +210,14 @@ function EditBuyurtma() {
             .then(res =>{
                 console.log(info)
                 closeForm()
+                GetData()
             })
             .catch(err =>{
                 console.log(err)
                 console.log(info)
             })
         }else{
-
+            return(WarnCommit())
         }
     }
 
@@ -225,8 +233,8 @@ function EditBuyurtma() {
             code: order?.code,
             product_id: order?.product?.id,
             status: order?.status,
-            order_number: order?.order_number,
-            protocol_number: order?.protocol_number
+            order_number: order?.order_number ? order?.order_number : null,
+            protocol_number: order?.protocol_number ?  order?.protocol_number : null
         }
         if (order?.status == 'denied') {
             info = { ...info, reason: order?.reason }
@@ -338,8 +346,8 @@ function EditBuyurtma() {
                             <>
                                 <p>Mahsulot</p>
                                 <Select
-                                    defaultValue={sectionOptions.find(x => x.value == order?.product?.id)}
-                                    value={sectionOptions.find(x => x.value == order?.product?.id)}
+                                    defaultValue={sectionOptions.find(x => x.value === order?.product?.id)}
+                                    value={sectionOptions.find(x => x.value === order?.product?.id)}
                                     options={sectionOptions}
                                     className='buyurtma_select_new'
                                     styles={customStyles}
@@ -407,7 +415,7 @@ function EditBuyurtma() {
                         bordered
                         label="Buyurtma raqami"
                         value={order?.order_number}
-                        {...register("order_number", { required: true })}
+                        {...register("order_number", { required: false })}
                         className='filial_input'
                         color="secondary"
                         onChange={(e) => {
@@ -423,7 +431,7 @@ function EditBuyurtma() {
                         className='filial_input'
                         value={order?.protocol_number}
                         color="secondary"
-                        {...register("protocol_number", { required: true })}
+                        {...register("protocol_number", { required: false })}
                         onChange={(e) => {
                             let newOrder = { ...order }
                             newOrder.protocol_number = e.target.value
@@ -435,6 +443,9 @@ function EditBuyurtma() {
                         <>
                             {
                                 order?.order_results?.map((item, index) =>{
+                                    if(item?.name == userName){
+                                        setHave(false)
+                                    }
                                     return(
                                         <Input
                                             key={index}
@@ -449,18 +460,11 @@ function EditBuyurtma() {
                                 })
                             }
                             {
-                                order?.order_results?.map(item =>{
-                                    if(item?.name == userName){
-                                        setHave(false)
-                                    }
-                                })
-                            
-                            }
-                            {
-                                have ? ((<div className='endRow'>
-                                            <button onClick={()=>{openForm()}} className='voice_button' type='button'>Ovoz berish</button>
-                                        </div>)) : 
-                                <></>
+                                order?.order_results?.find(x => x.user === userName) ?
+                                <></> :
+                                <div className='endRow'>
+                                    <button onClick={()=>{openForm()}} className='voice_button' type='button'>Ovoz berish</button>
+                                </div>
                             }
                         </> : <></>
                     }

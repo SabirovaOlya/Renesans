@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import https from '../../assets/https';
 import { AiOutlineRollback } from 'react-icons/ai'
 import './Client.css'
+import { Button } from 'antd';
 
 
 
@@ -39,10 +40,10 @@ function SingleClient() {
     return (
         <section>
             <div className='filialform_header'>
-                <Link to='/client' className='clientform_back'>
+                <button onClick={() => navigate(-1)} className='clientform_back'>
                     <AiOutlineRollback />
                     Orqaga
-                </Link>
+                </button>
                 <button className='pathButton' onClick={()=>{ToBuyurtma()}}>
                     Buyurtma
                 </button>
@@ -71,10 +72,14 @@ function SingleClient() {
                             <p>Tuman:</p>
                             <p>{client?.district}</p>
                         </div>
-                        <div className='single_buyurtma_inputs'>
-                            <p>Vaqtinchalik yashash joyi:</p>
-                            <p>{client?.temp_address}</p>
-                        </div>
+                        {
+                            client?.temp_address ? 
+                            <div className='single_buyurtma_inputs'>
+                                <p>Vaqtinchalik yashash joyi:</p>
+                                <p>{client?.temp_address}</p>
+                            </div> : 
+                            <></>
+                        }
                         <div className='single_buyurtma_inputs'>
                             <p>Jinsi:</p>
                             <p>{client?.gender == "male" ? "Erkar" : (client?.gender == "female" ? "ayol" : "-")}</p>

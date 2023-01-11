@@ -74,8 +74,8 @@ function Home() {
             }
               {
               statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.pointer == 'up' ?
-              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100 :
-              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2) - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all).toFixed(2))*100
+              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all)*100 - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all)*100).toFixed(2) :
+              ((statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.lastMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all)*100 - (statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.currentMonth/statisticInfo?.orders?.[statisticInfo?.orders?.length - 1]?.all)*100).toFixed(2)
               }%</span>o'tgan oyga ko'ra
           </p>
         </div>
@@ -105,8 +105,8 @@ function Home() {
                 <i className='bx bx-down-arrow-alt'></i>
               }{
               statisticInfo?.clients?.pointer == "up" ?
-            ((statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2))*100 :
-            ((statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all).toFixed(2) - (statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all).toFixed(2))*100
+            ((statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all - statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all)*100)?.toFixed(2) :
+            ((statisticInfo?.clients?.lastMonth/statisticInfo?.clients?.all - statisticInfo?.clients?.currentMonth/statisticInfo?.clients?.all)*100)?.toFixed(2)
             }%</span>o'tgan oyga ko'ra
           </p>
         </div>

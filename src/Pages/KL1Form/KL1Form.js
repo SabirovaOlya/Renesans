@@ -72,7 +72,7 @@ function KL1Form() {
       }
       
       let dataId ={
-        code: Number(id)
+        code: id
       }
       
       https
@@ -117,7 +117,7 @@ function KL1Form() {
             width='300px'
             color='secondary'
             label='Buyurtma kodi'
-            placeholder='12345'
+            placeholder='123..'
             clearable
             onChange={(e) => setModalCode(e.target.value)}
         ></Input>

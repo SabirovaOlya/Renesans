@@ -51,13 +51,15 @@ const DemoDualAxes = ({array}) => {
               opacity: 1,
             };
           }
-
+          
           return {
             opacity: 0.5,
           };
         },
       },
     ],
+    colorField: 'type',
+    color:['#19CDD7','#DDB27C'],
   };
   return <DualAxes {...config} />;
 };

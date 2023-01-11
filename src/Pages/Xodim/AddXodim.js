@@ -67,7 +67,7 @@ function AddXodim() {
         },
         {
             value:null,
-            label:"Hechkim"
+            label:"Qo'mita azosi emas"
         }
     ]
 

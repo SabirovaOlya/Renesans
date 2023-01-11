@@ -75,7 +75,7 @@ function Buyurtma() {
         }
         
         let dataId ={
-          code: Number(id)
+          code: id
         }
         
         https

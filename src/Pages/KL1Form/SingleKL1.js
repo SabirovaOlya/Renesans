@@ -354,7 +354,7 @@ function SingleKL1() {
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Buyurtmachining telefon raqami:</p>
-                <p>{mainInfo?.client?.phone}</p>
+                <p>{mainInfo?.client?.phone[0]}</p>
             </div>
             <div className='single_buyurtma_inputs pdf_margin_top_15'>
                 <p>Kredit maqsadi:</p>

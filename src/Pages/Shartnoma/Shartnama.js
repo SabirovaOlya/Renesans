@@ -51,7 +51,7 @@ function Shartnama() {
         }
         
         let dataId ={
-            code: Number(id)
+            code: id
         }
         
         https
@@ -135,7 +135,7 @@ function Shartnama() {
                     width='300px'
                     color='secondary'
                     label='Buyurtma kodi'
-                    placeholder='12345'
+                    placeholder='123..'
                     clearable
                     onChange={(e) => setModalCode(e.target.value)}
                 ></Input>
@@ -178,7 +178,7 @@ function Shartnama() {
                                 {
                                     shartnamalar?.map((item, index) => {
                                         return <li className='client_row' key={item?.id}>
-                                            <p className='liName li_shartnoma'>{item?.order?.name}</p>
+                                            <p className='liName li_shartnoma'>{item?.order?.client?.name}</p>
                                             <p className='li_shartnoma'>{item?.contract_num}</p>
                                             <p className='li_shartnoma'>{item?.contract_issue_date}</p>
                                             <div className='userButtons_shartnoma'>

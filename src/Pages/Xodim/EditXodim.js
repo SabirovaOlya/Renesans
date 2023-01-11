@@ -32,6 +32,13 @@ function EditXodim() {
             confirmButtonText: 'Ok'
         })
     }
+    function Error() {
+        Swal.fire({
+            title: "Xato",
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        })
+    }
 
     let positions = [
         {
@@ -52,7 +59,7 @@ function EditXodim() {
         },
         {
             value:null,
-            label:"Hechkim"
+            label:"Qo'mita azosi emas"
         }
     ]
 
@@ -69,12 +76,8 @@ function EditXodim() {
                 position:res?.data?.position
             })
             let images = []
-            res?.data?.photo?.map(item =>{
-                images.push(item?.photo)
-                console.log(item?.photo)
-            })
+            images.push(res?.data?.photo)
             setPath(images)
-            console.log(images)
             setBackXodim({
                 branch_id : res?.data?.branch?.id,
                 section_id: res?.data?.section?.id,
@@ -173,10 +176,12 @@ function EditXodim() {
         .then(res =>{
             if(res.request.status === 200){
                 Edited()
-            };
+            }
         })
         .catch(err =>{
-            console.log(err);
+            console.log(err)
+            console.log(info)
+
         })
     }
 

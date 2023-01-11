@@ -13,6 +13,7 @@ function SingleXodim() {
         .get(`/employees/${id}`)
         .then(res =>{
             setXodim(res?.data)
+            console.log(res?.data);
         })
         .catch(err =>{
             console.log(err);
@@ -83,19 +84,18 @@ function SingleXodim() {
                         <p>Code:</p>
                         <p>{xodim?.code}</p>
                     </div>
-                    <h4>Rasim</h4>
-                    <div className='photo_images'>
-                        {
-                            xodim?.photo?.map((item,index)=>{
-                                return(
-                                    <div className='image_container_user photo_size' key={index}>
-                                        <img className='photo_show_user' src={`https://ioi-tech.uz/${item?.photo}`}></img>
-                                        {/* <button type='button' onClick={()=>{ImageDelete(index)}}><AiFillCloseSquare className='icon_no'/></button> */}
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+                    {
+                      xodim?.photo ?
+                      <>
+                        <h4>Rasim</h4>
+                        <div className='photo_images'>
+                            <div className='image_container_user photo_size'>
+                                <img className='photo_show_user' src={`https://ioi-tech.uz/${xodim?.photo}`}></img>
+                            </div>
+                        </div>
+                      </>  : 
+                      <></>
+                    }
                 </div>
             </div>
         </div>

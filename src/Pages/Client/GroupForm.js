@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { Tabs } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input, Radio } from '@nextui-org/react';
 import { BiTrash } from 'react-icons/bi'
 import { AiOutlineUsergroupAdd, AiOutlineClear, AiOutlineRollback, AiOutlineUser } from 'react-icons/ai';
@@ -15,6 +15,8 @@ import './Client.css'
 import { log } from '@antv/g2plot/lib/utils';
 
   function GroupForm(props) {
+
+    let navigate = useNavigate()
 
     const [nameGroup, setnameGroup ] = useState('')
     const [variant, setVariant] = useState()
@@ -342,6 +344,8 @@ import { log } from '@antv/g2plot/lib/utils';
           .then(res=>{
             console.log(data)
             Success()
+
+            navigate(`/group/single_group/${res?.data?.group_id}`, {replace:true})
           })
           .catch(err =>{
             console.log(err)

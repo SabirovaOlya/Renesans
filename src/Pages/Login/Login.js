@@ -52,6 +52,7 @@ function Login() {
                         })
                         window.localStorage.setItem('token', res?.data?.token)
                         window.localStorage.setItem('name', res?.data?.user?.name)
+                        window.localStorage.setItem('photo', res?.data?.user?.employee?.photo)
                         window.localStorage.setItem('role', JSON.stringify(roles))
                         window.localStorage.setItem('user_id', res?.data?.user?.id)
                         window.localStorage.setItem('branch_id', res?.data?.user?.branch?.id)
@@ -81,8 +82,8 @@ function Login() {
                 </div>
                 <div className='login-secondary'>
                     <div className='login-secondary_wrapper'>
-                        <h1>Welcome to Renesans!👋</h1>
-                        <span>Please sign-in to your account and start the adventure</span>
+                        <h1>Renesansga xush kelibsiz!👋</h1>
+                        <span>Iltimos, hisobingizga kiring va ishlashni boshlashingiz mumkun. Hayrli kun!</span>
                         <form onSubmit={handleSubmit(onSubmit)}>
 
                             <Input

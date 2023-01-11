@@ -18,7 +18,7 @@ function Foydalan() {
         https
             .get(`/${newUrl}`)
             .then(res => {
-                setPaginations(res?.data?.data?.meta?.link)
+                setPaginations(res?.data?.meta?.links)
                 setUsers(res?.data?.data)
                 // setLoading(false)
             })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { AiOutlineRollback, AiOutlineClear, AiOutlineUserAdd } from 'react-icons/ai'
 import { Input } from '@nextui-org/react'
 import https from '../../assets/https'
@@ -14,6 +14,7 @@ function EditUser() {
     const [user, setUser] = useState({})
     const [backUser, setBackUser] = useState({})
     const userID = window.localStorage.getItem('user_id')
+    let navigate = useNavigate()
 
     // Alert
     function Success() {
@@ -99,7 +100,10 @@ function EditUser() {
                 if (user?.id == userID) {
                     window.localStorage.removeItem('name')
                     window.localStorage.setItem('name', user?.name)
+                    // window.localStorage.removeItem('role')
+                    // window.localStorage.setItem('name', user?.name)
                 }
+                console.log(data)
             })
             .catch(err => {
                 Warn()
@@ -116,10 +120,10 @@ function EditUser() {
     return (
         <section>
             <div className='filialform_header'>
-                <Link to='/foydalanuvchi' className='clientform_back'>
+                <button onClick={()=>{navigate(-1)}} className='clientform_back'>
                     <AiOutlineRollback />
                     Orqaga
-                </Link>
+                </button>
             </div>
             <div className='FilialEditTable single_buyurtma'>
                 <h1 className='text_center filial_edit_text'>{user?.name}</h1>

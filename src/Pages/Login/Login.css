@@ -38,6 +38,13 @@
     height: 70%;
     width: 80%;
 }
+.login-secondary_wrapper h1{
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+.login-secondary_wrapper span{
+    font-weight: 500;
+}
 .login-secondary_wrapper form{
     margin-top: 20px;
     display: flex;
